@@ -6,7 +6,7 @@ import OrdersList from "./pages/Orders/OrdersList";
 import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
 
 function App() {
-  const isOnboarded = false; // later: read from API/auth
+  const isOnboarded = true; // later: read from API/auth
 
   return (
     <BrowserRouter>
