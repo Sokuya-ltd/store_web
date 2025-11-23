@@ -148,26 +148,6 @@ export default function SettingsForm({ form, updateForm }) {
                     onChange={e => updateForm({ operating_hours: e.target.value })}
                 />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input
-                    label="Store Banner"
-                    type="text"
-                    value={form.store_banner}
-                    onChange={e => updateForm({ store_banner: e.target.value })}
-                />
-                <Input
-                    label="Store Logo"
-                    type="text"
-                    value={form.store_logo}
-                    onChange={e => updateForm({ store_logo: e.target.value })}
-                />
-                <Input
-                    label="Profile Image"
-                    type="text"
-                    value={form.profile_image}
-                    onChange={e => updateForm({ profile_image: e.target.value })}
-                />
-            </div>
             <Button type="submit" className="mt-6 w-full py-2 px-4 bg-orange-500 text-white font-semibold rounded-lg shadow">
                 Save Settings
             </Button>
