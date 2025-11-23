@@ -1,6 +1,6 @@
 import Card from "../components/ui/Card";
 import Badge from "../components/ui/Badge";
-import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, Package, Clock } from "lucide-react";
+import { TrendingUp, TrendingDown, ShoppingCart, DollarSign, Package, Clock, PoundSterlingIcon } from "lucide-react";
 import { colors } from "../lib/colors";
 
 export default function Dashboard() {
@@ -11,9 +11,9 @@ export default function Dashboard() {
       value: "14,732",
       change: "+4.3%",
       trend: "up",
-      icon: DollarSign,
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600",
+      icon: PoundSterlingIcon,
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600",
     },
     {
       label: "Total Expenses",
@@ -30,8 +30,8 @@ export default function Dashboard() {
       change: "-7.8%",
       trend: "down",
       icon: Package,
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600",
+      bgColor: "bg-purple-50",
+      iconColor: "text-purple-600",
     },
     {
       label: "Total Orders",
@@ -63,44 +63,51 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-slate-900">Ecommerce</h2>
-        <div className="flex gap-2">
-          <select className="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
-            <option>This Month</option>
-            <option>Last Month</option>
-            <option>This Year</option>
-          </select>
-        </div>
+        <button className="text-sm text-blue-600 hover:text-blue-700">View Reports →</button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.label} className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm text-slate-500 mb-1">{stat.label}</p>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2">{stat.value}</h3>
-                  <div className="flex items-center gap-1">
-                    {stat.trend === "up" ? (
-                      <TrendingUp className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-red-600" />
-                    )}
-                    <span className={`text-sm font-medium ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}>
-                      {stat.change}
-                    </span>
-                    <span className="text-sm text-slate-500">this month</span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left side - Stats cards in 2 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
+            return (
+              <Card key={stat.label} className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className={`p-4 rounded-xl ${stat.bgColor} shrink-0`}>
+                    <Icon className={`w-7 h-7 ${stat.iconColor}`} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-slate-600 mb-1">{stat.label}</p>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-1">{stat.value}</h3>
+                    <div className="flex items-center gap-1 text-sm">
+                      <span className="text-slate-600">
+                        {stat.trend === "up" ? "Increase by" : "Decreased by"}
+                      </span>
+                      <span className={`font-semibold ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}>
+                        {stat.change}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                  <Icon className={`w-6 h-6 ${stat.iconColor}`} />
-                </div>
-              </div>
-            </Card>
-          );
-        })}
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Right side - Earnings Chart */}
+        <Card>
+          <div className="p-6 border-b border-slate-200">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-slate-900">Earnings</h3>
+              <button className="text-sm text-slate-500 hover:text-slate-700">View All →</button>
+            </div>
+          </div>
+          <div className="p-6 flex items-center justify-center bg-slate-50 rounded-lg min-h-[200px]">
+            <p className="text-sm text-slate-500">Chart will go here</p>
+          </div>
+        </Card>
       </div>
 
       {/* Main Grid */}
@@ -132,59 +139,18 @@ export default function Dashboard() {
         </Card>
 
         {/* Earnings Chart Placeholder */}
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-slate-900">Earnings</h3>
-            <button className="text-sm text-slate-500 hover:text-slate-700">View All →</button>
-          </div>
-          <div className="h-64 flex items-center justify-center bg-slate-50 rounded-lg">
-            <p className="text-sm text-slate-500">Chart will go here</p>
+        <Card className="p-6 flex flex-col justify-between h-full">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-slate-900">Earnings</h3>
+              <button className="text-sm text-slate-500 hover:text-slate-700">View All →</button>
+            </div>
+            <div className="flex-1 flex items-center justify-center bg-slate-50 rounded-lg min-h-[200px]">
+              <p className="text-sm text-slate-500">Chart will go here</p>
+            </div>
           </div>
         </Card>
       </div>
-
-      {/* Top Selling Products */}
-      <Card>
-        <div className="p-6 border-b border-slate-200">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-slate-900">Top Selling Products</h3>
-            <button className="text-sm text-blue-600 hover:text-blue-700">View All →</button>
-          </div>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">S.no</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Product Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Stock</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Total Sales</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {topProducts.map((product, index) => (
-                <tr key={product.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4 text-sm text-slate-900">{index + 1}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-slate-100 rounded-lg" />
-                      <span className="text-sm text-slate-900">{product.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-900">{product.category}</td>
-                  <td className="px-6 py-4">
-                    <Badge variant={product.stock === "In Stock" ? "success" : "danger"}>
-                      {product.stock}
-                    </Badge>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-semibold text-slate-900">{product.sales.toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
     </div>
   );
 }
