@@ -18,7 +18,7 @@ export default function AppLayout() {
 
         {/* Fixed bottom nav for manage account */}
         <div className="mt-auto px-3 py-4 border-t border-white/20">
-          <NavItem to="/account" icon={<Settings size={18} />}>Manage Account</NavItem>
+          <NavItem to="/settings" icon={<Settings size={18} />}>Manage Account</NavItem>
         </div>
       </aside>
 
