@@ -30,20 +30,20 @@ export default function AppLayout() {
             <div className="relative group">
               <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
                 <Bell size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">5</span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500"></span>
+                <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">5</span>
               </button>
               
               {/* Notifications Dropdown */}
               <div className="absolute right-0 top-12 w-80 bg-white border border-slate-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                 <div className="p-3 border-b border-slate-200 flex items-center justify-between">
                   <h3 className="font-semibold text-slate-900">Notifications</h3>
-                  <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">5 unread</span>
+                  <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1">5 unread</span>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
                   <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-blue-500 mt-1.5 shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">New order received</p>
                         <p className="text-xs text-slate-500 mt-0.5">Order #1234 from John Doe</p>
@@ -53,7 +53,7 @@ export default function AppLayout() {
                   </a>
                   <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-green-500 mt-1.5 shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">Payment confirmed</p>
                         <p className="text-xs text-slate-500 mt-0.5">£299.99 received for order #1233</p>
@@ -63,7 +63,7 @@ export default function AppLayout() {
                   </a>
                   <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-orange-500 mt-1.5 shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">Low stock alert</p>
                         <p className="text-xs text-slate-500 mt-0.5">Blue Hoodie - Only 3 items left</p>
@@ -73,7 +73,7 @@ export default function AppLayout() {
                   </a>
                   <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-purple-500 mt-1.5 shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">New customer review</p>
                         <p className="text-xs text-slate-500 mt-0.5">5 stars for Red T-Shirt</p>
@@ -83,7 +83,7 @@ export default function AppLayout() {
                   </a>
                   <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-red-500 rounded-full mt-1.5 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-red-500 mt-1.5 shrink-0"></div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-900 truncate">Order cancelled</p>
                         <p className="text-xs text-slate-500 mt-0.5">Customer cancelled order #1230</p>
@@ -105,7 +105,7 @@ export default function AppLayout() {
               <span className="text-xs text-slate-400">store admin</span>
             </div>
             <div className="relative group">
-              <div className="w-8 h-8 rounded-full bg-slate-300 hover:bg-slate-400 transition-colors flex items-center justify-center text-xs font-semibold text-slate-700 cursor-pointer shadow-md">
+              <div className="w-8 h-8 bg-slate-300 hover:bg-slate-400 transition-colors flex items-center justify-center text-xs font-semibold text-slate-700 cursor-pointer shadow-md">
                 JO
               </div>
               <div className="absolute right-0 top-10 w-48 bg-white border border-slate-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
