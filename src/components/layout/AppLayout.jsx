@@ -1,30 +1,58 @@
 import { Outlet, NavLink } from "react-router-dom";
-import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell } from "lucide-react";
+import { useState } from "react";
+import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X } from "lucide-react";
 import { colors } from "../../lib/colors";
 
 export default function AppLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Sidebar content as a component for reuse
+  const SidebarContent = (
+    <>
+      <div className="px-6 py-4 text-xl font-semibold border-b border-white/20">
+        Africana Troprican
+      </div>
+      <nav className="flex-1 px-3 py-4 space-y-3">
+        <NavItem to="/" icon={<LayoutDashboard size={18} />}>Dashboard</NavItem>
+        <NavItem to="/products" icon={<Package size={18} />}>Products</NavItem>
+        <NavItem to="/orders" icon={<ShoppingCart size={18} />}>Orders</NavItem>
+      </nav>
+      <div className="mt-auto px-3 py-4 border-t border-white/20">
+        <NavItem to="/settings" icon={<Settings size={18} />}>Manage Account</NavItem>
+      </div>
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-slate-100 flex">
-
+      {/* Desktop Sidebar */}
       <aside className="fixed left-0 top-0 h-screen w-64 text-slate-100 hidden md:flex flex-col" style={{ backgroundColor: colors.primary.main }}>
-        <div className="px-6 py-4 text-xl font-semibold border-b border-white/20">
-          Africana Troprican
-        </div>
-        <nav className="flex-1 px-3 py-4 space-y-3">
-          <NavItem to="/" icon={<LayoutDashboard size={18} />}>Dashboard</NavItem>
-          <NavItem to="/products" icon={<Package size={18} />}>Products</NavItem>
-          <NavItem to="/orders" icon={<ShoppingCart size={18} />}>Orders</NavItem>
-        </nav>
-
-        {/* Fixed bottom nav for manage account */}
-        <div className="mt-auto px-3 py-4 border-t border-white/20">
-          <NavItem to="/settings" icon={<Settings size={18} />}>Manage Account</NavItem>
-        </div>
+        {SidebarContent}
       </aside>
 
-      <div className="flex-1 flex flex-col ml-64">
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-50 flex">
+          <aside className="h-full w-64 bg-[#FF6B1A] text-slate-100 flex flex-col shadow-xl animate-slide-in" style={{ backgroundColor: colors.primary.main }}>
+            <button className="absolute top-4 right-4 text-white" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">
+              <X size={28} />
+            </button>
+            {SidebarContent}
+          </aside>
+          {/* Overlay background */}
+          <div className="flex-1 bg-black bg-opacity-30" onClick={() => setSidebarOpen(false)}></div>
+        </div>
+      )}
+
+      <div className="flex-1 flex flex-col w-full md:ml-64">
         <header className="h-15.5 flex items-center justify-between px-4 bg-white border-b border-slate-200">
-          <div className="font-semibold">Welcome back 👋</div>
+          <div className="flex items-center gap-3">
+            {/* Hamburger for mobile */}
+            <button className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg" onClick={() => setSidebarOpen(true)} aria-label="Open sidebar">
+              <Menu size={24} />
+            </button>
+            <span className="font-semibold">Welcome back 👋</span>
+          </div>
           <div className="flex items-center gap-5">
             {/* Notifications */}
             <div className="relative group">
@@ -33,7 +61,6 @@ export default function AppLayout() {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500"></span>
                 <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">5</span>
               </button>
-              
               {/* Notifications Dropdown */}
               <div className="absolute right-0 top-12 w-80 bg-white border border-slate-200 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                 <div className="p-3 border-b border-slate-200 flex items-center justify-between">
@@ -134,7 +161,7 @@ export default function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 w-full px-6">
           <Outlet />
         </main>
       </div>

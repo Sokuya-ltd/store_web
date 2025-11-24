@@ -58,14 +58,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="w-full px-6 space-y-6">
+      <div className="flex items-center justify-between mt-5">
         <h2 className="text-2xl font-bold text-slate-900">Ecommerce</h2>
         <button className="text-sm text-blue-600 hover:text-blue-700">View Reports →</button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Left side - Stats cards in 2 columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {stats.map((stat, index) => {
@@ -95,24 +95,24 @@ export default function Dashboard() {
         </div>
 
         {/* Right side - Earnings Chart */}
-        <Card>
-          <div className="p-6 border-b border-slate-200">
+        <Card className="mt-4 md:mt-0">
+          <div className="p-4 md:p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-slate-900">Earnings</h3>
               <button className="text-sm text-slate-500 hover:text-slate-700">View All →</button>
             </div>
           </div>
-          <div className="p-6 flex items-center justify-center bg-slate-50 rounded-lg min-h-[200px]">
+          <div className="p-4 md:p-6 flex items-center justify-center bg-slate-50 rounded-lg min-h-40 md:min-h-[200px]">
             <p className="text-sm text-slate-500">Chart will go here</p>
           </div>
         </Card>
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <Card className="lg:col-span-2">
-          <div className="p-6 border-b border-slate-200">
+        <Card className="md:col-span-2">
+          <div className="p-4 md:p-6 border-b border-slate-200">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-slate-900 flex items-center gap-2">
                 <span className="w-1 h-4 bg-[#D35400] rounded-full mr-2"></span>
@@ -123,7 +123,7 @@ export default function Dashboard() {
           </div>
           <div className="divide-y divide-slate-100">
             {recentOrders.map((order) => (
-              <div key={order.id} className="p-4 flex items-center justify-between hover:bg-slate-50">
+              <div key={order.id} className="p-3 md:p-4 flex items-center justify-between hover:bg-slate-50">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center">
                     <Package className="w-6 h-6 text-slate-600" />
@@ -139,15 +139,15 @@ export default function Dashboard() {
           </div>
         </Card>
         {/* Top Customers Card */}
-        <Card className="p-0 overflow-hidden">
-          <div className="border-b-2 border-blue-100 flex items-center justify-between px-5 pt-4 pb-2">
+        <Card className="p-0 overflow-hidden mt-4 md:mt-0">
+          <div className="border-b-2 border-blue-100 flex items-center justify-between px-3 pt-3 pb-2 md:px-5 md:pt-4">
             <h3 className="font-semibold text-slate-900 flex items-center gap-2">
               <span className="w-1 h-4 bg-[#D35400] rounded-full mr-2"></span>
               Top Customers
             </h3>
             <button className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1">View All <span className="text-xs">▼</span></button>
           </div>
-          <div className="px-5 py-2">
+          <div className="px-3 py-2 md:px-5">
             <ul className="divide-y divide-gray-100">
               {/* Emma Wilson */}
               <li className="flex items-center justify-between py-3">

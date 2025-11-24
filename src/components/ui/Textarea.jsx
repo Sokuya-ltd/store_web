@@ -1,17 +1,33 @@
 import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 
-export default function Textarea({ label, error, className = "", ...props }) {
+export default function Textarea({
+    label,
+    error,
+    className = "",
+    value,
+    onChange,
+    apiKey = "inuw9fihz5kkkjbwdh2cido79371p1jozyn0m62wpzc8ywra",
+    ...props
+}) {
     return (
-        <div className="space-y-1">
+        <div className={`space-y-1 ${className}`}>
             {label && (
                 <label className="block text-sm font-medium text-slate-700">
                     {label}
                 </label>
             )}
-            <textarea
-                className={`w-full min-h-20 border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 ${
-                    error ? "border-rose-500 focus:ring-rose-500" : ""
-                } ${className}`}
+            <Editor
+                apiKey={apiKey}
+                value={value}
+                init={{
+                    height: 300,
+                    menubar: false,
+                    plugins: ['link', 'lists', 'code', 'table'],
+                    toolbar:
+                        'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link code',
+                }}
+                onEditorChange={onChange}
                 {...props}
             />
             {error && (

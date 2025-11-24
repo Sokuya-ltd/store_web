@@ -6,7 +6,7 @@ export default function Checkbox({ label, checked, onChange, id, className = "" 
         id={id}
         checked={checked}
         onChange={onChange}
-        className="form-checkbox h-4 w-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
+        className="form-checkbox h-4 w-4 accent-black border-gray-300 rounded focus:ring-black"
       />
       <label htmlFor={id} className="text-sm font-medium text-gray-700">{label}</label>
     </div>
