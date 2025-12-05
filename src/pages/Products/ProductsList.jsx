@@ -2,10 +2,135 @@ import { useState, useEffect } from "react";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
+import DataTable from "../../components/ui/DataTable";
+import productsData from "../../dataset/store_products.json";
+import { View } from "lucide-react";
 
-const mockProducts = [
-  { id: 1, name: "Red T-Shirt", price: 19.99, stock: 42, status: "Active" },
-  { id: 2, name: "Blue Hoodie", price: 39.99, stock: 8, status: "Low stock" },
+const mockProducts = productsData.store_products;
+
+// Define table columns
+const columns = [
+  {
+    accessorFn: (row) => row.product?.name,
+    id: "product",
+    header: "Product",
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <img
+          src={row.original.product?.image_url}
+          alt={row.original.product?.name}
+          className="w-10 h-10 object-cover shadow-md bg-slate-100"
+        />
+        <div>
+          <p className="font-medium text-slate-900">{row.original.product?.name}</p>
+          <p className="text-xs text-slate-500 truncate max-w-[180px]">{row.original.product?.description}</p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    accessorFn: (row) => row.product?.brand,
+    id: "brand",
+    header: "Brand",
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+    cell: ({ getValue }) => <span className="font-medium">£{getValue()?.toFixed(2)}</span>,
+  },
+  {
+    accessorFn: (row) => row.product?.recommended_price,
+    id: "recommended_price",
+    header: "Rec. Price",
+    cell: ({ getValue }) => <span className="text-slate-500">£{getValue()?.toFixed(2)}</span>,
+  },
+  {
+    accessorKey: "stock_qty",
+    header: "Stock",
+  },
+  {
+    accessorFn: (row) => row.product?.unit,
+    id: "unit",
+    header: "Unit",
+  },
+  {
+    accessorFn: (row) => row.product?.tags || [],
+    id: "tags",
+    header: "Tags",
+    enableSorting: false,
+    cell: ({ getValue }) => {
+      const tags = getValue() || [];
+      return (
+        <div className="flex flex-wrap gap-1 group relative">
+          {tags.slice(0, 2).map((tag) => (
+            <span key={tag} className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs">
+              {tag}
+            </span>
+          ))}
+          {tags.length > 2 && (
+            <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-xs cursor-pointer relative group/tags">
+              +{tags.length - 2}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-800 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tags:opacity-100 group-hover/tags:visible transition-all duration-200 whitespace-nowrap z-50">
+                {tags.slice(2).join(", ")}
+                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+              </div>
+            </span>
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      let variant = "danger";
+      if (row.original.status === "active") {
+        variant = "success";
+      } else if (row.original.status === "inactive") {
+        variant = "warning";
+      }
+      return (
+        <Badge variant={variant}>
+          {row.original.status}
+        </Badge>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: () => <span>Actions</span>,
+    enableSorting: false,
+    cell: ({ row }) => (
+      <div className="absolute group">
+        <button className="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600">
+          Manage ▼
+        </button>
+        <ul className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <li>
+            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
+              View
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
+              Edit
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
+              {row.original.status === "active" ? "Hide" : "Show"}
+            </a>
+          </li>
+          <li>
+            <a href="#" className="block px-3 py-2 text-xs text-rose-600 hover:bg-rose-50">
+              Delete
+            </a>
+          </li>
+        </ul>
+      </div>
+    ),
+  },
 ];
 
 export default function ProductsList() {
@@ -17,57 +142,19 @@ export default function ProductsList() {
   }, []);
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-xl font-semibold text-slate-900">Products</h2>
-        <Button>+ Add Product</Button>
+    <div className="w-full space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
+        <h2 className="text-xl font-semibold text-slate-900">Available Products</h2>
+        <Button className="shadow-md">+ Add Product</Button>
       </div>
 
-      <Card className="overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-left text-xs font-semibold text-slate-500 uppercase">
-            <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Price</th>
-              <th className="px-4 py-3">Stock</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p.id} className="border-t border-slate-100">
-                <td className="px-4 py-3">{p.name}</td>
-                <td className="px-4 py-3">£{p.price.toFixed(2)}</td>
-                <td className="px-4 py-3">{p.stock}</td>
-                <td className="px-4 py-3">
-                  <Badge variant={p.status === "Active" ? "success" : "warning"}>
-                    {p.status}
-                  </Badge>
-                </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <button className="text-xs text-slate-600 hover:text-slate-900">
-                    Edit
-                  </button>
-                  <button className="text-xs text-rose-600 hover:text-rose-800">
-                    Archive
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {products.length === 0 && (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="px-4 py-6 text-center text-sm text-slate-500"
-                >
-                  No products yet. Click &ldquo;Add Product&rdquo; to create
-                  one.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <Card className="p-4 shadow-md">
+        <DataTable
+          data={products}
+          columns={columns}
+          searchPlaceholder="Search products..."
+          pageSize={8}
+        />
       </Card>
     </div>
   );

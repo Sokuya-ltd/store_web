@@ -58,7 +58,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="w-full px-6 space-y-6">
+    <div className="w-full space-y-6">
       <div className="flex items-center justify-between mt-5">
         <h2 className="text-2xl font-bold text-slate-900">Ecommerce</h2>
         <button className="text-sm text-blue-600 hover:text-blue-700">View Reports →</button>

@@ -1,0 +1,1008 @@
+{
+    "store_products": [
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440002",
+            "price": 29.99,
+            "compare_at_price": 49.99,
+            "stock_qty": 150,
+            "stock_reserved": 5,
+            "reorder_threshold": 5,
+            "sku": "PROD-SKU-001",
+            "barcode": "1234567890123",
+            "status": "inactive",
+            "variant_options": {
+                "size": "M",
+                "color": "blue"
+            },
+            "weight": 0.5,
+            "store_specific_tags": [
+                "summer",
+                "bestseller"
+            ],
+            "store_notes": "High demand item",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440002",
+                "name": "Organic Tomatoes",
+                "slug": "organic-tomatoes",
+                "description": "Fresh, locally-sourced organic tomatoes",
+                "image_url": "https://via.placeholder.com/400x300?text=Tomatoes",
+                "unit": "kg",
+                "category_id": "cat-001",
+                "brand": "Local Farm",
+                "ingredients": "100% Tomatoes",
+                "recommended_price": 4.99,
+                "tags": [
+                    "organic",
+                    "fresh",
+                    "vegetables"
+                ],
+                "is_active": true,
+                "price": 3.99,
+                "stock": 125,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440010",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440003",
+            "price": 39.99,
+            "compare_at_price": 59.99,
+            "stock_qty": 200,
+            "stock_reserved": 10,
+            "reorder_threshold": 5,
+            "sku": "PROD-SKU-002",
+            "barcode": "1234567890124",
+            "status": "out_of_stock",
+            "variant_options": {
+                "size": "L",
+                "color": "red"
+            },
+            "weight": 0.6,
+            "store_specific_tags": [
+                "new",
+                "sale"
+            ],
+            "store_notes": "New arrival",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440003",
+                "name": "Whole Milk",
+                "slug": "whole-milk",
+                "description": "Premium whole milk, 1 liter",
+                "image_url": "https://via.placeholder.com/400x300?text=Milk",
+                "unit": "liter",
+                "category_id": "cat-002",
+                "brand": "Dairy Co",
+                "ingredients": "100% Cow's Milk",
+                "recommended_price": 2.49,
+                "tags": [
+                    "dairy",
+                    "fresh",
+                    "milk",
+                    "vegan"
+                ],
+                "is_active": true,
+                "price": 1.99,
+                "stock": 45,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440011",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440004",
+            "price": 19.99,
+            "compare_at_price": 39.99,
+            "stock_qty": 300,
+            "stock_reserved": 15,
+            "reorder_threshold": 10,
+            "sku": "PROD-SKU-003",
+            "barcode": "1234567890125",
+            "status": "active",
+            "variant_options": {
+                "size": "S",
+                "color": "green"
+            },
+            "weight": 0.4,
+            "store_specific_tags": [
+                "budget",
+                "popular"
+            ],
+            "store_notes": "Best seller",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440004",
+                "name": "Gluten-Free Bread",
+                "slug": "gluten-free-bread",
+                "description": "Artisan gluten-free bread loaf",
+                "image_url": "https://via.placeholder.com/400x300?text=Bread",
+                "unit": "piece",
+                "category_id": "cat-003",
+                "brand": "Bakery Plus",
+                "ingredients": "Rice flour, corn starch, eggs, yeast",
+                "recommended_price": 3.99,
+                "tags": [
+                    "gluten-free",
+                    "bread",
+                    "bakery"
+                ],
+                "is_active": true,
+                "price": 2.99,
+                "stock": 12,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440012",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440005",
+            "price": 49.99,
+            "compare_at_price": 79.99,
+            "stock_qty": 100,
+            "stock_reserved": 8,
+            "reorder_threshold": 3,
+            "sku": "PROD-SKU-004",
+            "barcode": "1234567890126",
+            "status": "active",
+            "variant_options": {
+                "size": "XL",
+                "color": "black"
+            },
+            "weight": 0.7,
+            "store_specific_tags": [
+                "premium",
+                "trending"
+            ],
+            "store_notes": "Limited stock",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440005",
+                "name": "Free Range Eggs",
+                "slug": "free-range-eggs",
+                "description": "Pack of 12 free range eggs",
+                "image_url": "https://via.placeholder.com/400x300?text=Eggs",
+                "unit": "dozen",
+                "category_id": "cat-002",
+                "brand": "Happy Hens",
+                "ingredients": "100% Eggs",
+                "recommended_price": 5.99,
+                "tags": [
+                    "organic",
+                    "eggs",
+                    "dairy"
+                ],
+                "is_active": true,
+                "price": 4.99,
+                "stock": 80,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440013",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440006",
+            "price": 24.99,
+            "compare_at_price": 44.99,
+            "stock_qty": 250,
+            "stock_reserved": 12,
+            "reorder_threshold": 8,
+            "sku": "PROD-SKU-005",
+            "barcode": "1234567890127",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "white"
+            },
+            "weight": 0.55,
+            "store_specific_tags": [
+                "classic"
+            ],
+            "store_notes": "Standard item",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440006",
+                "name": "Olive Oil Extra Virgin",
+                "slug": "olive-oil-extra-virgin",
+                "description": "Premium cold-pressed olive oil, 500ml",
+                "image_url": "https://via.placeholder.com/400x300?text=OliveOil",
+                "unit": "bottle",
+                "category_id": "cat-004",
+                "brand": "Mediterranean Gold",
+                "ingredients": "100% Olives",
+                "recommended_price": 12.99,
+                "tags": [
+                    "organic",
+                    "oil",
+                    "cooking"
+                ],
+                "is_active": true,
+                "price": 9.99,
+                "stock": 35,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440014",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440007",
+            "price": 34.99,
+            "compare_at_price": 54.99,
+            "stock_qty": 180,
+            "stock_reserved": 7,
+            "reorder_threshold": 6,
+            "sku": "PROD-SKU-006",
+            "barcode": "1234567890128",
+            "status": "active",
+            "variant_options": {
+                "size": "L",
+                "color": "gray"
+            },
+            "weight": 0.65,
+            "store_specific_tags": [
+                "summer",
+                "sale"
+            ],
+            "store_notes": "Seasonal item",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440007",
+                "name": "Organic Honey",
+                "slug": "organic-honey",
+                "description": "Raw organic wildflower honey, 340g",
+                "image_url": "https://via.placeholder.com/400x300?text=Honey",
+                "unit": "jar",
+                "category_id": "cat-005",
+                "brand": "Nature's Best",
+                "ingredients": "100% Raw Honey",
+                "recommended_price": 8.99,
+                "tags": [
+                    "organic",
+                    "honey",
+                    "natural"
+                ],
+                "is_active": false,
+                "price": 7.49,
+                "stock": 0,
+                "status": "Out of Stock"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440015",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440008",
+            "price": 14.99,
+            "compare_at_price": 29.99,
+            "stock_qty": 400,
+            "stock_reserved": 20,
+            "reorder_threshold": 15,
+            "sku": "PROD-SKU-007",
+            "barcode": "1234567890129",
+            "status": "active",
+            "variant_options": {
+                "size": "S",
+                "color": "yellow"
+            },
+            "weight": 0.3,
+            "store_specific_tags": [
+                "budget"
+            ],
+            "store_notes": "Best value",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440008",
+                "name": "Whole Wheat Pasta",
+                "slug": "whole-wheat-pasta",
+                "description": "Organic whole wheat pasta, 500g",
+                "image_url": "https://via.placeholder.com/400x300?text=Pasta",
+                "unit": "packet",
+                "category_id": "cat-006",
+                "brand": "Grain Goodness",
+                "ingredients": "100% Whole Wheat",
+                "recommended_price": 2.49,
+                "tags": [
+                    "organic",
+                    "pasta",
+                    "grains"
+                ],
+                "is_active": true,
+                "price": 1.79,
+                "stock": 156,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440016",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440009",
+            "price": 44.99,
+            "compare_at_price": 74.99,
+            "stock_qty": 120,
+            "stock_reserved": 6,
+            "reorder_threshold": 4,
+            "sku": "PROD-SKU-008",
+            "barcode": "1234567890130",
+            "status": "active",
+            "variant_options": {
+                "size": "XL",
+                "color": "navy"
+            },
+            "weight": 0.75,
+            "store_specific_tags": [
+                "premium"
+            ],
+            "store_notes": "Top choice",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440009",
+                "name": "Almond Butter",
+                "slug": "almond-butter",
+                "description": "Creamy natural almond butter, 340g",
+                "image_url": "https://via.placeholder.com/400x300?text=AlmondButter",
+                "unit": "jar",
+                "category_id": "cat-007",
+                "brand": "Nut Naturals",
+                "ingredients": "100% Roasted Almonds",
+                "recommended_price": 6.99,
+                "tags": [
+                    "organic",
+                    "nuts",
+                    "spreads"
+                ],
+                "is_active": true,
+                "price": 5.49,
+                "stock": 42,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440017",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440010",
+            "price": 21.99,
+            "compare_at_price": 41.99,
+            "stock_qty": 320,
+            "stock_reserved": 14,
+            "reorder_threshold": 9,
+            "sku": "PROD-SKU-009",
+            "barcode": "1234567890131",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "pink"
+            },
+            "weight": 0.48,
+            "store_specific_tags": [
+                "trending"
+            ],
+            "store_notes": "Fast mover",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440010",
+                "name": "Greek Yogurt",
+                "slug": "greek-yogurt",
+                "description": "Plain Greek yogurt, 500ml",
+                "image_url": "https://via.placeholder.com/400x300?text=GreekYogurt",
+                "unit": "pot",
+                "category_id": "cat-002",
+                "brand": "Dairy Delights",
+                "ingredients": "Milk, Live Cultures",
+                "recommended_price": 3.49,
+                "tags": [
+                    "dairy",
+                    "yogurt",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 2.79,
+                "stock": 68,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440018",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440011",
+            "price": 37.99,
+            "compare_at_price": 57.99,
+            "stock_qty": 160,
+            "stock_reserved": 9,
+            "reorder_threshold": 5,
+            "sku": "PROD-SKU-010",
+            "barcode": "1234567890132",
+            "status": "active",
+            "variant_options": {
+                "size": "L",
+                "color": "orange"
+            },
+            "weight": 0.62,
+            "store_specific_tags": [
+                "sale",
+                "new"
+            ],
+            "store_notes": "Recent update",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440011",
+                "name": "Blueberries",
+                "slug": "blueberries",
+                "description": "Fresh organic blueberries, 150g",
+                "image_url": "https://via.placeholder.com/400x300?text=Blueberries",
+                "unit": "punnet",
+                "category_id": "cat-001",
+                "brand": "Berry Farm",
+                "ingredients": "100% Blueberries",
+                "recommended_price": 4.49,
+                "tags": [
+                    "organic",
+                    "berries",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 3.99,
+                "stock": 23,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440019",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440012",
+            "price": 26.99,
+            "compare_at_price": 46.99,
+            "stock_qty": 280,
+            "stock_reserved": 11,
+            "reorder_threshold": 7,
+            "sku": "PROD-SKU-011",
+            "barcode": "1234567890133",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "purple"
+            },
+            "weight": 0.53,
+            "store_specific_tags": [
+                "classic",
+                "bestseller"
+            ],
+            "store_notes": "Always popular",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440012",
+                "name": "Whole Grain Cereal",
+                "slug": "whole-grain-cereal",
+                "description": "Nutritious whole grain breakfast cereal, 500g",
+                "image_url": "https://via.placeholder.com/400x300?text=Cereal",
+                "unit": "box",
+                "category_id": "cat-006",
+                "brand": "Grain Basics",
+                "ingredients": "Whole grains, honey, salt",
+                "recommended_price": 3.99,
+                "tags": [
+                    "organic",
+                    "cereal",
+                    "breakfast"
+                ],
+                "is_active": true,
+                "price": 2.99,
+                "stock": 89,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440020",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440013",
+            "price": 31.99,
+            "compare_at_price": 51.99,
+            "stock_qty": 210,
+            "stock_reserved": 10,
+            "reorder_threshold": 6,
+            "sku": "PROD-SKU-012",
+            "barcode": "1234567890134",
+            "status": "active",
+            "variant_options": {
+                "size": "L",
+                "color": "teal"
+            },
+            "weight": 0.59,
+            "store_specific_tags": [
+                "summer"
+            ],
+            "store_notes": "Good option",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440013",
+                "name": "Cashew Nuts",
+                "slug": "cashew-nuts",
+                "description": "Roasted cashew nuts, 200g",
+                "image_url": "https://via.placeholder.com/400x300?text=Cashews",
+                "unit": "packet",
+                "category_id": "cat-007",
+                "brand": "Nut Naturals",
+                "ingredients": "100% Roasted Cashews",
+                "recommended_price": 7.99,
+                "tags": [
+                    "organic",
+                    "nuts",
+                    "snacks"
+                ],
+                "is_active": true,
+                "price": 5.99,
+                "stock": 54,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440021",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440014",
+            "price": 17.99,
+            "compare_at_price": 37.99,
+            "stock_qty": 350,
+            "stock_reserved": 18,
+            "reorder_threshold": 12,
+            "sku": "PROD-SKU-013",
+            "barcode": "1234567890135",
+            "status": "active",
+            "variant_options": {
+                "size": "S",
+                "color": "brown"
+            },
+            "weight": 0.42,
+            "store_specific_tags": [
+                "budget",
+                "trending"
+            ],
+            "store_notes": "Great deal",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440014",
+                "name": "Coconut Milk",
+                "slug": "coconut-milk",
+                "description": "Organic coconut milk, 400ml",
+                "image_url": "https://via.placeholder.com/400x300?text=CoconutMilk",
+                "unit": "can",
+                "category_id": "cat-008",
+                "brand": "Tropical Essence",
+                "ingredients": "100% Coconut",
+                "recommended_price": 2.79,
+                "tags": [
+                    "organic",
+                    "coconut",
+                    "cooking"
+                ],
+                "is_active": true,
+                "price": 1.99,
+                "stock": 76,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440022",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440015",
+            "price": 42.99,
+            "compare_at_price": 72.99,
+            "stock_qty": 140,
+            "stock_reserved": 7,
+            "reorder_threshold": 4,
+            "sku": "PROD-SKU-014",
+            "barcode": "1234567890136",
+            "status": "active",
+            "variant_options": {
+                "size": "XL",
+                "color": "maroon"
+            },
+            "weight": 0.7,
+            "store_specific_tags": [
+                "premium",
+                "sale"
+            ],
+            "store_notes": "High demand",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440015",
+                "name": "Spinach",
+                "slug": "spinach",
+                "description": "Fresh organic spinach, 200g",
+                "image_url": "https://via.placeholder.com/400x300?text=Spinach",
+                "unit": "pack",
+                "category_id": "cat-001",
+                "brand": "Local Farm",
+                "ingredients": "100% Spinach",
+                "recommended_price": 2.49,
+                "tags": [
+                    "organic",
+                    "vegetables",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 1.79,
+                "stock": 102,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440023",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440016",
+            "price": 28.99,
+            "compare_at_price": 48.99,
+            "stock_qty": 270,
+            "stock_reserved": 13,
+            "reorder_threshold": 8,
+            "sku": "PROD-SKU-015",
+            "barcode": "1234567890137",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "cream"
+            },
+            "weight": 0.51,
+            "store_specific_tags": [
+                "classic"
+            ],
+            "store_notes": "Stable seller",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440016",
+                "name": "Dark Chocolate",
+                "slug": "dark-chocolate",
+                "description": "Premium dark chocolate, 100g",
+                "image_url": "https://via.placeholder.com/400x300?text=Chocolate",
+                "unit": "bar",
+                "category_id": "cat-009",
+                "brand": "Choco Deluxe",
+                "ingredients": "Cocoa, sugar, cocoa butter",
+                "recommended_price": 4.99,
+                "tags": [
+                    "organic",
+                    "chocolate",
+                    "treats"
+                ],
+                "is_active": true,
+                "price": 3.49,
+                "stock": 143,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440024",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440017",
+            "price": 36.99,
+            "compare_at_price": 56.99,
+            "stock_qty": 190,
+            "stock_reserved": 9,
+            "reorder_threshold": 5,
+            "sku": "PROD-SKU-016",
+            "barcode": "1234567890138",
+            "status": "active",
+            "variant_options": {
+                "size": "L",
+                "color": "silver"
+            },
+            "weight": 0.64,
+            "store_specific_tags": [
+                "new",
+                "trending"
+            ],
+            "store_notes": "Worth checking",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440017",
+                "name": "Apple Cider Vinegar",
+                "slug": "apple-cider-vinegar",
+                "description": "Raw organic apple cider vinegar, 500ml",
+                "image_url": "https://via.placeholder.com/400x300?text=Vinegar",
+                "unit": "bottle",
+                "category_id": "cat-004",
+                "brand": "Natural Essence",
+                "ingredients": "100% Apple Cider",
+                "recommended_price": 4.49,
+                "tags": [
+                    "organic",
+                    "vinegar",
+                    "cooking"
+                ],
+                "is_active": true,
+                "price": 3.29,
+                "stock": 67,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440025",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440018",
+            "price": 13.99,
+            "compare_at_price": 27.99,
+            "stock_qty": 420,
+            "stock_reserved": 25,
+            "reorder_threshold": 18,
+            "sku": "PROD-SKU-017",
+            "barcode": "1234567890139",
+            "status": "active",
+            "variant_options": {
+                "size": "S",
+                "color": "gold"
+            },
+            "weight": 0.28,
+            "store_specific_tags": [
+                "budget"
+            ],
+            "store_notes": "Value item",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440018",
+                "name": "Chickpea Flour",
+                "slug": "chickpea-flour",
+                "description": "Organic chickpea flour, 500g",
+                "image_url": "https://via.placeholder.com/400x300?text=ChickpeaFlour",
+                "unit": "packet",
+                "category_id": "cat-006",
+                "brand": "Grain Goodness",
+                "ingredients": "100% Chickpeas",
+                "recommended_price": 3.49,
+                "tags": [
+                    "organic",
+                    "flour",
+                    "vegan"
+                ],
+                "is_active": true,
+                "price": 2.49,
+                "stock": 88,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440026",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440019",
+            "price": 46.99,
+            "compare_at_price": 76.99,
+            "stock_qty": 110,
+            "stock_reserved": 5,
+            "reorder_threshold": 3,
+            "sku": "PROD-SKU-018",
+            "barcode": "1234567890140",
+            "status": "active",
+            "variant_options": {
+                "size": "XL",
+                "color": "bronze"
+            },
+            "weight": 0.78,
+            "store_specific_tags": [
+                "premium"
+            ],
+            "store_notes": "Luxury choice",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440019",
+                "name": "Strawberries",
+                "slug": "strawberries",
+                "description": "Fresh organic strawberries, 400g",
+                "image_url": "https://via.placeholder.com/400x300?text=Strawberries",
+                "unit": "punnet",
+                "category_id": "cat-001",
+                "brand": "Berry Farm",
+                "ingredients": "100% Strawberries",
+                "recommended_price": 5.99,
+                "tags": [
+                    "organic",
+                    "berries",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 4.49,
+                "stock": 31,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440027",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440020",
+            "price": 23.99,
+            "compare_at_price": 43.99,
+            "stock_qty": 290,
+            "stock_reserved": 12,
+            "reorder_threshold": 7,
+            "sku": "PROD-SKU-019",
+            "barcode": "1234567890141",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "coral"
+            },
+            "weight": 0.5,
+            "store_specific_tags": [
+                "summer",
+                "bestseller"
+            ],
+            "store_notes": "Hot item",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440020",
+                "name": "Quinoa",
+                "slug": "quinoa",
+                "description": "Organic white quinoa, 500g",
+                "image_url": "https://via.placeholder.com/400x300?text=Quinoa",
+                "unit": "packet",
+                "category_id": "cat-006",
+                "brand": "Grain Goodness",
+                "ingredients": "100% Quinoa",
+                "recommended_price": 6.99,
+                "tags": [
+                    "organic",
+                    "grains",
+                    "vegan"
+                ],
+                "is_active": true,
+                "price": 4.99,
+                "stock": 45,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440028",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440021",
+            "price": 35.99,
+            "compare_at_price": 55.99,
+            "stock_qty": 170,
+            "stock_reserved": 8,
+            "reorder_threshold": 5,
+            "sku": "PROD-SKU-020",
+            "barcode": "1234567890142",
+            "status": "active",
+            "variant_options": {
+                "size": "L",
+                "color": "khaki"
+            },
+            "weight": 0.6,
+            "store_specific_tags": [
+                "sale"
+            ],
+            "store_notes": "On promotion",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440021",
+                "name": "Ginger Root",
+                "slug": "ginger-root",
+                "description": "Fresh organic ginger root, 250g",
+                "image_url": "https://via.placeholder.com/400x300?text=Ginger",
+                "unit": "pack",
+                "category_id": "cat-001",
+                "brand": "Local Farm",
+                "ingredients": "100% Ginger",
+                "recommended_price": 3.49,
+                "tags": [
+                    "organic",
+                    "vegetables",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 2.29,
+                "stock": 59,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440029",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440022",
+            "price": 20.99,
+            "compare_at_price": 40.99,
+            "stock_qty": 330,
+            "stock_reserved": 16,
+            "reorder_threshold": 10,
+            "sku": "PROD-SKU-021",
+            "barcode": "1234567890143",
+            "status": "active",
+            "variant_options": {
+                "size": "S",
+                "color": "mint"
+            },
+            "weight": 0.46,
+            "store_specific_tags": [
+                "trending",
+                "budget"
+            ],
+            "store_notes": "Moving fast",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440022",
+                "name": "Tahini",
+                "slug": "tahini",
+                "description": "Organic sesame seed tahini, 340g",
+                "image_url": "https://via.placeholder.com/400x300?text=Tahini",
+                "unit": "jar",
+                "category_id": "cat-007",
+                "brand": "Nut Naturals",
+                "ingredients": "100% Sesame Seeds",
+                "recommended_price": 5.99,
+                "tags": [
+                    "organic",
+                    "seeds",
+                    "spreads"
+                ],
+                "is_active": true,
+                "price": 4.49,
+                "stock": 36,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440030",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440023",
+            "price": 40.99,
+            "compare_at_price": 70.99,
+            "stock_qty": 130,
+            "stock_reserved": 6,
+            "reorder_threshold": 4,
+            "sku": "PROD-SKU-022",
+            "barcode": "1234567890144",
+            "status": "active",
+            "variant_options": {
+                "size": "XL",
+                "color": "indigo"
+            },
+            "weight": 0.71,
+            "store_specific_tags": [
+                "premium",
+                "trending"
+            ],
+            "store_notes": "Top seller",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440023",
+                "name": "Bell Peppers",
+                "slug": "bell-peppers",
+                "description": "Organic bell peppers mix, 500g",
+                "image_url": "https://via.placeholder.com/400x300?text=BellPeppers",
+                "unit": "pack",
+                "category_id": "cat-001",
+                "brand": "Local Farm",
+                "ingredients": "100% Bell Peppers",
+                "recommended_price": 3.99,
+                "tags": [
+                    "organic",
+                    "vegetables",
+                    "fresh"
+                ],
+                "is_active": true,
+                "price": 2.99,
+                "stock": 71,
+                "status": "Active"
+            }
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440031",
+            "store_id": "550e8400-e29b-41d4-a716-446655440001",
+            "product_id": "550e8400-e29b-41d4-a716-446655440024",
+            "price": 30.99,
+            "compare_at_price": 50.99,
+            "stock_qty": 240,
+            "stock_reserved": 11,
+            "reorder_threshold": 7,
+            "sku": "PROD-SKU-023",
+            "barcode": "1234567890145",
+            "status": "active",
+            "variant_options": {
+                "size": "M",
+                "color": "lime"
+            },
+            "weight": 0.57,
+            "store_specific_tags": [
+                "new",
+                "bestseller"
+            ],
+            "store_notes": "Customer favorite",
+            "product": {
+                "id": "550e8400-e29b-41d4-a716-446655440024",
+                "name": "Sunflower Seeds",
+                "slug": "sunflower-seeds",
+                "description": "Raw sunflower seeds, 300g",
+                "image_url": "https://via.placeholder.com/400x300?text=SunflowerSeeds",
+                "unit": "packet",
+                "category_id": "cat-007",
+                "brand": "Seed Naturals",
+                "ingredients": "100% Sunflower Seeds",
+                "recommended_price": 3.99,
+                "tags": [
+                    "organic",
+                    "seeds",
+                    "snacks"
+                ],
+                "is_active": true,
+                "price": 2.79,
+                "stock": 94,
+                "status": "Active"
+            }
+        }
+    ]
+}
