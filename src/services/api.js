@@ -1,5 +1,5 @@
 // API base URL from environment
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.API_URL;
 
 /**
  * Generic API request helper
