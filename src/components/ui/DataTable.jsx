@@ -49,13 +49,13 @@ export default function DataTable({
                         value={globalFilter ?? ""}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder={searchPlaceholder}
-                        className="w-full md:w-80 px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        className="w-full md:w-80 px-4 py-2 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     />
                 </div>
             )}
 
             {/* Table */}
-            <div className="overflow-x-auto overflow-y-visible rounded-lg border border-slate-200 bg-white">
+            <div className="overflow-x-auto overflow-y-visible border border-slate-200 bg-white">
                 <table className="w-full text-sm">
                     <thead className="bg-slate-50 text-left text-xs font-semibold text-slate-500 uppercase">
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -140,7 +140,7 @@ export default function DataTable({
                     <button
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
-                        className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         <ChevronLeft size={16} />
                         Previous
@@ -158,7 +158,7 @@ export default function DataTable({
                                         {showEllipsis && <span className="px-2 text-slate-400">...</span>}
                                         <button
                                             onClick={() => table.setPageIndex(page - 1)}
-                                            className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${table.getState().pagination.pageIndex === page - 1
+                                            className={`w-8 h-8 text-sm font-medium transition-colors ${table.getState().pagination.pageIndex === page - 1
                                                 ? "bg-orange-500 text-white"
                                                 : "text-slate-600 hover:bg-slate-100"
                                                 }`}
@@ -172,7 +172,7 @@ export default function DataTable({
                     <button
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
-                        className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         Next
                         <ChevronRight size={16} />

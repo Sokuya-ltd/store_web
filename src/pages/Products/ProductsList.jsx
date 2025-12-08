@@ -119,9 +119,10 @@ const columns = [
           </li>
           <li>
             <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
-              {row.original.status === "active" ? "Hide" : "Show"}
+              {row.original.status === "active" ? "Unpublish" : "Publish"}
             </a>
           </li>
+          <hr className="my-1 border-slate-200" />
           <li>
             <a href="#" className="block px-3 py-2 text-xs text-rose-600 hover:bg-rose-50">
               Delete
@@ -145,7 +146,7 @@ export default function ProductsList() {
     <div className="w-full space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
         <h2 className="text-xl font-semibold text-slate-900">Available Products</h2>
-        <Button className="shadow-md">+ Add Product</Button>
+        <a href="/products/add" className="inline-block px-3 py-2 bg-[#000000] hover:bg-[#333333] text-white font-light shadow-md transition-colors">+ Add Product</a>
       </div>
 
       <Card className="p-4 shadow-md">

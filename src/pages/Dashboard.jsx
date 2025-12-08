@@ -61,7 +61,7 @@ export default function Dashboard() {
     <div className="w-full space-y-6">
       <div className="flex items-center justify-between mt-5">
         <h2 className="text-2xl font-bold text-slate-900">Ecommerce</h2>
-        <button className="text-sm text-blue-600 hover:text-blue-700">View Reports →</button>
+        <button className="text-sm text-[#000000] hover:text-[#333333]">View Reports →</button>
       </div>
 
       {/* Stats Cards */}

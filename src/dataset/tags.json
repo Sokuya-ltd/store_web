@@ -1,0 +1,28 @@
+{
+    "tags": [
+        { "name": "Organic", "slug": "organic" },
+        { "name": "Fresh", "slug": "fresh" },
+        { "name": "Frozen", "slug": "frozen" },
+        { "name": "Smoked", "slug": "smoked" },
+        { "name": "Dried", "slug": "dried" },
+        { "name": "Halal", "slug": "halal" },
+        { "name": "Vegan", "slug": "vegan" },
+        { "name": "Gluten-Free", "slug": "gluten-free" },
+        { "name": "Sugar-Free", "slug": "sugar-free" },
+        { "name": "Spicy", "slug": "spicy" },
+        { "name": "Mild", "slug": "mild" },
+        { "name": "Ready-to-Eat", "slug": "ready-to-eat" },
+        { "name": "Traditional", "slug": "traditional" },
+        { "name": "African", "slug": "african" },
+        { "name": "Caribbean", "slug": "caribbean" },
+        { "name": "Middle Eastern", "slug": "middle-eastern" },
+        { "name": "High Demand", "slug": "high-demand" },
+        { "name": "Best Seller", "slug": "best-seller" },
+        { "name": "New Arrival", "slug": "new-arrival" },
+        { "name": "Limited Stock", "slug": "limited-stock" },
+        { "name": "Bulk Buy", "slug": "bulk-buy" },
+        { "name": "Imported", "slug": "imported" },
+        { "name": "Local", "slug": "local" },
+        { "name": "Premium", "slug": "premium" }
+    ]
+}

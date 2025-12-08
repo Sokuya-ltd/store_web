@@ -1,0 +1,160 @@
+{
+    "categories": [
+        {
+            "id": "cat-001",
+            "name": "Fresh Produce",
+            "slug": "fresh-produce",
+            "subcategories": [
+                { "id": "cat-001-001", "name": "Fruits", "slug": "fruits" },
+                { "id": "cat-001-002", "name": "Vegetables", "slug": "vegetables" },
+                { "id": "cat-001-003", "name": "Tubers & Roots", "slug": "tubers-roots" },
+                { "id": "cat-001-004", "name": "Herbs & Leaves", "slug": "herbs-leaves" }
+            ]
+        },
+        {
+            "id": "cat-002",
+            "name": "Dairy & Eggs",
+            "slug": "dairy-eggs",
+            "subcategories": [
+                { "id": "cat-002-001", "name": "Milk & Cream", "slug": "milk-cream" },
+                { "id": "cat-002-002", "name": "Cheese & Butter", "slug": "cheese-butter" },
+                { "id": "cat-002-003", "name": "Yogurt", "slug": "yogurt" },
+                { "id": "cat-002-004", "name": "Eggs", "slug": "eggs" }
+            ]
+        },
+        {
+            "id": "cat-003",
+            "name": "Bakery & Bread",
+            "slug": "bakery-bread",
+            "subcategories": [
+                { "id": "cat-003-001", "name": "Bread Loaves", "slug": "bread-loaves" },
+                { "id": "cat-003-002", "name": "Rolls & Buns", "slug": "rolls-buns" },
+                { "id": "cat-003-003", "name": "Pastries", "slug": "pastries" },
+                { "id": "cat-003-004", "name": "Gluten-Free", "slug": "gluten-free" }
+            ]
+        },
+        {
+            "id": "cat-004",
+            "name": "Oils & Condiments",
+            "slug": "oils-condiments",
+            "subcategories": [
+                { "id": "cat-004-001", "name": "Palm Oil", "slug": "palm-oil" },
+                { "id": "cat-004-002", "name": "Vegetable & Groundnut Oil", "slug": "vegetable-groundnut-oil" },
+                { "id": "cat-004-003", "name": "Olive Oil", "slug": "olive-oil" },
+                { "id": "cat-004-004", "name": "Vinegar & Dressings", "slug": "vinegar-dressings" },
+                { "id": "cat-004-005", "name": "Sauces & Marinades", "slug": "sauces-marinades" }
+            ]
+        },
+        {
+            "id": "cat-005",
+            "name": "Sweeteners & Spreads",
+            "slug": "sweeteners-spreads",
+            "subcategories": [
+                { "id": "cat-005-001", "name": "Honey", "slug": "honey" },
+                { "id": "cat-005-002", "name": "Sugar & Syrups", "slug": "sugar-syrups" },
+                { "id": "cat-005-003", "name": "Jams & Preserves", "slug": "jams-preserves" },
+                { "id": "cat-005-004", "name": "Nut Butters", "slug": "nut-butters" }
+            ]
+        },
+        {
+            "id": "cat-006",
+            "name": "Grains & Cereals",
+            "slug": "grains-cereals",
+            "subcategories": [
+                { "id": "cat-006-001", "name": "Rice & Couscous", "slug": "rice-couscous" },
+                { "id": "cat-006-002", "name": "Pasta & Noodles", "slug": "pasta-noodles" },
+                { "id": "cat-006-003", "name": "Flour", "slug": "flour" },
+                { "id": "cat-006-004", "name": "Cereals & Oats", "slug": "cereals-oats" },
+                { "id": "cat-006-005", "name": "Quinoa & Grains", "slug": "quinoa-grains" }
+            ]
+        },
+        {
+            "id": "cat-007",
+            "name": "Nuts & Seeds",
+            "slug": "nuts-seeds",
+            "subcategories": [
+                { "id": "cat-007-001", "name": "Almonds", "slug": "almonds" },
+                { "id": "cat-007-002", "name": "Cashews", "slug": "cashews" },
+                { "id": "cat-007-003", "name": "Groundnuts", "slug": "groundnuts" },
+                { "id": "cat-007-004", "name": "Mixed Nuts", "slug": "mixed-nuts" },
+                { "id": "cat-007-005", "name": "Seeds", "slug": "seeds" }
+            ]
+        },
+        {
+            "id": "cat-008",
+            "name": "Beverages",
+            "slug": "beverages",
+            "subcategories": [
+                { "id": "cat-008-001", "name": "Soft Drinks & Malt", "slug": "soft-drinks-malt" },
+                { "id": "cat-008-002", "name": "Fruit Juices", "slug": "fruit-juices" },
+                { "id": "cat-008-003", "name": "Tea & Coffee", "slug": "tea-coffee" },
+                { "id": "cat-008-004", "name": "Plant Milks", "slug": "plant-milks" },
+                { "id": "cat-008-005", "name": "Traditional Drinks", "slug": "traditional-drinks" }
+            ]
+        },
+        {
+            "id": "cat-009",
+            "name": "Snacks & Confectionery",
+            "slug": "snacks-confectionery",
+            "subcategories": [
+                { "id": "cat-009-001", "name": "Chocolate", "slug": "chocolate" },
+                { "id": "cat-009-002", "name": "Biscuits & Cookies", "slug": "biscuits-cookies" },
+                { "id": "cat-009-003", "name": "Plantain Chips", "slug": "plantain-chips" },
+                { "id": "cat-009-004", "name": "Sweets & Candy", "slug": "sweets-candy" }
+            ]
+        },
+        {
+            "id": "cat-010",
+            "name": "Spices & Seasoning",
+            "slug": "spices-seasoning",
+            "subcategories": [
+                { "id": "cat-010-001", "name": "Dried Spices", "slug": "dried-spices" },
+                { "id": "cat-010-002", "name": "Seasoning Cubes", "slug": "seasoning-cubes" },
+                { "id": "cat-010-003", "name": "Curry & Pepper Mix", "slug": "curry-pepper-mix" },
+                { "id": "cat-010-004", "name": "African Blends", "slug": "african-blends" }
+            ]
+        },
+        {
+            "id": "cat-011",
+            "name": "Protein & Seafood",
+            "slug": "protein-seafood",
+            "subcategories": [
+                { "id": "cat-011-001", "name": "Frozen Meat", "slug": "frozen-meat" },
+                { "id": "cat-011-002", "name": "Frozen Fish", "slug": "frozen-fish" },
+                { "id": "cat-011-003", "name": "Smoked & Dried Fish", "slug": "smoked-dried-fish" },
+                { "id": "cat-011-004", "name": "Crayfish & Shrimps", "slug": "crayfish-shrimps" }
+            ]
+        },
+        {
+            "id": "cat-012",
+            "name": "Canned & Packaged Goods",
+            "slug": "canned-packaged-goods",
+            "subcategories": [
+                { "id": "cat-012-001", "name": "Canned Vegetables", "slug": "canned-vegetables" },
+                { "id": "cat-012-002", "name": "Canned Fish", "slug": "canned-fish" },
+                { "id": "cat-012-003", "name": "Beans & Lentils", "slug": "beans-lentils" },
+                { "id": "cat-012-004", "name": "Tomato Products", "slug": "tomato-products" }
+            ]
+        },
+        {
+            "id": "cat-013",
+            "name": "Household & Cleaning",
+            "slug": "household-cleaning",
+            "subcategories": [
+                { "id": "cat-013-001", "name": "Detergents & Soaps", "slug": "detergents-soaps" },
+                { "id": "cat-013-002", "name": "Kitchen Supplies", "slug": "kitchen-supplies" },
+                { "id": "cat-013-003", "name": "Cleaning Tools", "slug": "cleaning-tools" },
+                { "id": "cat-013-004", "name": "Air Fresheners", "slug": "air-fresheners" }
+            ]
+        },
+        {
+            "id": "cat-other",
+            "name": "Other",
+            "slug": "other",
+            "subcategories": [
+                { "id": "cat-other-001", "name": "Uncategorized", "slug": "uncategorized" },
+                { "id": "cat-other-002", "name": "Miscellaneous", "slug": "miscellaneous" }
+            ]
+        }
+    ]
+}
