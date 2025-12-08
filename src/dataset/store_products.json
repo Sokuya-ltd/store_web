@@ -42,6 +42,13 @@
                 "price": 3.99,
                 "stock": 125,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -87,6 +94,13 @@
                 "price": 1.99,
                 "stock": 45,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-002",
+                "name": "Dairy & Eggs",
+                "slug": "dairy-eggs",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -131,6 +145,13 @@
                 "price": 2.99,
                 "stock": 12,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-003",
+                "name": "Bakery & Bread",
+                "slug": "bakery-bread",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -175,6 +196,13 @@
                 "price": 4.99,
                 "stock": 80,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-002",
+                "name": "Dairy & Eggs",
+                "slug": "dairy-eggs",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -218,6 +246,13 @@
                 "price": 9.99,
                 "stock": 35,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-004",
+                "name": "Oils & Condiments",
+                "slug": "oils-condiments",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -262,6 +297,13 @@
                 "price": 7.49,
                 "stock": 0,
                 "status": "Out of Stock"
+            },
+            "category": {
+                "id": "cat-005",
+                "name": "Sweeteners & Spreads",
+                "slug": "sweeteners-spreads",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -305,6 +347,13 @@
                 "price": 1.79,
                 "stock": 156,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-006",
+                "name": "Grains & Cereals",
+                "slug": "grains-cereals",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -348,6 +397,13 @@
                 "price": 5.49,
                 "stock": 42,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-007",
+                "name": "Nuts & Seeds",
+                "slug": "nuts-seeds",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -391,6 +447,13 @@
                 "price": 2.79,
                 "stock": 68,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-002",
+                "name": "Dairy & Eggs",
+                "slug": "dairy-eggs",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -435,6 +498,13 @@
                 "price": 3.99,
                 "stock": 23,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -479,6 +549,13 @@
                 "price": 2.99,
                 "stock": 89,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-006",
+                "name": "Grains & Cereals",
+                "slug": "grains-cereals",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -522,6 +599,13 @@
                 "price": 5.99,
                 "stock": 54,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-007",
+                "name": "Nuts & Seeds",
+                "slug": "nuts-seeds",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -566,6 +650,13 @@
                 "price": 1.99,
                 "stock": 76,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-008",
+                "name": "Beverages",
+                "slug": "beverages",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -610,6 +701,13 @@
                 "price": 1.79,
                 "stock": 102,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -653,6 +751,13 @@
                 "price": 3.49,
                 "stock": 143,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-009",
+                "name": "Snacks & Confectionery",
+                "slug": "snacks-confectionery",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -697,6 +802,13 @@
                 "price": 3.29,
                 "stock": 67,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-004",
+                "name": "Oils & Condiments",
+                "slug": "oils-condiments",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -740,6 +852,13 @@
                 "price": 2.49,
                 "stock": 88,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-006",
+                "name": "Grains & Cereals",
+                "slug": "grains-cereals",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -783,6 +902,13 @@
                 "price": 4.49,
                 "stock": 31,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -827,6 +953,13 @@
                 "price": 4.99,
                 "stock": 45,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-006",
+                "name": "Grains & Cereals",
+                "slug": "grains-cereals",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -870,6 +1003,13 @@
                 "price": 2.29,
                 "stock": 59,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -914,6 +1054,13 @@
                 "price": 4.49,
                 "stock": 36,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-007",
+                "name": "Nuts & Seeds",
+                "slug": "nuts-seeds",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -958,6 +1105,13 @@
                 "price": 2.99,
                 "stock": 71,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-001",
+                "name": "Fresh Produce",
+                "slug": "fresh-produce",
+                "parent_id": null,
+                "parent_name": null
             }
         },
         {
@@ -1002,6 +1156,13 @@
                 "price": 2.79,
                 "stock": 94,
                 "status": "Active"
+            },
+            "category": {
+                "id": "cat-007",
+                "name": "Nuts & Seeds",
+                "slug": "nuts-seeds",
+                "parent_id": null,
+                "parent_name": null
             }
         }
     ]

@@ -42,6 +42,8 @@ export default function ProductAdd() {
         weight: "",
         store_specific_tags: [],
         store_notes: "",
+        // Embedded category object (matches store_products.json structure)
+        category: null,
         // Product fields (only required if creating new product)
         product: {
             id: "",
@@ -51,7 +53,6 @@ export default function ProductAdd() {
             image_url: "",
             unit: "kg",
             category_id: "",
-            suggested_category: "", // For categories not in the list
             brand: "",
             ingredients: "",
             recommended_price: "",
@@ -59,6 +60,9 @@ export default function ProductAdd() {
             is_active: true,
         },
     });
+
+    // State for suggested category (when category not in list)
+    const [suggestedCategory, setSuggestedCategory] = useState("");
 
     // Flatten categories for searchable dropdown
     const flattenedCategories = useMemo(() => {
@@ -101,13 +105,16 @@ export default function ProductAdd() {
     // Get selected category display name
     const selectedCategoryName = useMemo(() => {
         // If there's a suggested category, show it with a special indicator
-        if (form.product.suggested_category) {
-            return `✨ ${form.product.suggested_category} (Suggested)`;
+        if (suggestedCategory) {
+            return `✨ ${suggestedCategory} (Suggested)`;
         }
-        if (!form.product.category_id) return "";
-        const found = flattenedCategories.find((c) => c.id === form.product.category_id);
-        return found ? found.displayName : "";
-    }, [form.product.category_id, flattenedCategories]);
+        if (!form.category) return "";
+        // Build display name from embedded category
+        if (form.category.parent_name) {
+            return `${form.category.parent_name} > ${form.category.name}`;
+        }
+        return form.category.name;
+    }, [form.category, suggestedCategory]);
 
     // Filter products based on search query
     const filteredProducts = productsData.filter((product) =>
@@ -156,7 +163,17 @@ export default function ProductAdd() {
 
     // Handle category selection
     const handleSelectCategory = (category) => {
-        updateProduct({ category_id: category.id, suggested_category: "" });
+        // Build the embedded category object matching store_products.json structure
+        const embeddedCategory = {
+            id: category.id,
+            name: category.name,
+            slug: category.id, // Use id as slug for now
+            parent_id: category.isParent ? null : category.id.split('-').slice(0, 2).join('-'),
+            parent_name: category.parentName || null,
+        };
+        updateForm({ category: embeddedCategory });
+        updateProduct({ category_id: category.id });
+        setSuggestedCategory("");
         setCategorySearch("");
         setShowCategoryDropdown(false);
     };
@@ -164,11 +181,17 @@ export default function ProductAdd() {
     // Handle suggesting a new category
     const handleSuggestCategory = () => {
         if (categorySearch.trim()) {
-            // Use "Other > Uncategorized" as fallback category_id
-            updateProduct({
-                category_id: "cat-other-001",
-                suggested_category: categorySearch.trim()
-            });
+            // Use "Other > Uncategorized" as fallback with suggested name
+            const fallbackCategory = {
+                id: "cat-other-001",
+                name: "Uncategorized",
+                slug: "uncategorized",
+                parent_id: "cat-other",
+                parent_name: "Other",
+            };
+            updateForm({ category: fallbackCategory });
+            updateProduct({ category_id: "cat-other-001" });
+            setSuggestedCategory(categorySearch.trim());
             setCategorySearch("");
             setShowCategoryDropdown(false);
         }
@@ -176,8 +199,22 @@ export default function ProductAdd() {
 
     const handleSelectProduct = (product) => {
         setSearchQuery(product.name);
+        // Find and embed the category object
+        const categoryId = product.category_id;
+        const foundCategory = flattenedCategories.find((c) => c.id === categoryId);
+        const embeddedCategory = foundCategory
+            ? {
+                  id: foundCategory.id,
+                  name: foundCategory.name,
+                  slug: foundCategory.id,
+                  parent_id: foundCategory.isParent ? null : foundCategory.id.split('-').slice(0, 2).join('-'),
+                  parent_name: foundCategory.parentName || null,
+              }
+            : null;
+
         setForm({
             ...form,
+            category: embeddedCategory,
             product: {
                 id: product.id,
                 name: product.name,
@@ -189,10 +226,11 @@ export default function ProductAdd() {
                 brand: product.brand,
                 ingredients: product.ingredients,
                 recommended_price: product.recommended_price,
-                tags: product.tags,
+                tags: product.tags || [],
                 is_active: product.is_active,
             },
         });
+        setSuggestedCategory("");
         setIsNewProduct(false);
         setShowDropdown(false);
     };
@@ -201,12 +239,16 @@ export default function ProductAdd() {
         setIsNewProduct(true);
         setForm({
             ...form,
+            category: null, // Reset category for new product
             product: {
                 ...form.product,
+                id: "",
                 name: searchQuery,
                 slug: searchQuery.toLowerCase().replace(/\s+/g, "-"),
+                category_id: "",
             },
         });
+        setSuggestedCategory("");
         setShowDropdown(false);
     };
 
@@ -244,6 +286,7 @@ export default function ProductAdd() {
         const storeProductId = crypto.randomUUID();
         const productId = isNewProduct ? crypto.randomUUID() : form.product.id;
 
+        // Build the final store product object matching store_products.json structure
         const storeProduct = {
             id: storeProductId,
             store_id: "550e8400-e29b-41d4-a716-446655440001", // Current store ID
@@ -260,12 +303,23 @@ export default function ProductAdd() {
             weight: form.weight ? parseFloat(form.weight) : null,
             store_specific_tags: form.store_specific_tags,
             store_notes: form.store_notes,
+            // Embedded product object
             product: {
                 ...form.product,
                 id: productId,
                 recommended_price: form.product.recommended_price
                     ? parseFloat(form.product.recommended_price)
                     : null,
+                // Include suggested category in product notes if provided
+                ...(suggestedCategory && { suggested_category: suggestedCategory }),
+            },
+            // Embedded category object (new structure)
+            category: form.category || {
+                id: "cat-other-001",
+                name: "Uncategorized",
+                slug: "uncategorized",
+                parent_id: "cat-other",
+                parent_name: "Other",
             },
         };
 
