@@ -7,6 +7,8 @@ import ProductAdd from "./pages/Products/ProductAdd";
 import ProductEdit from "./pages/Products/ProductEdit";
 import OrdersList from "./pages/Orders/OrdersList";
 import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
+import RegistrationSuccess from "./pages/Onboarding/RegistrationSuccess";
+import Login from "./pages/Onboarding/Login";
 
 function App() {
   const isOnboarded = true; // later: read from API/auth
@@ -14,8 +16,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth routes */}
+        <Route path="/login" element={<Login />} />
+        
         {/* Onboarding routes */}
         <Route path="/onboarding/*" element={<OnboardingLayout />} />
+        <Route path="/onboarding/success" element={<RegistrationSuccess />} />
 
         {/* Protected app routes */}
         <Route
