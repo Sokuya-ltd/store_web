@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Badge from "../../components/ui/Badge";
 import DataTable from "../../components/ui/DataTable";
 import productsData from "../../dataset/store_products.json";
-import { View } from "lucide-react";
+import { View, Pencil, Trash2, MoreVertical } from "lucide-react";
 
 const mockProducts = productsData.store_products;
 
@@ -102,31 +103,38 @@ const columns = [
     header: () => <span>Actions</span>,
     enableSorting: false,
     cell: ({ row }) => (
-      <div className="absolute group">
-        <button className="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600">
-          Manage ▼
+      <div className="relative group">
+        <button className="text-xs px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center gap-1">
+          <MoreVertical className="w-3 h-3" />
+          Manage
         </button>
-        <ul className="absolute right-0 mt-1 w-32 bg-white border border-slate-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        <ul className="absolute right-0 mt-1 w-36 bg-white border border-slate-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 rounded-md overflow-hidden">
           <li>
-            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
-              View
-            </a>
-          </li>
-          <li>
-            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
+            <Link 
+              to={`/products/${row.original.id}/edit`}
+              className="flex items-center gap-2 px-3 py-2 text-xs text-slate-600 hover:bg-slate-50"
+            >
+              <Pencil className="w-3 h-3" />
               Edit
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="block px-3 py-2 text-xs text-slate-600 hover:bg-slate-50">
+            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 text-left">
+              <View className="w-3 h-3" />
+              View Details
+            </button>
+          </li>
+          <li>
+            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-600 hover:bg-slate-50 text-left">
               {row.original.status === "active" ? "Unpublish" : "Publish"}
-            </a>
+            </button>
           </li>
           <hr className="my-1 border-slate-200" />
           <li>
-            <a href="#" className="block px-3 py-2 text-xs text-rose-600 hover:bg-rose-50">
+            <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 text-left">
+              <Trash2 className="w-3 h-3" />
               Delete
-            </a>
+            </button>
           </li>
         </ul>
       </div>
@@ -146,7 +154,7 @@ export default function ProductsList() {
     <div className="w-full space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
         <h2 className="text-xl font-semibold text-slate-900">Available Products</h2>
-        <a href="/products/add" className="inline-block px-3 py-2 bg-[#000000] hover:bg-[#333333] text-white font-light shadow-md transition-colors">+ Add Product</a>
+        <Link to="/products/add" className="inline-block px-3 py-2 bg-[#000000] hover:bg-[#333333] text-white font-light shadow-md transition-colors">+ Add Product</Link>
       </div>
 
       <Card className="p-4 shadow-md">
