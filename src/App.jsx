@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
@@ -10,26 +13,19 @@ import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
 import RegistrationSuccess from "./pages/Onboarding/RegistrationSuccess";
 import Login from "./pages/Onboarding/Login";
 
-function App() {
-  const isOnboarded = true; // later: read from API/auth
-
+function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Auth routes */}
+    <Routes>
+      {/* Guest routes - redirect to dashboard if already logged in */}
+      <Route element={<GuestRoute />}>
         <Route path="/login" element={<Login />} />
-        
-        {/* Onboarding routes */}
         <Route path="/onboarding/*" element={<OnboardingLayout />} />
         <Route path="/onboarding/success" element={<RegistrationSuccess />} />
+      </Route>
 
-        {/* Protected app routes */}
-        <Route
-          path="/"
-          element={
-            isOnboarded ? <AppLayout /> : <Navigate to="/onboarding" replace />
-          }
-        >
+      {/* Protected routes - require authentication */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<AppLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="settings" element={<SettingsLayout />} />
           <Route path="products" element={<ProductsList />} />
@@ -37,7 +33,20 @@ function App() {
           <Route path="products/:id/edit" element={<ProductEdit />} />
           <Route path="orders" element={<OrdersList />} />
         </Route>
-      </Routes>
+      </Route>
+
+      {/* Catch all - redirect to home */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

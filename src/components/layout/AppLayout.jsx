@@ -2,15 +2,27 @@ import { Outlet, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X } from "lucide-react";
 import { colors } from "../../lib/colors";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, storeInfo, logout } = useAuth();
+
+  // Get user initials for avatar
+  const getInitials = (name) => {
+    if (!name) return "U";
+    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   // Sidebar content as a component for reuse
   const SidebarContent = (
     <>
       <div className="px-6 py-4 text-xl font-semibold border-b border-white/20">
-        Africana Troprican
+        {storeInfo?.name || "My Store"}
       </div>
       <nav className="flex-1 px-3 py-4 space-y-3">
         <NavItem to="/" icon={<LayoutDashboard size={18} />}>Dashboard</NavItem>
@@ -128,12 +140,12 @@ export default function AppLayout() {
             </div>
 
             <div className="flex flex-col items-end">
-              <span className="text-sm text-slate-500">John Ovo</span>
-              <span className="text-xs text-slate-400">store admin</span>
+              <span className="text-sm text-slate-500">{user?.name || "User"}</span>
+              <span className="text-xs text-slate-400">{storeInfo?.name || "Store"} Admin</span>
             </div>
             <div className="relative group">
               <div className="w-8 h-8 bg-slate-300 hover:bg-slate-400 transition-colors flex items-center justify-center text-xs font-semibold text-slate-700 cursor-pointer shadow-md">
-                JO
+                {getInitials(user?.name)}
               </div>
               <div className="absolute right-0 top-10 w-48 bg-white border border-slate-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                 <div className="py-1">
@@ -146,10 +158,13 @@ export default function AppLayout() {
                     <span>Support</span>
                   </a>
                   <hr className="my-1 border-slate-200" />
-                  <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                  <button 
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                  >
                     <LogOut size={16} />
                     <span>Logout</span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

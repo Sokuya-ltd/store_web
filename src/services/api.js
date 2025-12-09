@@ -1,5 +1,7 @@
 // API base URL from environment
-const API_BASE_URL = import.meta.env.API_URL;
+import { getToken, clearAuthData } from "./auth";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 /**
  * Generic API request helper
@@ -17,13 +19,21 @@ async function request(endpoint, options = {}) {
     };
 
     // Add auth token if available
-    const token = localStorage.getItem("auth_token");
+    const token = getToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
     try {
         const response = await fetch(url, config);
+
+        // Handle 401 Unauthorized - token expired or invalid
+        if (response.status === 401) {
+            clearAuthData();
+            // Optionally redirect to login
+            window.location.href = "/login";
+            throw new Error("Session expired. Please log in again.");
+        }
 
         // Handle non-JSON responses
         const contentType = response.headers.get("content-type");

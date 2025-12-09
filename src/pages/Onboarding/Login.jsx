@@ -3,9 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import api from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -45,15 +47,8 @@ export default function Login() {
             const response = await api.post("/store/login", formData);
             console.log("Login successful:", response);
 
-            // Store token
-            if (response.token) {
-                localStorage.setItem("auth_token", response.token);
-            }
-
-            // Store user data if needed
-            if (response.user || response.store_owner) {
-                localStorage.setItem("user", JSON.stringify(response.user || response.store_owner));
-            }
+            // Use auth context to save login data
+            login(response);
 
             // Navigate to dashboard
             navigate("/", { replace: true });
