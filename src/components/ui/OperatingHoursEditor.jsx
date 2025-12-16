@@ -66,7 +66,7 @@ export default function OperatingHoursEditor({ value, onChange, themeColor = "#0
                         {days.map((day) => {
                             const enabled = mergedValue[day]?.enabled ?? false;
                             return (
-                                <>
+                                <React.Fragment key={day}>
                                     {/* Toggle Switch */}
                                     <div className="flex items-center justify-center">
                                         <button
@@ -117,7 +117,7 @@ export default function OperatingHoursEditor({ value, onChange, themeColor = "#0
                                         )}
                                     </div>
                                     <div></div>
-                                </>
+                                </React.Fragment>
                             );
                         })}
                     </div>

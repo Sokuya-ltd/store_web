@@ -1,40 +1,48 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Textarea from "../../components/ui/Textarea";
 import OperatingHoursEditor from "../../components/ui/OperatingHoursEditor";
 import Button from "../../components/ui/Button";
-import Checkbox from "../../components/ui/Checkbox";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 
-export default function SettingsForm({ form, updateForm }) {
-    const navigate = useNavigate();
-
-    const handleNext = (e) => {
-        e.preventDefault();
-        // basic validation
-        if (!form.name || !form.email || !form.password || !form.phone) {
-            alert("Please fill in all required fields");
-            return;
-        }
-        navigate("/onboarding/store");
-    };
+export default function SettingsForm({ form, updateForm, onSubmit, submitting, submitError, submitSuccess }) {
     return (
-        <form className="space-y-6" onSubmit={handleNext} autoComplete="off">
+        <form className="space-y-6" onSubmit={onSubmit} autoComplete="off">
+            {/* Success Message */}
+            {submitSuccess && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+                    Profile updated successfully!
+                </div>
+            )}
+            
+            {/* Error Message */}
+            {submitError && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                    <p className="font-medium">Failed to update profile</p>
+                    {typeof submitError === 'object' ? (
+                        <ul className="text-sm list-disc list-inside mt-1">
+                            {Object.entries(submitError).map(([field, messages]) => (
+                                <li key={field}>{field}: {Array.isArray(messages) ? messages.join(', ') : messages}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm">{submitError}</p>
+                    )}
+                </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Input
                     label="Full Name"
                     type="text"
                     value={form.name}
                     onChange={e => updateForm({ ...form, name: e.target.value })}
-                    required
+                    readOnly
                 />
                 <Input
                     label="Email"
                     type="email"
                     value={form.email}
                     onChange={e => updateForm({ ...form, email: e.target.value })}
-                    required
+                    readOnly
                 />
                 <Input
                     label="Phone"
@@ -142,7 +150,7 @@ export default function SettingsForm({ form, updateForm }) {
                         label="Store Description"
                         rows={18}
                         value={form.store_description}
-                        onChange={e => updateForm({ ...form, store_description: e.target.value })}
+                        onChange={content => updateForm({ ...form, store_description: content })}
                         className="flex-1"
                     />
                 </div>
@@ -155,18 +163,20 @@ export default function SettingsForm({ form, updateForm }) {
                     />
                 </div>
             </div>
-            <div className="flex items-center justify-between">
-                <Checkbox
-                    label="I agree to the Terms and Conditions"
-                    checked={form.agree_terms}
-                    onChange={e => updateForm({ ...form, agree_terms: e.target.checked })}
-                    required
-                />
+            <div className="flex items-center justify-end">
                 <Button
                     type="submit"
-                    className="mt-6 py-2 px-4 bg-[#000000] text-white font-semibold shadow float-right"
+                    disabled={submitting}
+                    className="mt-6 py-2 px-4 bg-[#000000] text-white font-semibold shadow disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Update Settings
+                    {submitting ? (
+                        <span className="flex items-center gap-2">
+                            <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
+                            Updating...
+                        </span>
+                    ) : (
+                        'Update Settings'
+                    )}
                 </Button>
             </div>
         </form>
