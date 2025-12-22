@@ -110,7 +110,7 @@ const columns = [
         </button>
         <ul className="absolute right-0 mt-1 w-36 bg-white border border-slate-200 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 rounded-md overflow-hidden">
           <li>
-            <Link 
+            <Link
               to={`/products/${row.original.id}/edit`}
               className="flex items-center gap-2 px-3 py-2 text-xs text-slate-600 hover:bg-slate-50"
             >
@@ -153,7 +153,10 @@ export default function ProductsList() {
   return (
     <div className="w-full space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
-        <h2 className="text-xl font-semibold text-slate-900">Available Products</h2>
+        <div>
+          <h2 className="text-xl font-semibold text-slate-900">Products</h2>
+          <p>Manage your store inventory and catalog.</p>
+        </div>
         <Link to="/products/add" className="inline-block px-3 py-2 bg-[#000000] hover:bg-[#333333] text-white font-light shadow-md transition-colors">+ Add Product</Link>
       </div>
 
