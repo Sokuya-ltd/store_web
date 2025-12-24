@@ -40,8 +40,7 @@ export default function FileListTable({ files = [], onDelete, isLoading = false 
         { key: "all", label: "All" },
         { key: "logo", label: "Logo" },
         { key: "banner", label: "Banner" },
-        { key: "document", label: "Documents" },
-        { key: "product", label: "Products" }
+        { key: "document", label: "Documents" }
     ];
 
     return (
