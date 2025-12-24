@@ -48,10 +48,6 @@ export default function OperatingHoursEditor({ value, onChange, themeColor = "#0
     };
     return (
         <div className="bg-white rounded-lg p-6">
-            <div className="mb-6">
-                <label className="block text-sm font-semibold mb-1 text-black">Manage Hours</label>
-                <span className="text-xs text-black">Configure your business opening hours</span>
-            </div>
             <div className="w-full max-w-2xl mx-auto px-2 md:px-0">
                 <div className="overflow-x-auto">
                     <div className="grid grid-cols-[56px_120px_60px_120px_60px_120px_1fr] gap-x-2 gap-y-2 min-w-[700px] md:min-w-0">

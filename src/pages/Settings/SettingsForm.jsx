@@ -4,6 +4,7 @@ import Textarea from "../../components/ui/Textarea";
 import OperatingHoursEditor from "../../components/ui/OperatingHoursEditor";
 import Button from "../../components/ui/Button";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
+import Card from "../../components/ui/Card";
 
 export default function SettingsForm({ form, updateForm, onSubmit, submitting, submitError, submitSuccess }) {
     const [geoLoading, setGeoLoading] = useState(false);
@@ -59,7 +60,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                     Profile updated successfully!
                 </div>
             )}
-            
+
             {/* Error Message */}
             {submitError && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
@@ -75,192 +76,260 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                     )}
                 </div>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input
-                    label="Full Name"
-                    type="text"
-                    value={form.name}
-                    onChange={e => updateForm({ ...form, name: e.target.value })}
-                    readOnly
-                />
-                <Input
-                    label="Email"
-                    type="email"
-                    value={form.email}
-                    onChange={e => updateForm({ ...form, email: e.target.value })}
-                    readOnly
-                />
-                <Input
-                    label="Phone"
-                    type="text"
-                    value={form.phone}
-                    onChange={e => updateForm({ ...form, phone: e.target.value })}
-                    required
-                />
-            </div>
-            <h2 className="text-lg font-semibold mb-2">Store Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input
-                    label="Store Name"
-                    type="text"
-                    value={form.store_name}
-                    onChange={e => updateForm({ ...form, store_name: e.target.value })}
-                    required
-                />
-                <Input
-                    label="Store Address"
-                    type="text"
-                    value={form.store_address}
-                    onChange={e => updateForm({ ...form, store_address: e.target.value })}
-                    required
-                />
-                <Input
-                    label="Store City"
-                    type="text"
-                    value={form.store_city}
-                    onChange={e => updateForm({ ...form, store_city: e.target.value })}
-                    required
-                />
-                <Input
-                    label="Store State"
-                    type="text"
-                    value={form.store_state}
-                    onChange={e => updateForm({ ...form, store_state: e.target.value })}
-                    required
-                />
-                <Input
-                    label="Postal Code"
-                    type="text"
-                    value={form.store_postal_code}
-                    onChange={e => updateForm({ ...form, store_postal_code: e.target.value })}
-                    required
-                />
-                <div className="flex flex-col">
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Latitude</label>
-                    <div className="flex gap-2">
-                        <input
+
+            {/* General Information & Branding Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* General Information Card */}
+                <Card className="p-5">
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="text-base font-semibold text-slate-900 mb-1">General Information</h3>
+                            <p className="text-sm text-slate-600">Update your store name, description, and contact details.</p>
+                        </div>
+
+                        <Input
+                            label="Store Name"
                             type="text"
-                            value={form.store_latitude}
-                            onChange={e => updateForm({ ...form, store_latitude: e.target.value })}
-                            placeholder="Auto-fill →"
-                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent"
+                            value={form.store_name}
+                            onChange={e => updateForm({ ...form, store_name: e.target.value })}
+                            required
                         />
-                        <button
-                            type="button"
-                            onClick={handleGetLocation}
-                            disabled={geoLoading}
-                            title="Get current location"
-                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {geoLoading ? (
-                                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
-                            ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
+
+                        <Input
+                            label="Phone Number"
+                            type="tel"
+                            value={form.phone}
+                            onChange={e => updateForm({ ...form, phone: e.target.value })}
+                            required
+                        />
+
+                        <Input
+                            label="Email Address"
+                            type="email"
+                            value={form.email}
+                            onChange={e => updateForm({ ...form, email: e.target.value })}
+                            readOnly
+                        />
+
+                        <Textarea
+                            label="Description"
+                            rows={10}
+                            value={form.store_description}
+                            onChange={content => updateForm({ ...form, store_description: content })}
+                        />
+                    </div>
+                </Card>
+
+                <Card className="p-5">
+                    <div className="space-y-4">
+                        <div>
+                            <h3 className="text-base font-semibold text-slate-900 mb-1">Address & Location</h3>
+                            <p className="text-sm text-slate-600">Set your store's address, city, state, postal code, and delivery radius.</p>
+                        </div>
+                        <div className="space-y-4">
+                            <Input
+                                label="Store Address"
+                                type="text"
+                                value={form.store_address}
+                                onChange={e => updateForm({ ...form, store_address: e.target.value })}
+                                required
+                            />
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <Input
+                                    label="City"
+                                    type="text"
+                                    value={form.store_city}
+                                    onChange={e => updateForm({ ...form, store_city: e.target.value })}
+                                    required
+                                />
+                                <Input
+                                    label="State"
+                                    type="text"
+                                    value={form.store_state}
+                                    onChange={e => updateForm({ ...form, store_state: e.target.value })}
+                                    required
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <Input
+                                    label="Postal Code"
+                                    type="text"
+                                    value={form.store_postal_code}
+                                    onChange={e => updateForm({ ...form, store_postal_code: e.target.value })}
+                                    required
+                                />
+
+                                <Input
+                                    label="Delivery Radius (km)"
+                                    type="number"
+                                    step="0.01"
+                                    value={form.delivery_radius}
+                                    onChange={e => updateForm({ ...form, delivery_radius: e.target.value })}
+                                />
+                            </div>
+
+                            {/* Latitude & Longitude */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col">
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Latitude</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={form.store_latitude}
+                                            onChange={e => updateForm({ ...form, store_latitude: e.target.value })}
+                                            placeholder="Auto-fill →"
+                                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={handleGetLocation}
+                                            disabled={geoLoading}
+                                            title="Get current location"
+                                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {geoLoading ? (
+                                                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
+                                            ) : (
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col">
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Longitude</label>
+                                    <div className="flex gap-2">
+                                        <input
+                                            type="text"
+                                            value={form.store_longitude}
+                                            onChange={e => updateForm({ ...form, store_longitude: e.target.value })}
+                                            placeholder="Auto-fill →"
+                                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={handleGetLocation}
+                                            disabled={geoLoading}
+                                            title="Get current location"
+                                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            {geoLoading ? (
+                                                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
+                                            ) : (
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {form.store_latitude && form.store_longitude && (
+                                <div className="mt-4">
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Location Preview</label>
+                                    <iframe
+                                        width="100%"
+                                        height="250"
+                                        style={{ border: 0, borderRadius: '0.375rem' }}
+                                        loading="lazy"
+                                        allowFullScreen=""
+                                        src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${form.store_latitude},${form.store_longitude}`}
+                                    ></iframe>
+                                </div>
                             )}
-                        </button>
+
+                            {geoError && (
+                                <p className="text-xs text-red-600">{geoError}</p>
+                            )}
+                        </div>
+                    </div>
+                </Card>
+
+                {/* Branding Card - REMOVED - Moved to separate BrandingForm */}
+            </div>
+
+            {/* Hours Section */}
+            <Card className="p-5">
+                <div className="space-y-6">
+
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Operating Hours */}
+                        <div>
+                            <div>
+                                <h3 className="text-base font-semibold text-slate-900 mb-1">Hours</h3>
+                                <p className="text-sm text-slate-600">Set your store's operating hours.</p>
+                            </div>
+                            <OperatingHoursEditor
+                                value={form.operating_hours}
+                                onChange={val => updateForm({ ...form, operating_hours: val })}
+                                themeColor="#FF6B1A"
+                                className="w-full"
+                            />
+                        </div>
+
+                        {/* Finance Information Section */}
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="text-base font-semibold text-slate-900 mb-1">Finance Information</h3>
+                                <p className="text-sm text-slate-600">Manage your store's financial settings.</p>
+                            </div>
+
+                            <Input
+                                label="Minimum Order Amount"
+                                type="number"
+                                step="0.01"
+                                value={form.minimum_order_amount}
+                                onChange={e => updateForm({ ...form, minimum_order_amount: e.target.value })}
+                            />
+                            <Input
+                                label="Delivery Fee"
+                                type="number"
+                                step="0.01"
+                                value={form.delivery_fee}
+                                onChange={e => updateForm({ ...form, delivery_fee: e.target.value })}
+                            />
+                            <div className="grid grid-cols-2 gap-4">
+                                <Input
+                                    label={`Commission Rate (%)`}
+                                    type="number"
+                                    step="0.01"
+                                    value={form.commission_rate || ""}
+                                    onChange={e => updateForm({ ...form, commission_rate: e.target.value })}
+                                />
+                                <div className="pt-2">
+                                    <label className="flex items-center gap-2 font-medium text-slate-900">
+                                        <span>Accepts Orders</span>
+                                    </label>
+                                    <ToggleButtonGroup
+                                        options={[
+                                            { label: "Yes", value: true },
+                                            { label: "No", value: false }
+                                        ]}
+                                        value={form.accepts_orders}
+                                        onChange={val => updateForm({ ...form, accepts_orders: val })}
+                                        name="accepts_orders"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="flex flex-col">
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Longitude</label>
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            value={form.store_longitude}
-                            onChange={e => updateForm({ ...form, store_longitude: e.target.value })}
-                            placeholder="Auto-fill →"
-                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent"
-                        />
-                        <button
-                            type="button"
-                            onClick={handleGetLocation}
-                            disabled={geoLoading}
-                            title="Get current location"
-                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {geoLoading ? (
-                                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
-                            ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            )}
-                        </button>
-                    </div>
-                    {geoError && (
-                        <p className="text-xs text-red-600 mt-1">{geoError}</p>
-                    )}
-                </div>
-                <Input
-                    label="Delivery Radius (km)"
-                    type="number"
-                    step="0.01"
-                    value={form.delivery_radius}
-                    onChange={e => updateForm({ ...form, delivery_radius: e.target.value })}
-                />
-                <div className="flex flex-col justify-end">
-                    <label className="mb-1 font-medium">Accepts Orders</label>
-                    <ToggleButtonGroup
-                        options={[
-                            { label: "Yes", value: true },
-                            { label: "No", value: false }
-                        ]}
-                        value={form.accepts_orders}
-                        onChange={val => updateForm({ ...form, accepts_orders: val })}
-                        name="accepts_orders"
-                    />
-                </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Input
-                    label="Minimum Order Amount"
-                    type="number"
-                    step="0.01"
-                    value={form.minimum_order_amount}
-                    onChange={e => updateForm({ ...form, minimum_order_amount: e.target.value })}
-                />
-                <Input
-                    label="Delivery Fee"
-                    type="number"
-                    step="0.01"
-                    value={form.delivery_fee}
-                    onChange={e => updateForm({ ...form, delivery_fee: e.target.value })}
-                />
-                <Input
-                    label="Commission Rate (%)"
-                    type="number"
-                    step="0.01"
-                    value={form.commission_rate}
-                    onChange={e => updateForm({ ...form, commission_rate: e.target.value })}
-                />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2 flex flex-col">
-                    <Textarea
-                        label="Store Description"
-                        rows={18}
-                        value={form.store_description}
-                        onChange={content => updateForm({ ...form, store_description: content })}
-                        className="flex-1"
-                    />
-                </div>
-                <div className="md:col-span-1 flex flex-col">
-                    <OperatingHoursEditor
-                        value={form.operating_hours}
-                        onChange={val => updateForm({ ...form, operating_hours: val })}
-                        themeColor="#FF6B1A"
-                        className="w-full"
-                    />
-                </div>
-            </div>
+            </Card>
+
+            {/* Submit Button */}
             <div className="flex items-center justify-end">
                 <Button
                     type="submit"
                     disabled={submitting}
-                    className="mt-6 py-2 px-4 bg-[#000000] text-white font-semibold shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="py-2 px-6 bg-[#000000] text-white font-semibold shadow hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {submitting ? (
                         <span className="flex items-center gap-2">

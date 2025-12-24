@@ -1,14 +1,23 @@
 import { useState, useEffect } from "react";
 import SettingsForm from "./SettingsForm";
+import BrandingForm from "./BrandingForm";
 import { useStoreProfile } from "../../hooks/useStoreProfile";
 import api from "../../services/api";
 
 export default function SettingsLayout() {
     const { profile, loading, error, refetch } = useStoreProfile();
     const [activeTab, setActiveTab] = useState(0);
+    
+    // Settings Form State
     const [submitting, setSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(null);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    
+    // Branding Form State (separate)
+    const [brandingSubmitting, setBrandingSubmitting] = useState(false);
+    const [brandingSubmitError, setBrandingSubmitError] = useState(null);
+    const [brandingSubmitSuccess, setBrandingSubmitSuccess] = useState(false);
+    
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -29,12 +38,16 @@ export default function SettingsLayout() {
         is_active: true,
         is_verified: false,
         accepts_orders: true,
-        store_banner: "",
-        store_logo: "",
-        profile_image: "",
         verification_documents: "",
         business_registration_number: "",
         bank_name: ""
+    });
+
+    // Separate branding form state
+    const [brandingForm, setBrandingForm] = useState({
+        store_banner: "",
+        store_logo: "",
+        profile_image: ""
     });
 
     // Transform API operating_hours format to component format
@@ -98,12 +111,16 @@ export default function SettingsLayout() {
                 total_reviews: profile.total_reviews ?? 0,
                 total_orders: profile.total_orders ?? 0,
                 total_revenue: profile.total_revenue != null ? parseFloat(profile.total_revenue) : 0,
-                store_banner: profile.store_banner || "",
-                store_logo: profile.store_logo || "",
-                profile_image: profile.profile_image || "",
                 verification_documents: profile.verification_documents || "",
                 business_registration_number: profile.business_registration_number || "",
                 bank_name: profile.bank_name || ""
+            });
+
+            // Populate branding form separately
+            setBrandingForm({
+                store_banner: profile.store_banner || "",
+                store_logo: profile.store_logo || "",
+                profile_image: profile.profile_image || ""
             });
         }
     }, [profile]);
@@ -161,6 +178,7 @@ export default function SettingsLayout() {
                 delivery_radius: form.delivery_radius ? String(form.delivery_radius) : null,
                 minimum_order_amount: form.minimum_order_amount ? String(form.minimum_order_amount) : null,
                 delivery_fee: form.delivery_fee ? String(form.delivery_fee) : null,
+                commission_rate: form.commission_rate ? String(form.commission_rate) : null,
                 accepts_orders: form.accepts_orders,
             };
 
@@ -179,6 +197,51 @@ export default function SettingsLayout() {
             setSubmitError(err.errors || err.message || "Failed to update profile");
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    // Handle Branding Form Submission (separate endpoint)
+    const handleBrandingSubmit = async (e) => {
+        e.preventDefault();
+        setBrandingSubmitting(true);
+        setBrandingSubmitError(null);
+        setBrandingSubmitSuccess(false);
+
+        try {
+            // Create FormData for file uploads
+            const formData = new FormData();
+            
+            if (brandingForm.store_logo instanceof File) {
+                formData.append('store_logo', brandingForm.store_logo);
+            }
+            if (brandingForm.store_banner instanceof File) {
+                formData.append('store_banner', brandingForm.store_banner);
+            }
+            if (brandingForm.profile_image instanceof File) {
+                formData.append('profile_image', brandingForm.profile_image);
+            }
+
+            console.log("Submitting branding files");
+
+            // Send to separate branding endpoint
+            await api.post("/store/branding", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
+            setBrandingSubmitSuccess(true);
+            
+            // Refetch profile to sync with server
+            await refetch();
+            
+            // Clear success message after 3 seconds
+            setTimeout(() => setBrandingSubmitSuccess(false), 3000);
+        } catch (err) {
+            console.error("Failed to update branding:", err);
+            setBrandingSubmitError(err.errors || err.message || "Failed to update branding");
+        } finally {
+            setBrandingSubmitting(false);
         }
     };
 
@@ -212,28 +275,65 @@ export default function SettingsLayout() {
 
     return (
         <div className="p-8 w-full">
-            <h1 className="text-2xl font-bold mb-4">Account Settings</h1>
-            <div className="bg-white shadow p-6 w-full mx-auto">
-                <div className="border-b border-[#556B2F] mb-4">
+            {/* Header with Title and Status Toggle */}
+            <div className="flex items-center justify-between mb-8">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">Store Profile</h1>
+                    <p className="text-slate-600 text-sm mt-1">Manage your store's public information and settings.</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-slate-700">Store Status:</span>
+                    <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 px-3 py-2">
+                        <div className={`h-2 w-2 rounded-full ${form.is_active ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <span className={`text-sm font-medium ${form.is_active ? 'text-green-600' : 'text-red-600'}`}>
+                            {form.is_active ? 'Open' : 'Closed'}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => updateForm({ ...form, is_active: !form.is_active })}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                                form.is_active ? 'bg-green-500' : 'bg-slate-300'
+                            }`}
+                        >
+                            <span
+                                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                    form.is_active ? 'translate-x-6' : 'translate-x-1'
+                                }`}
+                            />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="bg-white shadow rounded-lg p-6 w-full">
+                <div className="border-b border-slate-200 mb-4">
                     <nav className="flex space-x-4" aria-label="Tabs">
                         <button
                             className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 0 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(0)}
                         >
-                            Personal Information
+                            Store Profile
                         </button>
                         <button
                             className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 1 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(1)}
                         >
-                            Account Security
+                            Branding
                         </button>
                         <button
                             className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 2 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(2)}
+                        >
+                            Account Security
+                        </button>
+                        <button
+                            className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 3 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
+                                }`}
+                            onClick={() => setActiveTab(3)}
                         >
                             Finance Information
                         </button>
@@ -241,25 +341,32 @@ export default function SettingsLayout() {
                 </div>
                 <div>
                     {activeTab === 0 && (
-                        <div>
-                            <h2 className="text-lg font-semibold mb-2">Personal Information</h2>
-                            <SettingsForm 
-                                form={form} 
-                                updateForm={updateForm}
-                                onSubmit={handleSubmit}
-                                submitting={submitting}
-                                submitError={submitError}
-                                submitSuccess={submitSuccess}
-                            />
-                        </div>
+                        <SettingsForm 
+                            form={form} 
+                            updateForm={updateForm}
+                            onSubmit={handleSubmit}
+                            submitting={submitting}
+                            submitError={submitError}
+                            submitSuccess={submitSuccess}
+                        />
                     )}
                     {activeTab === 1 && (
+                        <BrandingForm 
+                            form={brandingForm} 
+                            updateForm={setBrandingForm}
+                            onSubmit={handleBrandingSubmit}
+                            submitting={brandingSubmitting}
+                            submitError={brandingSubmitError}
+                            submitSuccess={brandingSubmitSuccess}
+                        />
+                    )}
+                    {activeTab === 2 && (
                         <div>
                             <h2 className="text-lg font-semibold mb-2">Account Security</h2>
                             <p className="text-gray-600">Change your password and manage security settings.</p>
                         </div>
                     )}
-                    {activeTab === 2 && (
+                    {activeTab === 3 && (
                         <div>
                             <h2 className="text-lg font-semibold mb-2">Finance Information</h2>
                             <p className="text-gray-600">Manage your payment methods and billing info.</p>

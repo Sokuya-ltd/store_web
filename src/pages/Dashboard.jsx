@@ -95,18 +95,18 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="w-full space-y-6 mt-5">
+    <div className="w-full space-y-8 px-6 py-6">
       {/* Hero Welcome Card */}
-      <div className="bg-linear-to-br from-[#D35400] to-[#A04000] p-8 text-white shadow-lg">
+      <div className="bg-linear-to-br from-[#D35400] to-[#A04000] p-12 text-white shadow-lg">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <h2 className="text-4xl font-bold mb-2">Welcome back, Sokuya Store!</h2>
-            <p className="text-orange-100 mb-6">You have 4 new orders to prepare and 2 low stock alerts.</p>
+            <h2 className="text-4xl font-bold mb-4">Welcome back, Sokuya Store!</h2>
+            <p className="text-orange-100 mb-8">You have 4 new orders to prepare and 2 low stock alerts.</p>
             <div className="flex gap-4">
-              <button className="bg-white text-[#D35400] px-6 py-2 rounded-lg font-semibold hover:bg-orange-50 transition">
+              <button className="bg-white text-[#D35400] px-8 py-3 font-semibold hover:bg-orange-50 transition">
                 Manage Orders
               </button>
-              <button className="border-2 border-white text-white px-6 py-2 rounded-lg font-semibold hover:bg-white/10 transition">
+              <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white/10 transition">
                 View Reports
               </button>
             </div>
@@ -119,9 +119,9 @@ export default function Dashboard() {
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.label} className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className={`p-3 rounded-xl bg-slate-100`}>
+            <Card key={stat.label} className="p-8">
+              <div className="flex items-start justify-between mb-6">
+                <div className={`p-4 bg-slate-100`}>
                   <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                 </div>
                 {stat.trend && (
@@ -148,10 +148,10 @@ export default function Dashboard() {
       {/* Revenue Overview and Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="lg:col-span-2 p-6">
-          <div className="flex items-center justify-between mb-6">
+        <Card className="lg:col-span-2 p-8">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="font-semibold text-slate-900 text-lg">Revenue Overview</h3>
+              <h3 className="font-semibold text-slate-900 text-lg mb-1">Revenue Overview</h3>
               <p className="text-sm text-slate-500">Daily revenue for the past week</p>
             </div>
             <button className="text-sm text-[#D35400] hover:text-[#A04000] font-semibold flex items-center gap-1">
@@ -183,18 +183,18 @@ export default function Dashboard() {
         </Card>
 
         {/* Recent Orders */}
-        <Card className="p-6">
-          <div className="flex items-center justify-between mb-6">
+        <Card className="p-8">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="font-semibold text-slate-900 text-lg">Recent Orders</h3>
+              <h3 className="font-semibold text-slate-900 text-lg mb-1">Recent Orders</h3>
               <p className="text-sm text-slate-500">You have 4 active orders</p>
             </div>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {recentOrders.map((order) => (
-              <div key={order.id} className="flex items-center justify-between pb-4 border-b border-slate-100 last:border-b-0 last:pb-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#D35400]/10 flex items-center justify-center font-semibold text-[#D35400]">
+              <div key={order.id} className="flex items-center justify-between pb-6 border-b border-slate-100 last:border-b-0 last:pb-0">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-[#D35400]/10 flex items-center justify-center font-semibold text-[#D35400]">
                     {order.initials}
                   </div>
                   <div>
@@ -203,15 +203,15 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-slate-900 text-sm">{order.amount}</p>
-                  <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${order.statusBg} ${order.statusText}`}>
+                  <p className="font-semibold text-slate-900 text-sm mb-2">{order.amount}</p>
+                  <span className={`inline-block px-3 py-2 text-xs font-medium ${order.statusBg} ${order.statusText}`}>
                     {order.status}
                   </span>
                 </div>
               </div>
             ))}
           </div>
-          <button className="w-full mt-6 text-center text-[#D35400] hover:text-[#A04000] font-semibold text-sm">
+          <button className="w-full mt-8 text-center text-[#D35400] hover:text-[#A04000] font-semibold text-sm py-2">
             View All Orders →
           </button>
         </Card>

@@ -1,6 +1,6 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useState } from "react";
-import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X, Store } from "lucide-react";
 import { colors } from "../../lib/colors";
 import { useAuth } from "../../context/AuthContext";
 
@@ -28,6 +28,8 @@ export default function AppLayout() {
         <NavItem to="/" icon={<LayoutDashboard size={18} />}>Dashboard</NavItem>
         <NavItem to="/products" icon={<Package size={18} />}>Products</NavItem>
         <NavItem to="/orders" icon={<ShoppingCart size={18} />}>Orders</NavItem>
+        <NavItem to="/inventory" icon={<Store size={18} />}>Inventory</NavItem>
+        <NavItem to="/customers" icon={<User size={18} />}>Customers</NavItem>
       </nav>
       <div className="mt-auto px-3 py-4 border-t border-slate-200">
         <NavItem to="/settings" icon={<Settings size={18} />}>Manage Account</NavItem>

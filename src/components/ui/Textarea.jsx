@@ -21,7 +21,7 @@ export default function Textarea({
                 apiKey={apiKey}
                 value={value}
                 init={{
-                    height: 300,
+                    height: 335,
                     menubar: false,
                     plugins: ['link', 'lists', 'code', 'table'],
                     toolbar:
