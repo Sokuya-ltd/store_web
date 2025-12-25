@@ -37,7 +37,6 @@ export default function FileListTable({ files = [], onDelete, isLoading = false 
     const getFileTypeConfig = (type) => FILE_TYPES[type] || FILE_TYPES.product;
 
     const filterTabs = [
-        { key: "all", label: "All" },
         { key: "logo", label: "Logo" },
         { key: "banner", label: "Banner" },
         { key: "document", label: "Documents" }
