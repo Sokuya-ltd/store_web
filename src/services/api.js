@@ -106,6 +106,64 @@ const api = {
 
     delete: (endpoint, options = {}) =>
         request(endpoint, { method: "DELETE", ...options }),
+
+    uploadFile: async (endpoint, formData, options = {}) => {
+        const url = `${API_BASE_URL}${endpoint}`;
+
+        const config = {
+            method: "POST",
+            ...options,
+        };
+
+        // Important: Don't set Content-Type header - let browser set it with boundary
+        const token = getToken();
+        if (token) {
+            config.headers = {
+                Authorization: `Bearer ${token}`,
+                ...options.headers,
+            };
+        }
+
+        try {
+            const response = await fetch(url, { body: formData, ...config });
+
+            if (response.status === 401) {
+                clearAuthData();
+                window.location.href = "/login";
+                throw new Error("Session expired. Please log in again.");
+            }
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                const error = new Error(data.message || `HTTP error ${response.status}`);
+                error.status = response.status;
+                error.data = data;
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            if (error.status) throw error;
+            console.error("API upload failed:", error);
+            throw new Error("Upload failed. Please check your connection.");
+        }
+    },
 };
+
+export async function uploadStoreFile(file, type) {
+    // type should be: 'logo', 'banner', or 'document'
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', type);
+
+    return api.uploadFile('/store/upload', formData);
+}
+
+export async function retrieveStoreFiles(type) {
+    // type should be: 'logo', 'banner', 'document', or 'all'
+    const endpoint = type ? `/store/retrieve?type=${type}` : '/store/retrieve';
+    return api.get(endpoint);
+}
 
 export default api;

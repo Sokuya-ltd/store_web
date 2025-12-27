@@ -200,7 +200,7 @@ export default function SettingsLayout() {
         }
     };
 
-    // Handle Branding Form Submission (separate endpoint)
+    // Handle Branding Form Submission
     const handleBrandingSubmit = async (e) => {
         e.preventDefault();
         setBrandingSubmitting(true);
@@ -208,27 +208,12 @@ export default function SettingsLayout() {
         setBrandingSubmitSuccess(false);
 
         try {
-            // Create FormData for file uploads
-            const formData = new FormData();
+            // Files are uploaded individually through BrandingForm component
+            // This submit just confirms the branding update
             
-            if (brandingForm.store_logo instanceof File) {
-                formData.append('store_logo', brandingForm.store_logo);
-            }
-            if (brandingForm.store_banner instanceof File) {
-                formData.append('store_banner', brandingForm.store_banner);
-            }
-            if (brandingForm.profile_image instanceof File) {
-                formData.append('profile_image', brandingForm.profile_image);
-            }
-
-            console.log("Submitting branding files");
-
-            // Send to separate branding endpoint
-            await api.post("/store/branding", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            // If you need to sync metadata or notify backend of updates,
+            // you can call an endpoint here, otherwise just show success
+            // For now, we'll consider it successful since files are uploaded via /store/upload
             
             setBrandingSubmitSuccess(true);
             
@@ -274,14 +259,14 @@ export default function SettingsLayout() {
     }
 
     return (
-        <div className="p-8 w-full">
+        <div className="p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto">
             {/* Header with Title and Status Toggle */}
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Store Profile</h1>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
+                <div className="flex-1">
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-900">Store Profile</h1>
                     <p className="text-slate-600 text-sm mt-1">Manage your store's public information and settings.</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
                     <span className="text-sm font-medium text-slate-700">Store Status:</span>
                     <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 px-3 py-2">
                         <div className={`h-2 w-2 rounded-full ${form.is_active ? 'bg-green-500' : 'bg-red-500'}`}></div>
@@ -306,32 +291,32 @@ export default function SettingsLayout() {
             </div>
 
             {/* Main Content */}
-            <div className="bg-white shadow rounded-lg p-6 w-full">
-                <div className="border-b border-slate-200 mb-4">
-                    <nav className="flex space-x-4" aria-label="Tabs">
+            <div className="bg-white shadow rounded-lg p-4 md:p-6 w-full">
+                <div className="border-b border-slate-200 mb-4 overflow-x-auto">
+                    <nav className="flex space-x-2 md:space-x-4 min-w-max md:min-w-0" aria-label="Tabs">
                         <button
-                            className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 0 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 0 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(0)}
                         >
                             Store Profile
                         </button>
                         <button
-                            className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 1 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 1 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(1)}
                         >
                             Branding
                         </button>
                         <button
-                            className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 2 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 2 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(2)}
                         >
                             Account Security
                         </button>
                         <button
-                            className={`py-2 px-4 font-medium text-sm border-b-2 ${activeTab === 3 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 3 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
                                 }`}
                             onClick={() => setActiveTab(3)}
                         >

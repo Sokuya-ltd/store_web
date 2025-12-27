@@ -77,10 +77,10 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                 </div>
             )}
 
-            {/* General Information & Branding Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* General Information & Address Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {/* General Information Card */}
-                <Card className="p-5">
+                <Card className="p-4 md:p-5">
                     <div className="space-y-4">
                         <div>
                             <h3 className="text-base font-semibold text-slate-900 mb-1">General Information</h3>
@@ -135,7 +135,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                 required
                             />
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                 <Input
                                     label="City"
                                     type="text"
@@ -152,7 +152,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                 <Input
                                     label="Postal Code"
                                     type="text"
@@ -171,29 +171,29 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                             </div>
 
                             {/* Latitude & Longitude */}
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                 <div className="flex flex-col">
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Latitude</label>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-1 sm:gap-2">
                                         <input
                                             type="text"
                                             value={form.store_latitude}
                                             onChange={e => updateForm({ ...form, store_latitude: e.target.value })}
                                             placeholder="Auto-fill →"
-                                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
                                         />
                                         <button
                                             type="button"
                                             onClick={handleGetLocation}
                                             disabled={geoLoading}
                                             title="Get current location"
-                                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="px-2 sm:px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
                                             ) : (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a 8 8 0 1111.314 0z" />
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 </svg>
                                             )}
@@ -203,26 +203,26 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
 
                                 <div className="flex flex-col">
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Longitude</label>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-1 sm:gap-2">
                                         <input
                                             type="text"
                                             value={form.store_longitude}
                                             onChange={e => updateForm({ ...form, store_longitude: e.target.value })}
                                             placeholder="Auto-fill →"
-                                            className="flex-1 px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
                                         />
                                         <button
                                             type="button"
                                             onClick={handleGetLocation}
                                             disabled={geoLoading}
                                             title="Get current location"
-                                            className="px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="px-2 sm:px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
                                             ) : (
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a 8 8 0 1111.314 0z" />
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 </svg>
                                             )}
@@ -232,16 +232,16 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                             </div>
 
                             {form.store_latitude && form.store_longitude && (
-                                <div className="mt-4">
+                                <div className="mt-3 md:mt-4">
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Location Preview</label>
-                                    <iframe
-                                        width="100%"
-                                        height="250"
-                                        style={{ border: 0, borderRadius: '0.375rem' }}
-                                        loading="lazy"
-                                        allowFullScreen=""
-                                        src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${form.store_latitude},${form.store_longitude}`}
-                                    ></iframe>
+                                    <div className="w-full overflow-hidden rounded-md" style={{paddingBottom: '66.67%', position: 'relative'}}>
+                                        <iframe
+                                            style={{ border: 0, borderRadius: '0.375rem', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                                            loading="lazy"
+                                            allowFullScreen=""
+                                            src={`https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=${form.store_latitude},${form.store_longitude}`}
+                                        ></iframe>
+                                    </div>
                                 </div>
                             )}
 
@@ -256,7 +256,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
             </div>
 
             {/* Hours Section */}
-            <Card className="p-5">
+            <Card className="p-4 md:p-5">
                 <div className="space-y-6">
 
 
@@ -296,7 +296,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                 value={form.delivery_fee}
                                 onChange={e => updateForm({ ...form, delivery_fee: e.target.value })}
                             />
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                 <Input
                                     label={`Commission Rate (%)`}
                                     type="number"
@@ -329,7 +329,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                 <Button
                     type="submit"
                     disabled={submitting}
-                    className="py-2 px-6 bg-[#000000] text-white font-semibold shadow hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="py-2 px-4 md:px-6 bg-[#000000] text-white font-semibold shadow hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                 >
                     {submitting ? (
                         <span className="flex items-center gap-2">

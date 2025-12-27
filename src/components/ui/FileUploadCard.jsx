@@ -9,6 +9,7 @@ export default function FileUploadCard({
     isLoading = false 
 }) {
     const [dragActive, setDragActive] = useState(false);
+    const [uploading, setUploading] = useState({ logo: false, banner: false, documents: false });
 
     const handleDrag = (e) => {
         e.preventDefault();

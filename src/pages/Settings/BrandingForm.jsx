@@ -5,6 +5,7 @@ import FileListTable from "../../components/ui/FileListTable";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import { Image, FileText } from "lucide-react";
+import { uploadStoreFile, retrieveStoreFiles } from "../../services/api";
 
 export default function BrandingForm({ 
     form, 
@@ -16,34 +17,248 @@ export default function BrandingForm({
 }) {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileDeleteLoading, setFileDeleteLoading] = useState(false);
+    const [uploading, setUploading] = useState({ logo: false, banner: false, documents: false });
+    const [toasts, setToasts] = useState([]);
+    const [loadingFiles, setLoadingFiles] = useState(false);
+    const [pendingFile, setPendingFile] = useState(null);
+    const [showTypeDialog, setShowTypeDialog] = useState(false);
 
-    // Simulate loading uploaded files from API
+    // Fetch uploaded files on component mount
     useEffect(() => {
-        // In a real app, fetch files from API
-        // For now, initialize empty or with mock data
-        setUploadedFiles([]);
+        fetchUploadedFiles();
     }, []);
 
-    const handleLogoUpload = (file) => {
-        updateForm({ ...form, store_logo: file });
+    const fetchUploadedFiles = async () => {
+        console.log('🔍 fetchUploadedFiles called');
+        setLoadingFiles(true);
+        try {
+            const allFiles = [];
+            console.log('📁 Starting to fetch files...');
+
+            // Fetch images - separate call as per backend route handler
+            try {
+                console.log('🖼️  Fetching images...');
+                const imagesResponse = await retrieveStoreFiles('images');
+                const imagesData = imagesResponse.data || imagesResponse;
+                console.log('🖼️  Images response:', imagesData);
+                
+                if (imagesData.images) {
+                    Object.entries(imagesData.images).forEach(([type, image]) => {
+                        if (image.uploaded && image.url) {
+                            allFiles.push({
+                                id: `${type}_${Date.now()}`,
+                                name: `${type.charAt(0).toUpperCase() + type.slice(1)}`,
+                                type: type, // 'logo' or 'banner'
+                                size: 0,
+                                url: image.url,
+                                uploadedAt: new Date().toISOString(),
+                                filePath: image.path
+                            });
+                        }
+                    });
+                }
+                console.log('Transformed images:', allFiles.filter(f => f.type !== 'document'));
+            } catch (imageError) {
+                console.warn('⚠️  Failed to fetch images:', imageError.message);
+                // Continue even if images fail
+            }
+            
+            // Fetch documents - separate call as per backend route handler
+            try {
+                console.log('📄 About to fetch documents...');
+                console.log('📄 Calling retrieveStoreFiles("documents")');
+                const docsResponse = await retrieveStoreFiles('documents');
+                console.log('📄 Got response from API:', docsResponse);
+                
+                const docsData = docsResponse.data || docsResponse;
+                console.log('docsData (after data extraction):', docsData);
+                console.log('docsData.documents:', docsData.documents);
+                
+                let documents = [];
+                
+                // Handle various response formats from backend
+                if (Array.isArray(docsData.documents)) {
+                    console.log('✓ Found documents array in docsData.documents');
+                    documents = docsData.documents;
+                } else if (Array.isArray(docsData.data)) {
+                    console.log('✓ Found documents array in docsData.data');
+                    documents = docsData.data;
+                } else if (Array.isArray(docsData)) {
+                    console.log('✓ docsData itself is an array');
+                    documents = docsData;
+                } else {
+                    console.log('✗ No array found. docsData keys:', Object.keys(docsData || {}));
+                }
+                
+                console.log('Final documents array length:', documents.length);
+                console.log('Final documents array:', documents);
+                
+                if (documents && documents.length > 0) {
+                    console.log(`Processing ${documents.length} documents...`);
+                    documents.forEach((doc, idx) => {
+                        console.log(`  Doc ${idx}:`, doc);
+                        const downloadUrl = `/api/store/documents/${doc.id}/download`;
+                        
+                        const transformedDoc = {
+                            id: doc.id,
+                            name: doc.filename || doc.file_name || doc.name,
+                            type: 'document',
+                            size: parseFloat(doc.size_mb) || doc.size || 0,
+                            url: doc.url || downloadUrl,
+                            uploadedAt: doc.uploaded_at || doc.createdAt || new Date().toISOString(),
+                            filePath: doc.url || downloadUrl,
+                            documentType: doc.type,
+                            canDownload: doc.can_download !== false
+                        };
+                        allFiles.push(transformedDoc);
+                    });
+                    console.log('✓ Added documents to allFiles. Total files now:', allFiles.length);
+                } else {
+                    console.log('No documents to process (array was empty or null)');
+                }
+            } catch (docError) {
+                console.error('✗ Failed to fetch documents:', docError);
+                console.error('Document error details:', docError);
+            }
+
+            console.log('Final combined files:', allFiles);
+            console.log('Setting uploadedFiles state with', allFiles.length, 'files');
+            console.log('Documents in allFiles:', allFiles.filter(f => f.type === 'document'));
+            setUploadedFiles(allFiles);
+
+        } catch (error) {
+            console.error('Failed to fetch files:', error);
+            // Silently fail - user can still upload new files
+        } finally {
+            setLoadingFiles(false);
+        }
     };
 
-    const handleBannerUpload = (file) => {
-        updateForm({ ...form, store_banner: file });
+    const showToast = (message) => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, message }]);
+        setTimeout(() => {
+            setToasts(prev => prev.filter(t => t.id !== id));
+        }, 3000);
     };
 
-    const handleDocumentUpload = (file) => {
-        // Add to files list
-        const newFile = {
-            id: Date.now(),
-            name: file.name,
-            type: "document",
-            size: file.size,
-            url: URL.createObjectURL(file),
-            uploadedAt: new Date().toISOString(),
-            file: file
-        };
-        setUploadedFiles([...uploadedFiles, newFile]);
+    const handleLogoUpload = async (file) => {
+        setUploading(prev => ({ ...prev, logo: true }));
+        try {
+            const response = await uploadStoreFile(file, 'logo');
+            const data = response.data || response;
+            updateForm({ ...form, store_logo: data.url || data.file_path });
+            showToast('Logo uploaded successfully!');
+        } catch (error) {
+            console.error('Logo upload failed:', error);
+            alert('Failed to upload logo: ' + error.message);
+        } finally {
+            setUploading(prev => ({ ...prev, logo: false }));
+        }
+    };
+
+    const handleBannerUpload = async (file) => {
+        setUploading(prev => ({ ...prev, banner: true }));
+        try {
+            const response = await uploadStoreFile(file, 'banner');
+            const data = response.data || response;
+            updateForm({ ...form, store_banner: data.url || data.file_path });
+            showToast('Banner uploaded successfully!');
+        } catch (error) {
+            console.error('Banner upload failed:', error);
+            alert('Failed to upload banner: ' + error.message);
+        } finally {
+            setUploading(prev => ({ ...prev, banner: false }));
+        }
+    };
+
+    const handleDocumentUpload = async (file) => {
+        // Show dialog to select document type
+        setPendingFile(file);
+        setShowTypeDialog(true);
+    };
+
+    const handleDocumentTypeSelect = async (documentType) => {
+        if (!pendingFile) return;
+        
+        setShowTypeDialog(false);
+        setUploading(prev => ({ ...prev, documents: true }));
+        
+        try {
+            // Upload with document_type using the uploadStoreFile helper
+            const formData = new FormData();
+            formData.append('file', pendingFile);
+            formData.append('type', 'document');
+            formData.append('document_type', documentType);
+            
+            // Get auth token using the same method as API service
+            const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+            
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/store/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: formData
+            });
+            
+            // Try to parse response
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                console.error('Response text:', await response.text());
+                throw new Error('Server returned invalid JSON response');
+            }
+            
+            if (!response.ok) {
+                throw {
+                    status: response.status,
+                    message: data.message || 'Failed to upload document',
+                    errors: data.errors
+                };
+            }
+            
+            // Add the new document to the list immediately
+            const newFile = {
+                id: data.document_id || data.id || Date.now(),
+                name: pendingFile.name,
+                type: 'document',
+                size: pendingFile.size,
+                url: data.url || data.file_path || data.path,
+                uploadedAt: data.uploaded_at || new Date().toISOString(),
+                filePath: data.url || data.file_path || data.path,
+                documentType: documentType
+            };
+            
+            console.log('New file object:', newFile);
+            
+            // Add immediately to UI
+            setUploadedFiles(prev => [...prev, newFile]);
+            showToast('Document uploaded successfully!');
+            
+            // Refresh the file list to stay in sync with backend
+            setTimeout(async () => {
+                await fetchUploadedFiles();
+            }, 500);
+        } catch (error) {
+            console.error('Document upload failed:', error);
+            
+            // Handle specific error messages from backend
+            if (error.status === 422 && error.errors) {
+                const errorMessages = Object.entries(error.errors)
+                    .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
+                    .join('\n');
+                alert(`Validation Error:\n${errorMessages}`);
+            } else if (error.status === 422) {
+                alert(error.message || 'Validation failed');
+            } else {
+                alert('Failed to upload document: ' + (error.message || 'Unknown error'));
+            }
+        } finally {
+            setUploading(prev => ({ ...prev, documents: false }));
+            setPendingFile(null);
+        }
     };
 
     const handleProductUpload = (file) => {
@@ -66,7 +281,58 @@ export default function BrandingForm({
         }
     };
 
+    const documentTypes = [
+        { value: 'business_license', label: 'Business License' },
+        { value: 'tax_id', label: 'Tax ID' },
+        { value: 'bank_details', label: 'Bank Details' },
+        { value: 'other', label: 'Other' }
+    ];
+
     return (
+        <>
+            {/* Document Type Selection Dialog */}
+            {showTypeDialog && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-4">Select Document Type</h3>
+                        <div className="space-y-2 mb-6">
+                            {documentTypes.map(docType => (
+                                <button
+                                    key={docType.value}
+                                    onClick={() => handleDocumentTypeSelect(docType.value)}
+                                    className="w-full text-left px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                                >
+                                    {docType.label}
+                                </button>
+                            ))}
+                        </div>
+                        <button
+                            onClick={() => {
+                                setShowTypeDialog(false);
+                                setPendingFile(null);
+                            }}
+                            className="w-full px-4 py-2 text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
+            {/* Toast Notifications */}
+            <div className="fixed top-4 right-4 z-50 space-y-2">
+                {toasts.map(toast => (
+                    <div
+                        key={toast.id}
+                        className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-300"
+                    >
+                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                        <span className="font-medium">{toast.message}</span>
+                    </div>
+                ))}
+            </div>
+
         <form className="space-y-8" onSubmit={onSubmit} autoComplete="off">
             {/* Success Message */}
             {submitSuccess && (
@@ -106,7 +372,7 @@ export default function BrandingForm({
                         formats={["PNG", "JPG", "WebP"]}
                         maxSize={5 * 1024 * 1024}
                         onFileSelect={handleLogoUpload}
-                        isLoading={submitting}
+                        isLoading={uploading.logo}
                     />
 
                     {/* Store Banner Card */}
@@ -116,7 +382,7 @@ export default function BrandingForm({
                         formats={["PNG", "JPG", "WebP"]}
                         maxSize={5 * 1024 * 1024}
                         onFileSelect={handleBannerUpload}
-                        isLoading={submitting}
+                        isLoading={uploading.banner}
                     />
 
                     {/* Documents Card */}
@@ -126,7 +392,7 @@ export default function BrandingForm({
                         formats={["PDF", "DOC"]}
                         maxSize={10 * 1024 * 1024}
                         onFileSelect={handleDocumentUpload}
-                        isLoading={submitting}
+                        isLoading={uploading.documents}
                     />
                 </div>
             </div>
@@ -141,10 +407,11 @@ export default function BrandingForm({
                     <FileListTable
                         files={uploadedFiles}
                         onDelete={handleDeleteFile}
-                        isLoading={fileDeleteLoading}
+                        isLoading={fileDeleteLoading || loadingFiles}
                     />
                 </Card>
             </div>
         </form>
+        </>
     );
 }

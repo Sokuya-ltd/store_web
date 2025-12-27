@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const FILE_TYPES = {
     logo: { label: "Logo", color: "bg-blue-100 text-blue-700" },
     banner: { label: "Banner", color: "bg-purple-100 text-purple-700" },
@@ -8,11 +6,9 @@ const FILE_TYPES = {
 };
 
 export default function FileListTable({ files = [], onDelete, isLoading = false }) {
-    const [activeFilter, setActiveFilter] = useState("all");
+    console.log('FileListTable rendered with files:', files);
 
-    const filteredFiles = activeFilter === "all" 
-        ? files 
-        : files.filter(file => file.type === activeFilter);
+    const filteredFiles = files;
 
     const formatFileSize = (bytes) => {
         if (bytes === 0) return "0 Bytes";
@@ -36,31 +32,8 @@ export default function FileListTable({ files = [], onDelete, isLoading = false 
 
     const getFileTypeConfig = (type) => FILE_TYPES[type] || FILE_TYPES.product;
 
-    const filterTabs = [
-        { key: "logo", label: "Logo" },
-        { key: "banner", label: "Banner" },
-        { key: "document", label: "Documents" }
-    ];
-
     return (
         <div>
-            {/* Filter Tabs */}
-            <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-                {filterTabs.map((tab) => (
-                    <button
-                        key={tab.key}
-                        onClick={() => setActiveFilter(tab.key)}
-                        className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
-                            activeFilter === tab.key
-                                ? "bg-slate-900 text-white"
-                                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                        }`}
-                    >
-                        {tab.label}
-                    </button>
-                ))}
-            </div>
-
             {/* Files Table */}
             {filteredFiles.length === 0 ? (
                 <div className="text-center py-12">
@@ -81,6 +54,7 @@ export default function FileListTable({ files = [], onDelete, isLoading = false 
                     <p className="text-slate-600 text-sm font-medium">No files uploaded yet</p>
                 </div>
             ) : (
+                // List View
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
