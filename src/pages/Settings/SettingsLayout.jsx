@@ -270,9 +270,7 @@ export default function SettingsLayout() {
     }
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto">
-            <ToastContainer toasts={toasts} onClose={hideToast} />
-            
+        <div className="w-full space-y-8 px-6 py-6">
             {/* Header with Title and Status Toggle */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex-1">
