@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import SettingsForm from "./SettingsForm";
 import BrandingForm from "./BrandingForm";
 import { useStoreProfile } from "../../hooks/useStoreProfile";
+import { useToast } from "../../hooks/useToast";
+import ToastContainer from "../../components/ui/ToastContainer";
 import api from "../../services/api";
 
 export default function SettingsLayout() {
     const { profile, loading, error, refetch } = useStoreProfile();
+    const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
     const [activeTab, setActiveTab] = useState(0);
     
     // Settings Form State
@@ -184,8 +187,11 @@ export default function SettingsLayout() {
 
             console.log("Submitting payload:", JSON.stringify(payload, null, 2));
 
-            await api.put("/store/profile", payload);
+            const response = await api.put("/store/profile", payload);
             setSubmitSuccess(true);
+            
+            // Show success toast with message from API
+            showSuccess(response.message || "Profile updated successfully!");
             
             // Optionally refetch profile to sync with server
             await refetch();
@@ -194,7 +200,9 @@ export default function SettingsLayout() {
             setTimeout(() => setSubmitSuccess(false), 3000);
         } catch (err) {
             console.error("Failed to update profile:", err);
-            setSubmitError(err.errors || err.message || "Failed to update profile");
+            const errorMessage = err.errors || err.message || "Failed to update profile";
+            setSubmitError(errorMessage);
+            showError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
         } finally {
             setSubmitting(false);
         }
@@ -216,6 +224,7 @@ export default function SettingsLayout() {
             // For now, we'll consider it successful since files are uploaded via /store/upload
             
             setBrandingSubmitSuccess(true);
+            showSuccess("Branding updated successfully!");
             
             // Refetch profile to sync with server
             await refetch();
@@ -224,7 +233,9 @@ export default function SettingsLayout() {
             setTimeout(() => setBrandingSubmitSuccess(false), 3000);
         } catch (err) {
             console.error("Failed to update branding:", err);
-            setBrandingSubmitError(err.errors || err.message || "Failed to update branding");
+            const errorMessage = err.errors || err.message || "Failed to update branding";
+            setBrandingSubmitError(errorMessage);
+            showError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
         } finally {
             setBrandingSubmitting(false);
         }
@@ -260,6 +271,8 @@ export default function SettingsLayout() {
 
     return (
         <div className="p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto">
+            <ToastContainer toasts={toasts} onClose={hideToast} />
+            
             {/* Header with Title and Status Toggle */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex-1">

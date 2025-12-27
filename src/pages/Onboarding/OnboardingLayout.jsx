@@ -1,9 +1,12 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import StepBusinessInfo from "./StepBusinessInfo";
+import ToastContainer from "../../components/ui/ToastContainer";
+import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
 
 export default function OnboardingLayout() {
+    const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -50,6 +53,8 @@ export default function OnboardingLayout() {
             const response = await api.post("/store/register", data);
             console.log("Registration successful:", response);
 
+            showSuccess(response.message || "Registration successful!");
+
             // Store token if returned
             if (response.token) {
                 localStorage.setItem("auth_token", response.token);
@@ -76,13 +81,19 @@ export default function OnboardingLayout() {
                     errors[field] = messages[0]; // Take first error message for each field
                 });
                 setFieldErrors(errors);
-                setError("Please fix the errors below.");
+                const errorMessage = "Please fix the errors below.";
+                setError(errorMessage);
+                showError(errorMessage);
             } else if (err.status === 500) {
                 // Server error - show more details for debugging
                 const serverMessage = err.data?.message || err.data?.error || err.message;
-                setError(`Server error: ${serverMessage}\n\nPlease check backend logs for details.`);
+                const errorMsg = `Server error: ${serverMessage}`;
+                setError(errorMsg);
+                showError(errorMsg);
             } else {
-                setError(err.message || "Registration failed. Please try again.");
+                const errorMsg = err.message || "Registration failed. Please try again.";
+                setError(errorMsg);
+                showError(errorMsg);
             }
         } finally {
             setIsSubmitting(false);
@@ -91,6 +102,8 @@ export default function OnboardingLayout() {
 
     return (
         <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-10 gap-0 overflow-hidden">
+            <ToastContainer toasts={toasts} onClose={hideToast} />
+            
             {/* Left content */}
             <div className="lg:col-span-6 bg-[#D35400] p-6 sm:p-8 lg:p-16 flex items-center justify-center">
                 <div className="text-white text-center lg:text-left">

@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+import ToastContainer from "../../components/ui/ToastContainer";
+import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
+    const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -39,6 +42,7 @@ export default function Login() {
         // Basic validation
         if (!formData.email || !formData.password) {
             setError("Please fill in all fields");
+            showError("Please fill in all fields");
             setIsSubmitting(false);
             return;
         }
@@ -46,6 +50,8 @@ export default function Login() {
         try {
             const response = await api.post("/store/login", formData);
             console.log("Login successful:", response);
+
+            showSuccess(response.message || "Login successful!");
 
             // Use auth context to save login data
             login(response);
@@ -57,6 +63,8 @@ export default function Login() {
             console.log("Error message:", err.message);
             console.log("Error status:", err.status);
             console.log("Error data:", err.data);
+            
+            showError(err.message || "Login failed");
 
             // Check if account is not verified (check message content first)
             const errorMessage = err.message?.toLowerCase() || "";
@@ -88,6 +96,8 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-10 gap-0 overflow-hidden">
+            <ToastContainer toasts={toasts} onClose={hideToast} />
+            
             {/* Left content */}
             <div className="lg:col-span-6 bg-[#D35400] p-6 sm:p-8 lg:p-16 flex items-center justify-center">
                 <div className="text-white text-center lg:text-left">

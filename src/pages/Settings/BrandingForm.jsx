@@ -4,7 +4,9 @@ import FileUploadCard from "../../components/ui/FileUploadCard";
 import FileListTable from "../../components/ui/FileListTable";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import ToastContainer from "../../components/ui/ToastContainer";
 import { Image, FileText } from "lucide-react";
+import { useToast } from "../../hooks/useToast";
 import { uploadStoreFile, retrieveStoreFiles } from "../../services/api";
 
 export default function BrandingForm({ 
@@ -15,10 +17,10 @@ export default function BrandingForm({
     submitError, 
     submitSuccess 
 }) {
+    const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [fileDeleteLoading, setFileDeleteLoading] = useState(false);
     const [uploading, setUploading] = useState({ logo: false, banner: false, documents: false });
-    const [toasts, setToasts] = useState([]);
     const [loadingFiles, setLoadingFiles] = useState(false);
     const [pendingFile, setPendingFile] = useState(null);
     const [showTypeDialog, setShowTypeDialog] = useState(false);
@@ -134,24 +136,16 @@ export default function BrandingForm({
         }
     };
 
-    const showToast = (message) => {
-        const id = Date.now();
-        setToasts(prev => [...prev, { id, message }]);
-        setTimeout(() => {
-            setToasts(prev => prev.filter(t => t.id !== id));
-        }, 3000);
-    };
-
     const handleLogoUpload = async (file) => {
         setUploading(prev => ({ ...prev, logo: true }));
         try {
             const response = await uploadStoreFile(file, 'logo');
             const data = response.data || response;
             updateForm({ ...form, store_logo: data.url || data.file_path });
-            showToast('Logo uploaded successfully!');
+            showSuccess(response.message || 'Logo uploaded successfully!');
         } catch (error) {
             console.error('Logo upload failed:', error);
-            alert('Failed to upload logo: ' + error.message);
+            showError('Failed to upload logo: ' + error.message);
         } finally {
             setUploading(prev => ({ ...prev, logo: false }));
         }
@@ -163,10 +157,10 @@ export default function BrandingForm({
             const response = await uploadStoreFile(file, 'banner');
             const data = response.data || response;
             updateForm({ ...form, store_banner: data.url || data.file_path });
-            showToast('Banner uploaded successfully!');
+            showSuccess(response.message || 'Banner uploaded successfully!');
         } catch (error) {
             console.error('Banner upload failed:', error);
-            alert('Failed to upload banner: ' + error.message);
+            showError('Failed to upload banner: ' + error.message);
         } finally {
             setUploading(prev => ({ ...prev, banner: false }));
         }
@@ -235,7 +229,7 @@ export default function BrandingForm({
             
             // Add immediately to UI
             setUploadedFiles(prev => [...prev, newFile]);
-            showToast('Document uploaded successfully!');
+            showSuccess('Document uploaded successfully!');
             
             // Refresh the file list to stay in sync with backend
             setTimeout(async () => {
@@ -248,12 +242,12 @@ export default function BrandingForm({
             if (error.status === 422 && error.errors) {
                 const errorMessages = Object.entries(error.errors)
                     .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
-                    .join('\n');
-                alert(`Validation Error:\n${errorMessages}`);
+                    .join(' | ');
+                showError(`Validation Error: ${errorMessages}`);
             } else if (error.status === 422) {
-                alert(error.message || 'Validation failed');
+                showError(error.message || 'Validation failed');
             } else {
-                alert('Failed to upload document: ' + (error.message || 'Unknown error'));
+                showError('Failed to upload document: ' + (error.message || 'Unknown error'));
             }
         } finally {
             setUploading(prev => ({ ...prev, documents: false }));
@@ -318,22 +312,10 @@ export default function BrandingForm({
                     </div>
                 </div>
             )}
-            {/* Toast Notifications */}
-            <div className="fixed top-4 right-4 z-50 space-y-2">
-                {toasts.map(toast => (
-                    <div
-                        key={toast.id}
-                        className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-300"
-                    >
-                        <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                        <span className="font-medium">{toast.message}</span>
-                    </div>
-                ))}
-            </div>
 
         <form className="space-y-8" onSubmit={onSubmit} autoComplete="off">
+            <ToastContainer toasts={toasts} onClose={hideToast} />
+            
             {/* Success Message */}
             {submitSuccess && (
                 <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3">
