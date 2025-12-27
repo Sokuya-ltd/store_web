@@ -27,12 +27,11 @@ async function request(endpoint, options = {}) {
     try {
         const response = await fetch(url, config);
 
-        // Handle 401 Unauthorized - token expired or invalid
+        // Handle 401 Unauthorized - don't auto-redirect, let components handle it
         if (response.status === 401) {
             clearAuthData();
-            // Optionally redirect to login
-            window.location.href = "/login";
-            throw new Error("Session expired. Please log in again.");
+            // Don't use window.location.href - let the component handle the error
+            // This allows error messages and toasts to display properly
         }
 
         // Handle non-JSON responses

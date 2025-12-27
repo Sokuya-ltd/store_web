@@ -7,13 +7,13 @@ import { useState } from 'react';
 export function useToast() {
     const [toasts, setToasts] = useState([]);
 
-    const showToast = (message, type = 'success', duration = 3000) => {
+    const showToast = (message, type = 'success', duration = 5000) => {
         const id = Date.now();
         const toast = { id, message, type };
         
         setToasts(prev => [...prev, toast]);
         
-        // Auto-dismiss after duration
+        // Auto-dismiss after duration (default 5 seconds for better visibility)
         if (duration > 0) {
             setTimeout(() => {
                 setToasts(prev => prev.filter(t => t.id !== id));

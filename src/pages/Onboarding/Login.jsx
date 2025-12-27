@@ -42,7 +42,7 @@ export default function Login() {
         // Basic validation
         if (!formData.email || !formData.password) {
             setError("Please fill in all fields");
-            showError("Please fill in all fields");
+            showError("Please fill in all fields", 8000);
             setIsSubmitting(false);
             return;
         }
@@ -64,7 +64,8 @@ export default function Login() {
             console.log("Error status:", err.status);
             console.log("Error data:", err.data);
             
-            showError(err.message || "Login failed");
+            // Show error toast with longer duration (8 seconds)
+            showError(err.message || "Login failed", 8000);
 
             // Check if account is not verified (check message content first)
             const errorMessage = err.message?.toLowerCase() || "";
@@ -161,13 +162,6 @@ export default function Login() {
                     </div>
                 ) : (
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    {/* Error message display */}
-                    {error && (
-                        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                            {error}
-                        </div>
-                    )}
-
                     <Input
                         label="Email"
                         type="email"
