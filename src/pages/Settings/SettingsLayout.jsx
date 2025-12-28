@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SettingsForm from "./SettingsForm";
 import BrandingForm from "./BrandingForm";
+import AccountSecurityForm from "./AccountSecurityForm";
 import { useStoreProfile } from "../../hooks/useStoreProfile";
 import { useToast } from "../../hooks/useToast";
 import ToastContainer from "../../components/ui/ToastContainer";
@@ -357,10 +358,7 @@ export default function SettingsLayout() {
                         />
                     )}
                     {activeTab === 2 && (
-                        <div>
-                            <h2 className="text-lg font-semibold mb-2">Account Security</h2>
-                            <p className="text-gray-600">Change your password and manage security settings.</p>
-                        </div>
+                        <AccountSecurityForm />
                     )}
                     {activeTab === 3 && (
                         <div>
