@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import SettingsForm from "./SettingsForm";
 import BrandingForm from "./BrandingForm";
+import FinanceInformationForm from "./FinanceInformationForm";
 import AccountSecurityForm from "./AccountSecurityForm";
 import { useStoreProfile } from "../../hooks/useStoreProfile";
 import { useToast } from "../../hooks/useToast";
@@ -361,10 +362,7 @@ export default function SettingsLayout() {
                         <AccountSecurityForm />
                     )}
                     {activeTab === 3 && (
-                        <div>
-                            <h2 className="text-lg font-semibold mb-2">Finance Information</h2>
-                            <p className="text-gray-600">Manage your payment methods and billing info.</p>
-                        </div>
+                        <FinanceInformationForm initialData={form} />
                     )}
                 </div>
             </div>

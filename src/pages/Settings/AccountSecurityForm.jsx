@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Eye, EyeOff, Lock, Mail, Shield, Clock } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Shield, Clock, Copy, Check } from "lucide-react";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import { useToast } from "../../context/ToastContext";
@@ -32,6 +32,39 @@ export default function AccountSecurityForm() {
     // Email Verification State
     const [emailVerificationLoading, setEmailVerificationLoading] = useState(false);
     const [emailVerified, setEmailVerified] = useState(true);
+    const [userEmail, setUserEmail] = useState("user@example.com");
+
+    // Copy to Clipboard State
+    const [copiedId, setCopiedId] = useState(null);
+
+    // Password Strength Calculator
+    const getPasswordStrength = (password) => {
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (password.length >= 12) strength++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+        if (/\d/.test(password)) strength++;
+        if (/[^a-zA-Z\d]/.test(password)) strength++;
+        return strength;
+    };
+
+    const passwordStrength = getPasswordStrength(passwordForm.new_password);
+    const strengthLabels = ["Very Weak", "Weak", "Fair", "Good", "Strong", "Very Strong"];
+    const strengthColors = ["bg-red-500", "bg-orange-500", "bg-yellow-500", "bg-lime-500", "bg-green-500"];
+
+    // Copy to Clipboard
+    const copyToClipboard = (text, id) => {
+        navigator.clipboard.writeText(text);
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+    };
+
+    // Mask email
+    const maskEmail = (email) => {
+        const [local, domain] = email.split("@");
+        const maskedLocal = local.substring(0, 2) + "***" + local.substring(local.length - 1);
+        return `${maskedLocal}@${domain}`;
+    };
 
     // Audit Log State
     const [auditLogs, setAuditLogs] = useState([]);
@@ -231,6 +264,12 @@ export default function AccountSecurityForm() {
                                     <p className="text-sm text-slate-600">Update your password regularly to keep your account secure</p>
                                 </div>
                             </div>
+                            {/* Warning Banner */}
+                            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                <p className="text-xs text-amber-800">
+                                    <span className="font-semibold">⚠️ Note:</span> After changing your password, you'll need to log in again with your new password.
+                                </p>
+                            </div>
 
                             <div className="space-y-4">
                                 {/* Current Password */}
@@ -291,7 +330,7 @@ export default function AccountSecurityForm() {
                                                 ? "border-red-500"
                                                 : "border-slate-300"
                                                 }`}
-                                            placeholder="Enter new password (min 8 characters)"
+                                            placeholder="Enter new password"
                                         />
                                         <button
                                             type="button"
@@ -310,6 +349,39 @@ export default function AccountSecurityForm() {
                                             )}
                                         </button>
                                     </div>
+
+                                    {/* Password Strength Indicator */}
+                                    {passwordForm.new_password && (
+                                        <div className="mt-2">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full transition-all ${strengthColors[Math.max(0, passwordStrength - 1)]}`}
+                                                        style={{ width: `${(passwordStrength / 5) * 100}%` }}
+                                                    />
+                                                </div>
+                                                <span className="text-xs font-medium text-slate-600">
+                                                    {strengthLabels[passwordStrength]}
+                                                </span>
+                                            </div>
+
+                                            {/* Requirements Checklist */}
+                                            <div className="space-y-1 text-xs text-slate-600">
+                                                <div className={passwordForm.new_password.length >= 8 ? "text-green-600" : ""}>
+                                                    {passwordForm.new_password.length >= 8 ? "✓" : "○"} At least 8 characters
+                                                </div>
+                                                <div className={/[a-z]/.test(passwordForm.new_password) && /[A-Z]/.test(passwordForm.new_password) ? "text-green-600" : ""}>
+                                                    {/[a-z]/.test(passwordForm.new_password) && /[A-Z]/.test(passwordForm.new_password) ? "✓" : "○"} Mix of uppercase and lowercase
+                                                </div>
+                                                <div className={/\d/.test(passwordForm.new_password) ? "text-green-600" : ""}>
+                                                    {/\d/.test(passwordForm.new_password) ? "✓" : "○"} Contains numbers
+                                                </div>
+                                                <div className={/[^a-zA-Z\d]/.test(passwordForm.new_password) ? "text-green-600" : ""}>
+                                                    {/[^a-zA-Z\d]/.test(passwordForm.new_password) ? "✓" : "○"} Contains special characters
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                     {passwordErrors.new_password && (
                                         <p className="text-xs text-red-600 mt-1">{passwordErrors.new_password}</p>
                                     )}
@@ -456,13 +528,18 @@ export default function AccountSecurityForm() {
                                     </div>
                                 </div>
                                 <div
-                                    className={`px-3 py-1-full text-xs font-medium ${emailVerified
+                                    className={`px-3 py-1 text-xs font-medium rounded ${emailVerified
                                         ? "bg-green-100 text-green-700"
                                         : "bg-red-100 text-red-700"
                                         }`}
                                 >
                                     {emailVerified ? "Verified" : "Not Verified"}
                                 </div>
+                            </div>
+
+                            <div className="bg-slate-50 p-3 rounded-lg mb-4">
+                                <p className="text-xs text-slate-600 font-medium mb-1">Email Address</p>
+                                <p className="text-sm text-slate-900 font-mono">{maskEmail(userEmail)}</p>
                             </div>
 
                             <p className="text-sm text-slate-600 mb-4">
@@ -515,13 +592,28 @@ export default function AccountSecurityForm() {
                                     <tbody className="divide-y divide-slate-200">
                                         {auditLogs.map((log) => (
                                             <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                                                <td className="px-4 py-2 text-slate-600">
+                                                <td className="px-4 py-2 text-slate-600 text-xs">
                                                     {new Date(log.created_at).toLocaleString()}
                                                 </td>
-                                                <td className="px-4 py-2 text-slate-600">
+                                                <td className="px-4 py-2 text-slate-600 text-xs">
                                                     {log.event.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                                                 </td>
-                                                <td className="px-4 py-2 text-slate-600">{log.ip_address}</td>
+                                                <td className="px-4 py-2 text-slate-600">
+                                                    <div className="flex items-center gap-2 group">
+                                                        <span className="text-xs font-mono">{log.ip_address}</span>
+                                                        <button
+                                                            onClick={() => copyToClipboard(log.ip_address, log.id)}
+                                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-slate-600"
+                                                            title="Copy IP address"
+                                                        >
+                                                            {copiedId === log.id ? (
+                                                                <Check className="w-4 h-4 text-green-600" />
+                                                            ) : (
+                                                                <Copy className="w-4 h-4" />
+                                                            )}
+                                                        </button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
