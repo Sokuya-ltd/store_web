@@ -3,10 +3,13 @@ import { useState } from "react";
 import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X, Store } from "lucide-react";
 import { colors } from "../../lib/colors";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
+import ToastContainer from "../ui/ToastContainer";
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, storeInfo, logout } = useAuth();
+  const { toasts, hideToast } = useToast();
 
   // Get user initials for avatar
   const getInitials = (name) => {
@@ -178,6 +181,9 @@ export default function AppLayout() {
           <Outlet />
         </main>
       </div>
+
+      {/* Toast Container */}
+      <ToastContainer toasts={toasts} onClose={hideToast} />
     </div>
   );
 }

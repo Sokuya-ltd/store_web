@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Eye, EyeOff, Lock, Mail, Shield, Clock } from "lucide-react";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
-import { useToast } from "../../hooks/useToast";
+import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
 
 export default function AccountSecurityForm() {
@@ -36,6 +36,12 @@ export default function AccountSecurityForm() {
     // Audit Log State
     const [auditLogs, setAuditLogs] = useState([]);
     const [auditLogsLoading, setAuditLogsLoading] = useState(false);
+    const [auditLogsPagination, setAuditLogsPagination] = useState({
+        current_page: 1,
+        total: 0,
+        per_page: 50,
+        last_page: 1,
+    });
 
     // Change Password Handler
     const handlePasswordChange = async (e) => {
@@ -186,11 +192,17 @@ export default function AccountSecurityForm() {
     };
 
     // Fetch Audit Logs Handler
-    const fetchAuditLogs = async () => {
+    const fetchAuditLogs = async (page = 1) => {
         setAuditLogsLoading(true);
         try {
-            const response = await api.get("/store/audit-logs");
-            setAuditLogs(response.logs || []);
+            const response = await api.get(`/store/audit/by-type?types=security&page=${page}`);
+            setAuditLogs(response.data?.data || []);
+            setAuditLogsPagination({
+                current_page: response.data?.current_page || 1,
+                total: response.data?.total || 0,
+                per_page: response.data?.per_page || 50,
+                last_page: response.data?.last_page || 1,
+            });
         } catch (err) {
             console.error("Failed to fetch audit logs:", err);
             // Set empty array on error, don't show error toast as this is supplementary info
@@ -500,28 +512,71 @@ export default function AccountSecurityForm() {
                     ) : auditLogs.length === 0 ? (
                         <p className="text-slate-600 text-sm">No recent activities found.</p>
                     ) : (
-                        <div className="max-h-64 overflow-y-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b border-slate-200">
-                                        <th className="px-4 py-2 text-left font-semibold text-slate-900">Date</th>
-                                        <th className="px-4 py-2 text-left font-semibold text-slate-900">Activity</th>
-                                        <th className="px-4 py-2 text-left font-semibold text-slate-900">IP Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-200">
-                                    {auditLogs.map((log) => (
-                                        <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-4 py-2 text-slate-600">
-                                                {new Date(log.timestamp).toLocaleString()}
-                                            </td>
-                                            <td className="px-4 py-2 text-slate-600">{log.activity}</td>
-                                            <td className="px-4 py-2 text-slate-600">{log.ip_address}</td>
+                        <>
+                            <div className="max-h-64 overflow-y-auto">
+                                <table className="w-full text-sm">
+                                    <thead>
+                                        <tr className="border-b border-slate-200">
+                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">Date</th>
+                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">Activity</th>
+                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">IP Address</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-200">
+                                        {auditLogs.map((log) => (
+                                            <tr key={log.id} className="hover:bg-slate-50 transition-colors">
+                                                <td className="px-4 py-2 text-slate-600">
+                                                    {new Date(log.created_at).toLocaleString()}
+                                                </td>
+                                                <td className="px-4 py-2 text-slate-600">
+                                                    {log.event.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                                                </td>
+                                                <td className="px-4 py-2 text-slate-600">{log.ip_address}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* Pagination Controls */}
+                            <div className="mt-4 flex items-center justify-between">
+                                <p className="text-xs text-slate-600">
+                                    Showing {auditLogs.length > 0 ? (auditLogsPagination.current_page - 1) * auditLogsPagination.per_page + 1 : 0} to {Math.min(auditLogsPagination.current_page * auditLogsPagination.per_page, auditLogsPagination.total)} of {auditLogsPagination.total} entries
+                                </p>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => fetchAuditLogs(auditLogsPagination.current_page - 1)}
+                                        disabled={auditLogsPagination.current_page === 1 || auditLogsLoading}
+                                        className="px-3 py-1 text-sm border border-slate-300 text-slate-700 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    >
+                                        Previous
+                                    </button>
+                                    <div className="flex items-center gap-1">
+                                        {Array.from({ length: auditLogsPagination.last_page }, (_, i) => i + 1).map((page) => (
+                                            <button
+                                                key={page}
+                                                onClick={() => fetchAuditLogs(page)}
+                                                disabled={auditLogsLoading}
+                                                className={`px-2 py-1 text-xs rounded transition-colors ${
+                                                    auditLogsPagination.current_page === page
+                                                        ? "bg-[#556B2F] text-white font-semibold"
+                                                        : "border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                }`}
+                                            >
+                                                {page}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <button
+                                        onClick={() => fetchAuditLogs(auditLogsPagination.current_page + 1)}
+                                        disabled={auditLogsPagination.current_page === auditLogsPagination.last_page || auditLogsLoading}
+                                        className="px-3 py-1 text-sm border border-slate-300 text-slate-700 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </>
                     )}
                 </Card>
             </div>
