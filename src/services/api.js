@@ -51,7 +51,6 @@ async function request(endpoint, options = {}) {
 
             // Handle server errors (500) with more detail
             if (response.status === 500) {
-                console.error("Server Error Details:", data);
                 const error = new Error(data.message || "Server error. Please contact support.");
                 error.status = 500;
                 error.data = data;
@@ -70,7 +69,6 @@ async function request(endpoint, options = {}) {
         if (error.status) throw error;
 
         // Network or other errors
-        console.error("API request failed:", error);
         throw new Error("Network error. Please check your connection.");
     }
 }
@@ -144,7 +142,6 @@ const api = {
             return data;
         } catch (error) {
             if (error.status) throw error;
-            console.error("API upload failed:", error);
             throw new Error("Upload failed. Please check your connection.");
         }
     },

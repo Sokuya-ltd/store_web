@@ -82,7 +82,6 @@ export default function ProductAdd() {
             setIsLoading(true);
             setLoadError(null);
             try {
-                console.log("🔄 Fetching products, categories, and tags...");
                 const response = await api.get("/store/products/create");
                 
                 if (!isMounted) return;
@@ -91,12 +90,10 @@ export default function ProductAdd() {
                     setApiProducts(response.data.products || []);
                     setApiCategories(response.data.categories || []);
                     setApiTags(response.data.tags || []);
-                    console.log("✅ Data loaded successfully");
                 }
             } catch (error) {
                 if (!isMounted) return;
                 
-                console.error("❌ Failed to fetch products data:", error);
                 const errorMsg = error?.response?.data?.message || error?.message || "Failed to load products, categories, and tags";
                 setLoadError(errorMsg);
                 toast.error(errorMsg);
@@ -155,24 +152,17 @@ export default function ProductAdd() {
 
     // Get selected category display name
     const selectedCategoryName = useMemo(() => {
-        console.log("📊 Computing selectedCategoryName:", { 
-            "form.category": form.category,
-            "suggestedCategory": suggestedCategory
-        });
-        
         // If there's a suggested category, show it with a special indicator
         if (suggestedCategory) {
             return `✨ ${suggestedCategory} (Suggested)`;
         }
         if (!form.category) {
-            console.log("⚠️ No category selected");
             return "";
         }
         // Build display name from embedded category
         const displayName = form.category.parent_name
             ? `${form.category.parent_name} > ${form.category.name}`
             : form.category.name;
-        console.log("✅ Category display name:", displayName);
         return displayName;
     }, [form.category, suggestedCategory]);
 
@@ -225,8 +215,6 @@ export default function ProductAdd() {
 
     // Handle category selection
     const handleSelectCategory = (category) => {
-        console.log("🔵 Category selected from dropdown:", category);
-        
         // Build the embedded category object matching store_products.json structure
         const embeddedCategory = {
             id: category.id,
@@ -235,7 +223,6 @@ export default function ProductAdd() {
             parent_id: category.isParent ? null : category.id.split('-').slice(0, 2).join('-'),
             parent_name: category.parentName || null,
         };
-        console.log("🔵 Embedded category object created:", embeddedCategory);
         
         // Update form state with new category
         setForm(prevForm => {
@@ -247,7 +234,6 @@ export default function ProductAdd() {
                     category_id: category.id
                 }
             };
-            console.log("🔵 Form state updated with category:", newForm.category);
             return newForm;
         });
         
@@ -255,8 +241,6 @@ export default function ProductAdd() {
         setSuggestedCategory("");
         setCategorySearch("");
         setShowCategoryDropdown(false);
-        
-        console.log("🔵 Dropdown closed and states cleared");
     };
 
     // Handle suggesting a new category
@@ -281,8 +265,6 @@ export default function ProductAdd() {
     const handleSelectProduct = (storeProduct) => {
         // Extract the product data from the store product response
         const product = storeProduct.product;
-        
-        console.log("📦 Product selected:", storeProduct);
         
         setSearchQuery(product.name);
 
@@ -362,27 +344,21 @@ export default function ProductAdd() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("📋 Form submission started");
-        console.log("📋 Current form state:", form);
         
         // Comprehensive validation
         if (!form.product.name?.trim()) {
-            console.warn("❌ Validation failed: Product name is required");
             toast.error("Product name is required");
             return;
         }
         if (!form.category?.id) {
-            console.warn("❌ Validation failed: Category not selected");
             toast.error("Please select a category");
             return;
         }
         if (!form.price || parseFloat(form.price) <= 0) {
-            console.warn("❌ Validation failed: Invalid price", form.price);
             toast.error("Please enter a valid price");
             return;
         }
         if (!form.stock_qty || parseInt(form.stock_qty) < 0) {
-            console.warn("❌ Validation failed: Invalid stock quantity", form.stock_qty);
             toast.error("Please enter a valid stock quantity");
             return;
         }
@@ -390,18 +366,15 @@ export default function ProductAdd() {
             const comparePrice = parseFloat(form.compare_at_price);
             const regularPrice = parseFloat(form.price);
             if (comparePrice <= regularPrice) {
-                console.warn("❌ Validation failed: Compare at price must be greater than regular price");
                 toast.error("Compare at price must be greater than regular price");
                 return;
             }
         }
         if (form.store_notes && form.store_notes.length > 500) {
-            console.warn("❌ Validation failed: Store notes exceeds 500 chars");
             toast.error("Store notes must not exceed 500 characters");
             return;
         }
 
-        console.log("✅ All validation passed, building payload...");
         setIsSubmitting(true);
         try {
             // Generate IDs for new entries
@@ -410,7 +383,6 @@ export default function ProductAdd() {
             // Upload image if file was selected
             let imageUrl = form.product.image_url || null;
             if (productImageFile) {
-                console.log("📸 Uploading product image...");
                 const formData = new FormData();
                 formData.append("image", productImageFile);
                 
@@ -419,9 +391,7 @@ export default function ProductAdd() {
                         headers: { "Content-Type": "multipart/form-data" },
                     });
                     imageUrl = uploadResponse.data.image_url || uploadResponse.data.url;
-                    console.log("✅ Image uploaded successfully:", imageUrl);
                 } catch (uploadError) {
-                    console.error("❌ Image upload failed:", uploadError);
                     toast.warning("Image upload failed, but product will be saved without image");
                 }
             }
@@ -449,24 +419,15 @@ export default function ProductAdd() {
                 store_notes: form.store_notes?.trim() || null,
                 featured_image_url: imageUrl,
             };
-
-            console.log("📤 Sending API request to /store/products");
-            console.log("📦 Payload:", payload);
             
             // Submit to API
             const response = await api.post("/store/products", payload);
-            console.log("✅ API Response received:", response);
 
             toast.success(`Product "${form.product.name}" added successfully!`);
             navigate("/products");
         } catch (error) {
-            console.error("❌ Failed to add product:", error);
-            console.error("Error response data:", error?.response?.data);
-            console.error("Error message:", error?.message);
-            
             // Handle 409 Conflict: Product already exists in store
             if (error?.response?.status === 409) {
-                console.warn("⚠️ Product already exists in this store");
                 toast.info("This product already exists in your store");
                 return;
             }
@@ -477,7 +438,6 @@ export default function ProductAdd() {
                 const errorMessages = Object.entries(errors)
                     .map(([field, messages]) => `${field}: ${messages[0]}`)
                     .join("\n");
-                console.error("Validation errors:", errorMessages);
                 toast.error(errorMessages);
                 return;
             }
@@ -485,7 +445,6 @@ export default function ProductAdd() {
             // Handle 400 Bad Request
             if (error?.response?.status === 400) {
                 const errorMessage = error?.response?.data?.message || "Invalid request data";
-                console.error("Bad request:", errorMessage);
                 toast.error(errorMessage);
                 return;
             }
@@ -815,7 +774,6 @@ export default function ProductAdd() {
                                     value={form.product.image_url}
                                     onChange={(file) => {
                                         setProductImageFile(file);
-                                        console.log("📸 Product image selected:", file);
                                     }}
                                     recommendation="Recommended: 500x500px or larger, PNG or JPG"
                                 />

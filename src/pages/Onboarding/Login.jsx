@@ -49,7 +49,6 @@ export default function Login() {
 
         try {
             const response = await api.post("/store/login", formData);
-            console.log("Login successful:", response);
 
             showSuccess(response.message || "Login successful!");
 
@@ -59,11 +58,6 @@ export default function Login() {
             // Navigate to dashboard
             navigate("/", { replace: true });
         } catch (err) {
-            console.error("Login failed:", err);
-            console.log("Error message:", err.message);
-            console.log("Error status:", err.status);
-            console.log("Error data:", err.data);
-            
             // Show error toast with longer duration (8 seconds)
             showError(err.message || "Login failed", 8000);
 

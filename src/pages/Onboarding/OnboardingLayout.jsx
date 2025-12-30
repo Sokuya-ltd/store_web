@@ -51,7 +51,6 @@ export default function OnboardingLayout() {
 
         try {
             const response = await api.post("/store/register", data);
-            console.log("Registration successful:", response);
 
             showSuccess(response.message || "Registration successful!");
 
@@ -70,9 +69,6 @@ export default function OnboardingLayout() {
                 replace: true 
             });
         } catch (err) {
-            console.error("Registration failed:", err);
-            console.error("Validation errors:", err.errors);
-
             // Handle validation errors
             if (err.status === 422 && err.errors) {
                 // Set field-specific errors

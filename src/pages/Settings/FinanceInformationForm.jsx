@@ -41,18 +41,8 @@ export default function FinanceInformationForm({ initialData = {} }) {
     const fetchProfile = async () => {
       try {
         const response = await api.get("/store/profile");
-        console.log("Profile API Response:", response);
         const profileData = response.store_owner || response.data;
-        console.log("Profile Data:", profileData);
         if (profileData) {
-          console.log("Setting form with:", {
-            business_registration_number: profileData.business_registration_number,
-            tax_id: profileData.tax_id,
-            bank_account_number: profileData.bank_account_number,
-            bank_name: profileData.bank_name,
-            bank_routing_number: profileData.bank_routing_number,
-            bank_account_holder: profileData.name,
-          });
           setForm({
             business_registration_number: profileData.business_registration_number || "",
             tax_id: profileData.tax_id || "",
@@ -63,7 +53,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
           });
         }
       } catch (err) {
-        console.error("Failed to fetch profile data:", err);
+        // Error fetching profile silently handled
       }
     };
 
@@ -109,8 +99,6 @@ export default function FinanceInformationForm({ initialData = {} }) {
       }
       toast.success(response.message || "Business information updated successfully!");
     } catch (err) {
-      console.error("Failed to update business information:", err);
-
       if (err.status === 422 && err.errors) {
         setErrors((prev) => ({
           ...prev,
@@ -161,8 +149,6 @@ export default function FinanceInformationForm({ initialData = {} }) {
       }
       toast.success(response.message || "Bank information updated successfully!");
     } catch (err) {
-      console.error("Failed to update bank information:", err);
-
       if (err.status === 422 && err.errors) {
         setErrors((prev) => ({
           ...prev,

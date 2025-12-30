@@ -6,8 +6,6 @@ const FILE_TYPES = {
 };
 
 export default function FileListTable({ files = [], onDelete, isLoading = false }) {
-    console.log('FileListTable rendered with files:', files);
-
     const filteredFiles = files;
 
     const formatFileSize = (bytes) => {

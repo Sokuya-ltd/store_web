@@ -31,18 +31,14 @@ export default function BrandingForm({
     }, []);
 
     const fetchUploadedFiles = async () => {
-        console.log('🔍 fetchUploadedFiles called');
         setLoadingFiles(true);
         try {
             const allFiles = [];
-            console.log('📁 Starting to fetch files...');
 
             // Fetch images - separate call as per backend route handler
             try {
-                console.log('🖼️  Fetching images...');
                 const imagesResponse = await retrieveStoreFiles('images');
                 const imagesData = imagesResponse.data || imagesResponse;
-                console.log('🖼️  Images response:', imagesData);
                 
                 if (imagesData.images) {
                     Object.entries(imagesData.images).forEach(([type, image]) => {
@@ -59,46 +55,26 @@ export default function BrandingForm({
                         }
                     });
                 }
-                console.log('Transformed images:', allFiles.filter(f => f.type !== 'document'));
             } catch (imageError) {
-                console.warn('⚠️  Failed to fetch images:', imageError.message);
                 // Continue even if images fail
             }
             
             // Fetch documents - separate call as per backend route handler
             try {
-                console.log('📄 About to fetch documents...');
-                console.log('📄 Calling retrieveStoreFiles("documents")');
                 const docsResponse = await retrieveStoreFiles('documents');
-                console.log('📄 Got response from API:', docsResponse);
                 
                 const docsData = docsResponse.data || docsResponse;
-                console.log('docsData (after data extraction):', docsData);
-                console.log('docsData.documents:', docsData.documents);
-                
-                let documents = [];
-                
                 // Handle various response formats from backend
                 if (Array.isArray(docsData.documents)) {
-                    console.log('✓ Found documents array in docsData.documents');
                     documents = docsData.documents;
                 } else if (Array.isArray(docsData.data)) {
-                    console.log('✓ Found documents array in docsData.data');
                     documents = docsData.data;
                 } else if (Array.isArray(docsData)) {
-                    console.log('✓ docsData itself is an array');
                     documents = docsData;
-                } else {
-                    console.log('✗ No array found. docsData keys:', Object.keys(docsData || {}));
                 }
                 
-                console.log('Final documents array length:', documents.length);
-                console.log('Final documents array:', documents);
-                
                 if (documents && documents.length > 0) {
-                    console.log(`Processing ${documents.length} documents...`);
                     documents.forEach((doc, idx) => {
-                        console.log(`  Doc ${idx}:`, doc);
                         const downloadUrl = `/api/store/documents/${doc.id}/download`;
                         
                         const transformedDoc = {
@@ -114,22 +90,14 @@ export default function BrandingForm({
                         };
                         allFiles.push(transformedDoc);
                     });
-                    console.log('✓ Added documents to allFiles. Total files now:', allFiles.length);
-                } else {
-                    console.log('No documents to process (array was empty or null)');
                 }
             } catch (docError) {
-                console.error('✗ Failed to fetch documents:', docError);
-                console.error('Document error details:', docError);
+                // Continue even if documents fail
             }
 
-            console.log('Final combined files:', allFiles);
-            console.log('Setting uploadedFiles state with', allFiles.length, 'files');
-            console.log('Documents in allFiles:', allFiles.filter(f => f.type === 'document'));
             setUploadedFiles(allFiles);
 
         } catch (error) {
-            console.error('Failed to fetch files:', error);
             // Silently fail - user can still upload new files
         } finally {
             setLoadingFiles(false);
@@ -144,7 +112,6 @@ export default function BrandingForm({
             updateForm({ ...form, store_logo: data.url || data.file_path });
             showSuccess(response.message || 'Logo uploaded successfully!');
         } catch (error) {
-            console.error('Logo upload failed:', error);
             showError('Failed to upload logo: ' + error.message);
         } finally {
             setUploading(prev => ({ ...prev, logo: false }));
@@ -159,7 +126,6 @@ export default function BrandingForm({
             updateForm({ ...form, store_banner: data.url || data.file_path });
             showSuccess(response.message || 'Banner uploaded successfully!');
         } catch (error) {
-            console.error('Banner upload failed:', error);
             showError('Failed to upload banner: ' + error.message);
         } finally {
             setUploading(prev => ({ ...prev, banner: false }));
@@ -201,7 +167,6 @@ export default function BrandingForm({
             try {
                 data = await response.json();
             } catch (e) {
-                console.error('Response text:', await response.text());
                 throw new Error('Server returned invalid JSON response');
             }
             
@@ -225,8 +190,6 @@ export default function BrandingForm({
                 documentType: documentType
             };
             
-            console.log('New file object:', newFile);
-            
             // Add immediately to UI
             setUploadedFiles(prev => [...prev, newFile]);
             showSuccess('Document uploaded successfully!');
@@ -236,8 +199,6 @@ export default function BrandingForm({
                 await fetchUploadedFiles();
             }, 500);
         } catch (error) {
-            console.error('Document upload failed:', error);
-            
             // Handle specific error messages from backend
             if (error.status === 422 && error.errors) {
                 const errorMessages = Object.entries(error.errors)

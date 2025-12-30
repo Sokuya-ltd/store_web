@@ -106,7 +106,6 @@ export default function AccountSecurityForm() {
             });
 
             // Show success toast with the message from response
-            console.log("Showing success toast:", response.message);
             toast.success(response.message || "Password changed successfully!");
             
             // Reset form
@@ -121,8 +120,6 @@ export default function AccountSecurityForm() {
                 confirm: false,
             });
         } catch (err) {
-            console.error("Password change failed:", err);
-            
             // Handle validation errors (422)
             if (err.status === 422 && err.errors) {
                 setPasswordErrors(
@@ -154,13 +151,11 @@ export default function AccountSecurityForm() {
         setTwoFALoading(true);
         try {
             const response = await api.post("/store/2fa/enable", {});
-            console.log("2FA setup response:", response);
 
             // Show OTP input for verification
             setShowOTPInput(true);
             toast.success("Check your email for a verification code");
         } catch (err) {
-            console.error("2FA enable failed:", err);
             toast.error(err.message || "Failed to enable 2FA");
         } finally {
             setTwoFALoading(false);
@@ -183,7 +178,6 @@ export default function AccountSecurityForm() {
             setOtpCode("");
             toast.success(response.message || "Two-Factor Authentication enabled successfully!");
         } catch (err) {
-            console.error("2FA verification failed:", err);
             setOtpErrors(err.message || "Invalid verification code");
             toast.error("Invalid verification code");
         } finally {
@@ -203,7 +197,6 @@ export default function AccountSecurityForm() {
             setTwoFAEnabled(false);
             toast.success(response.message || "Two-Factor Authentication disabled");
         } catch (err) {
-            console.error("2FA disable failed:", err);
             toast.error(err.message || "Failed to disable 2FA");
         } finally {
             setTwoFALoading(false);
@@ -217,7 +210,6 @@ export default function AccountSecurityForm() {
             const response = await api.post("/store/email/resend-verification", {});
             toast.success(response.message || "Verification email sent. Please check your inbox.");
         } catch (err) {
-            console.error("Resend verification failed:", err);
             toast.error(err.message || "Failed to send verification email");
         } finally {
             setEmailVerificationLoading(false);
@@ -237,7 +229,6 @@ export default function AccountSecurityForm() {
                 last_page: response.data?.last_page || 1,
             });
         } catch (err) {
-            console.error("Failed to fetch audit logs:", err);
             // Set empty array on error, don't show error toast as this is supplementary info
             setAuditLogs([]);
         } finally {

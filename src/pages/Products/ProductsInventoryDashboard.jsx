@@ -48,8 +48,6 @@ export default function ProductsInventoryDashboard() {
         params: { page, per_page: 15 },
       });
 
-      console.log("API Response:", response);
-
       // Handle API response structure - check response directly and response.data
       const productData = response?.data;
       
@@ -78,11 +76,9 @@ export default function ProductsInventoryDashboard() {
           });
         }
       } else {
-        console.warn("Unexpected response format:", response);
         toast.error("Unexpected response format from server");
       }
     } catch (err) {
-      console.error("Failed to fetch products:", err);
       toast.error(err?.response?.data?.message || "Failed to load products");
     } finally {
       setIsLoading(false);
@@ -140,7 +136,6 @@ export default function ProductsInventoryDashboard() {
 
       toast.success(response?.message || "Stock adjusted successfully");
     } catch (err) {
-      console.error("Failed to adjust stock:", err);
       toast.error(err?.response?.data?.message || "Failed to adjust stock");
       await fetchProductsWithInventory();
     }

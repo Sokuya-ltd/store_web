@@ -86,12 +86,7 @@ export default function SettingsLayout() {
     // Populate form when profile is loaded
     useEffect(() => {
         if (profile) {
-            console.log("Profile loaded:", profile);
-            console.log("store_longitude:", profile.store_longitude);
-            console.log("store_latitude:", profile.store_latitude);
-            console.log("API operating_hours:", profile.operating_hours);
             const transformedHours = transformOperatingHours(profile.operating_hours);
-            console.log("Transformed operating_hours:", transformedHours);
             setForm({
                 name: profile.name || "",
                 email: profile.email || "",
@@ -187,8 +182,6 @@ export default function SettingsLayout() {
                 accepts_orders: form.accepts_orders,
             };
 
-            console.log("Submitting payload:", JSON.stringify(payload, null, 2));
-
             const response = await api.put("/store/profile", payload);
             setSubmitSuccess(true);
             
@@ -201,7 +194,6 @@ export default function SettingsLayout() {
             // Clear success message after 3 seconds
             setTimeout(() => setSubmitSuccess(false), 3000);
         } catch (err) {
-            console.error("Failed to update profile:", err);
             const errorMessage = err.errors || err.message || "Failed to update profile";
             setSubmitError(errorMessage);
             showError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));
@@ -234,7 +226,6 @@ export default function SettingsLayout() {
             // Clear success message after 3 seconds
             setTimeout(() => setBrandingSubmitSuccess(false), 3000);
         } catch (err) {
-            console.error("Failed to update branding:", err);
             const errorMessage = err.errors || err.message || "Failed to update branding";
             setBrandingSubmitError(errorMessage);
             showError(typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage));

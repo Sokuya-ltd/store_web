@@ -262,7 +262,6 @@ export default function ProductEdit() {
             },
         };
 
-        console.log("Updated Store Product:", updatedStoreProduct);
         // TODO: Save to API
         alert("Product updated successfully!");
         navigate("/products");

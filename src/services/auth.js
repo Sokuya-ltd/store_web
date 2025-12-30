@@ -110,7 +110,7 @@ export async function logout(api = null) {
             await api.post("/store/logout");
         }
     } catch (error) {
-        console.error("Logout API error:", error);
+        // Logout error silently handled
     } finally {
         clearAuthData();
     }
