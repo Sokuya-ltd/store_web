@@ -10,6 +10,19 @@ export default function Textarea({
     apiKey = "inuw9fihz5kkkjbwdh2cido79371p1jozyn0m62wpzc8ywra",
     ...props
 }) {
+    // Handle TinyMCE's onEditorChange callback
+    const handleEditorChange = (content) => {
+        if (onChange) {
+            // Create a synthetic event object that matches the expected interface
+            const syntheticEvent = {
+                target: {
+                    value: content
+                }
+            };
+            onChange(syntheticEvent);
+        }
+    };
+
     return (
         <div className={`space-y-1 ${className}`}>
             {label && (
@@ -27,7 +40,7 @@ export default function Textarea({
                     toolbar:
                         'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | link code',
                 }}
-                onEditorChange={onChange}
+                onEditorChange={handleEditorChange}
                 {...props}
             />
             {error && (

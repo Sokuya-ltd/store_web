@@ -6,7 +6,7 @@ import GuestRoute from "./components/GuestRoute";
 import AppLayout from "./components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
-import ProductsList from "./pages/Products/ProductsList";
+import ProductsInventoryDashboard from "./pages/Products/ProductsInventoryDashboard";
 import ProductAdd from "./pages/Products/ProductAdd";
 import ProductEdit from "./pages/Products/ProductEdit";
 import OrdersList from "./pages/Orders/OrdersList";
@@ -29,9 +29,9 @@ function AppRoutes() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="settings" element={<SettingsLayout />} />
-          <Route path="products" element={<ProductsList />} />
+          <Route path="products" element={<ProductsInventoryDashboard />} />
           <Route path="products/add" element={<ProductAdd />} />
-          <Route path="products/:id/edit" element={<ProductEdit />} />
+          <Route path="products/edit/:id" element={<ProductEdit />} />
           <Route path="orders" element={<OrdersList />} />
         </Route>
       </Route>

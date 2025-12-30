@@ -10,4 +10,16 @@ export default defineConfig({
       plugins: [tailwindcss],
     },
   },
+  server: {
+    middlewareMode: false,
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5173,
+    },
+  },
+  // Suppress TinyMCE event listener warnings in development
+  define: {
+    __DEV__: true,
+  },
 })

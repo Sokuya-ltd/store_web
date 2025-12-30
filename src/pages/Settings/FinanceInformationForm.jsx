@@ -234,7 +234,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
       </Card>
 
       {/* Bank Information Card */}
-      <Card className="p-4 md:p-6 border-blue-200 bg-gradient-to-br from-blue-50 to-transparent">
+      <Card className="p-4 md:p-6 border-blue-200 bg-linear-to-br from-blue-50 to-transparent">
         <div className="mb-4 flex items-center gap-3">
           <CreditCard className="w-6 h-6 text-blue-700" />
           <div>

@@ -516,7 +516,7 @@ export default function ProductEdit() {
                             <div className="flex flex-wrap gap-2 mb-2">
                                 {form.store_specific_tags.map((tag, index) => (
                                     <span
-                                        key={index}
+                                        key={`${tag}-${index}`}
                                         className="px-2 py-1 bg-orange-100 text-orange-700 text-sm rounded flex items-center gap-1"
                                     >
                                         {tag}

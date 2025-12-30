@@ -5,25 +5,34 @@ import Textarea from "../../components/ui/Textarea";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
-import productsData from "../../dataset/products.json";
-import categoriesData from "../../dataset/categories.json";
-import tagsData from "../../dataset/tags.json";
+import ImageUpload from "../../components/ui/ImageUpload";
+import { useToast } from "../../context/ToastContext";
+import api from "../../services/api";
 
 export default function ProductAdd() {
     const navigate = useNavigate();
+    const toast = useToast();
     const [searchQuery, setSearchQuery] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
     const [isNewProduct, setIsNewProduct] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [categorySearch, setCategorySearch] = useState("");
     const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
     const [storeTagSearch, setStoreTagSearch] = useState("");
     const [showStoreTagDropdown, setShowStoreTagDropdown] = useState(false);
     const [productTagSearch, setProductTagSearch] = useState("");
     const [showProductTagDropdown, setShowProductTagDropdown] = useState(false);
+    const [productImageFile, setProductImageFile] = useState(null);
     const dropdownRef = useRef(null);
     const categoryDropdownRef = useRef(null);
     const storeTagDropdownRef = useRef(null);
     const productTagDropdownRef = useRef(null);
+
+    // API data state
+    const [apiProducts, setApiProducts] = useState([]);
+    const [apiCategories, setApiCategories] = useState([]);
+    const [apiTags, setApiTags] = useState([]);
 
     const [form, setForm] = useState({
         // Store product fields
@@ -63,11 +72,53 @@ export default function ProductAdd() {
 
     // State for suggested category (when category not in list)
     const [suggestedCategory, setSuggestedCategory] = useState("");
+    const [loadError, setLoadError] = useState(null);
+
+    // Fetch data from API on component mount (only once)
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchData = async () => {
+            setIsLoading(true);
+            setLoadError(null);
+            try {
+                console.log("🔄 Fetching products, categories, and tags...");
+                const response = await api.get("/store/products/create");
+                
+                if (!isMounted) return;
+                
+                if (response?.data) {
+                    setApiProducts(response.data.products || []);
+                    setApiCategories(response.data.categories || []);
+                    setApiTags(response.data.tags || []);
+                    console.log("✅ Data loaded successfully");
+                }
+            } catch (error) {
+                if (!isMounted) return;
+                
+                console.error("❌ Failed to fetch products data:", error);
+                const errorMsg = error?.response?.data?.message || error?.message || "Failed to load products, categories, and tags";
+                setLoadError(errorMsg);
+                toast.error(errorMsg);
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        fetchData();
+
+        // Cleanup function to prevent setting state on unmounted component
+        return () => {
+            isMounted = false;
+        };
+    }, []); // Empty dependency array - run only on mount
 
     // Flatten categories for searchable dropdown
     const flattenedCategories = useMemo(() => {
         const result = [];
-        categoriesData.categories.forEach((parent) => {
+        apiCategories.forEach((parent) => {
             // Add parent category
             result.push({
                 id: parent.id,
@@ -76,8 +127,8 @@ export default function ProductAdd() {
                 isParent: true,
             });
             // Add subcategories with parent name prefix
-            if (parent.subcategories) {
-                parent.subcategories.forEach((sub) => {
+            if (parent.children && Array.isArray(parent.children)) {
+                parent.children.forEach((sub) => {
                     result.push({
                         id: sub.id,
                         name: sub.name,
@@ -89,7 +140,7 @@ export default function ProductAdd() {
             }
         });
         return result;
-    }, []);
+    }, [apiCategories]);
 
     // Filter categories based on search
     const filteredCategories = useMemo(() => {
@@ -104,42 +155,53 @@ export default function ProductAdd() {
 
     // Get selected category display name
     const selectedCategoryName = useMemo(() => {
+        console.log("📊 Computing selectedCategoryName:", { 
+            "form.category": form.category,
+            "suggestedCategory": suggestedCategory
+        });
+        
         // If there's a suggested category, show it with a special indicator
         if (suggestedCategory) {
             return `✨ ${suggestedCategory} (Suggested)`;
         }
-        if (!form.category) return "";
-        // Build display name from embedded category
-        if (form.category.parent_name) {
-            return `${form.category.parent_name} > ${form.category.name}`;
+        if (!form.category) {
+            console.log("⚠️ No category selected");
+            return "";
         }
-        return form.category.name;
+        // Build display name from embedded category
+        const displayName = form.category.parent_name
+            ? `${form.category.parent_name} > ${form.category.name}`
+            : form.category.name;
+        console.log("✅ Category display name:", displayName);
+        return displayName;
     }, [form.category, suggestedCategory]);
 
     // Filter products based on search query
-    const filteredProducts = productsData.filter((product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredProducts = useMemo(() => {
+        return apiProducts.filter((product) =>
+            product.product?.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery, apiProducts]);
 
     // Filter store tags based on search and exclude already selected
     const filteredStoreTags = useMemo(() => {
         const selectedTags = form.store_specific_tags || [];
-        return tagsData.tags.filter(
+        return apiTags.filter(
             (tag) =>
                 tag.name.toLowerCase().includes(storeTagSearch.toLowerCase()) &&
                 !selectedTags.includes(tag.name)
         );
-    }, [storeTagSearch, form.store_specific_tags]);
+    }, [storeTagSearch, form.store_specific_tags, apiTags]);
 
     // Filter product tags based on search and exclude already selected
     const filteredProductTags = useMemo(() => {
         const selectedTags = form.product.tags || [];
-        return tagsData.tags.filter(
+        return apiTags.filter(
             (tag) =>
                 tag.name.toLowerCase().includes(productTagSearch.toLowerCase()) &&
                 !selectedTags.includes(tag.name)
         );
-    }, [productTagSearch, form.product.tags]);
+    }, [productTagSearch, form.product.tags, apiTags]);
 
     // Handle click outside to close dropdowns
     useEffect(() => {
@@ -163,19 +225,38 @@ export default function ProductAdd() {
 
     // Handle category selection
     const handleSelectCategory = (category) => {
+        console.log("🔵 Category selected from dropdown:", category);
+        
         // Build the embedded category object matching store_products.json structure
         const embeddedCategory = {
             id: category.id,
             name: category.name,
-            slug: category.id, // Use id as slug for now
+            slug: category.id,
             parent_id: category.isParent ? null : category.id.split('-').slice(0, 2).join('-'),
             parent_name: category.parentName || null,
         };
-        updateForm({ category: embeddedCategory });
-        updateProduct({ category_id: category.id });
+        console.log("🔵 Embedded category object created:", embeddedCategory);
+        
+        // Update form state with new category
+        setForm(prevForm => {
+            const newForm = { 
+                ...prevForm, 
+                category: embeddedCategory,
+                product: {
+                    ...prevForm.product,
+                    category_id: category.id
+                }
+            };
+            console.log("🔵 Form state updated with category:", newForm.category);
+            return newForm;
+        });
+        
+        // Clear search and close dropdown
         setSuggestedCategory("");
         setCategorySearch("");
         setShowCategoryDropdown(false);
+        
+        console.log("🔵 Dropdown closed and states cleared");
     };
 
     // Handle suggesting a new category
@@ -197,24 +278,33 @@ export default function ProductAdd() {
         }
     };
 
-    const handleSelectProduct = (product) => {
+    const handleSelectProduct = (storeProduct) => {
+        // Extract the product data from the store product response
+        const product = storeProduct.product;
+        
+        console.log("📦 Product selected:", storeProduct);
+        
         setSearchQuery(product.name);
-        // Find and embed the category object
-        const categoryId = product.category_id;
-        const foundCategory = flattenedCategories.find((c) => c.id === categoryId);
-        const embeddedCategory = foundCategory
-            ? {
-                  id: foundCategory.id,
-                  name: foundCategory.name,
-                  slug: foundCategory.id,
-                  parent_id: foundCategory.isParent ? null : foundCategory.id.split('-').slice(0, 2).join('-'),
-                  parent_name: foundCategory.parentName || null,
-              }
-            : null;
 
         setForm({
             ...form,
-            category: embeddedCategory,
+            // Auto-fill store-specific fields from existing product
+            price: storeProduct.price || "",
+            compare_at_price: storeProduct.compare_at_price || "",
+            stock_qty: storeProduct.stock_qty || "",
+            stock_reserved: storeProduct.stock_reserved || 0,
+            reorder_threshold: storeProduct.reorder_threshold || 5,
+            sku: storeProduct.sku || "",
+            barcode: storeProduct.barcode || "",
+            status: storeProduct.status || "active",
+            variant_options: storeProduct.variant_options || {
+                size: "",
+                color: "",
+            },
+            weight: storeProduct.weight || "",
+            store_specific_tags: storeProduct.store_specific_tags || [],
+            store_notes: storeProduct.store_notes || "",
+            category: null,  // Let user select their own category
             product: {
                 id: product.id,
                 name: product.name,
@@ -270,63 +360,142 @@ export default function ProductAdd() {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Validation
-        if (!form.product.name) {
-            alert("Please select or create a product");
+        console.log("📋 Form submission started");
+        console.log("📋 Current form state:", form);
+        
+        // Comprehensive validation
+        if (!form.product.name?.trim()) {
+            console.warn("❌ Validation failed: Product name is required");
+            toast.error("Product name is required");
             return;
         }
-        if (!form.price || !form.stock_qty) {
-            alert("Please fill in price and stock quantity");
+        if (!form.category?.id) {
+            console.warn("❌ Validation failed: Category not selected");
+            toast.error("Please select a category");
+            return;
+        }
+        if (!form.price || parseFloat(form.price) <= 0) {
+            console.warn("❌ Validation failed: Invalid price", form.price);
+            toast.error("Please enter a valid price");
+            return;
+        }
+        if (!form.stock_qty || parseInt(form.stock_qty) < 0) {
+            console.warn("❌ Validation failed: Invalid stock quantity", form.stock_qty);
+            toast.error("Please enter a valid stock quantity");
+            return;
+        }
+        if (form.compare_at_price && form.price) {
+            const comparePrice = parseFloat(form.compare_at_price);
+            const regularPrice = parseFloat(form.price);
+            if (comparePrice <= regularPrice) {
+                console.warn("❌ Validation failed: Compare at price must be greater than regular price");
+                toast.error("Compare at price must be greater than regular price");
+                return;
+            }
+        }
+        if (form.store_notes && form.store_notes.length > 500) {
+            console.warn("❌ Validation failed: Store notes exceeds 500 chars");
+            toast.error("Store notes must not exceed 500 characters");
             return;
         }
 
-        // Generate IDs for new entries
-        const storeProductId = crypto.randomUUID();
-        const productId = isNewProduct ? crypto.randomUUID() : form.product.id;
+        console.log("✅ All validation passed, building payload...");
+        setIsSubmitting(true);
+        try {
+            // Generate IDs for new entries
+            const productId = isNewProduct ? crypto.randomUUID() : form.product.id;
 
-        // Build the final store product object matching store_products.json structure
-        const storeProduct = {
-            id: storeProductId,
-            store_id: "550e8400-e29b-41d4-a716-446655440001", // Current store ID
-            product_id: productId,
-            price: parseFloat(form.price),
-            compare_at_price: form.compare_at_price ? parseFloat(form.compare_at_price) : null,
-            stock_qty: parseInt(form.stock_qty),
-            stock_reserved: parseInt(form.stock_reserved) || 0,
-            reorder_threshold: parseInt(form.reorder_threshold) || 5,
-            sku: form.sku,
-            barcode: form.barcode,
-            status: form.status,
-            variant_options: form.variant_options,
-            weight: form.weight ? parseFloat(form.weight) : null,
-            store_specific_tags: form.store_specific_tags,
-            store_notes: form.store_notes,
-            // Embedded product object
-            product: {
-                ...form.product,
-                id: productId,
-                recommended_price: form.product.recommended_price
-                    ? parseFloat(form.product.recommended_price)
-                    : null,
-                // Include suggested category in product notes if provided
-                ...(suggestedCategory && { suggested_category: suggestedCategory }),
-            },
-            // Embedded category object (new structure)
-            category: form.category || {
-                id: "cat-other-001",
-                name: "Uncategorized",
-                slug: "uncategorized",
-                parent_id: "cat-other",
-                parent_name: "Other",
-            },
-        };
+            // Upload image if file was selected
+            let imageUrl = form.product.image_url || null;
+            if (productImageFile) {
+                console.log("📸 Uploading product image...");
+                const formData = new FormData();
+                formData.append("image", productImageFile);
+                
+                try {
+                    const uploadResponse = await api.post("/upload/image", formData, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    });
+                    imageUrl = uploadResponse.data.image_url || uploadResponse.data.url;
+                    console.log("✅ Image uploaded successfully:", imageUrl);
+                } catch (uploadError) {
+                    console.error("❌ Image upload failed:", uploadError);
+                    toast.warning("Image upload failed, but product will be saved without image");
+                }
+            }
 
-        console.log("Store Product to save:", storeProduct);
-        // TODO: Save to API
-        alert("Product added successfully!");
-        navigate("/products");
+            // Build the payload matching API expectations
+            // Sanitize tags: remove empty strings and enforce max length
+            const sanitizedTags = form.product.tags
+                .map(tag => String(tag).trim())
+                .filter(tag => tag.length > 0 && tag.length <= 50);
+
+            const payload = {
+                product_name: form.product.name.trim(),
+                brand: form.product.brand?.trim() || null,
+                description: form.product.description?.trim() || null,
+                category_id: form.category.id,
+                unit: form.product.unit || "kg",
+                price: parseFloat(form.price),
+                compare_at_price: form.compare_at_price ? parseFloat(form.compare_at_price) : null,
+                initial_stock: parseInt(form.stock_qty),
+                reorder_threshold: parseInt(form.reorder_threshold) || 5,
+                sku: form.sku?.trim() || null,
+                barcode: form.barcode?.trim() || null,
+                weight: form.weight ? parseFloat(form.weight) : null,
+                tags: sanitizedTags,
+                store_notes: form.store_notes?.trim() || null,
+                featured_image_url: imageUrl,
+            };
+
+            console.log("📤 Sending API request to /store/products");
+            console.log("📦 Payload:", payload);
+            
+            // Submit to API
+            const response = await api.post("/store/products", payload);
+            console.log("✅ API Response received:", response);
+
+            toast.success(`Product "${form.product.name}" added successfully!`);
+            navigate("/products");
+        } catch (error) {
+            console.error("❌ Failed to add product:", error);
+            console.error("Error response data:", error?.response?.data);
+            console.error("Error message:", error?.message);
+            
+            // Handle 409 Conflict: Product already exists in store
+            if (error?.response?.status === 409) {
+                console.warn("⚠️ Product already exists in this store");
+                toast.info("This product already exists in your store");
+                return;
+            }
+            
+            // Handle 422 Validation errors from API
+            if (error?.response?.status === 422) {
+                const errors = error?.response?.data?.errors || {};
+                const errorMessages = Object.entries(errors)
+                    .map(([field, messages]) => `${field}: ${messages[0]}`)
+                    .join("\n");
+                console.error("Validation errors:", errorMessages);
+                toast.error(errorMessages);
+                return;
+            }
+            
+            // Handle 400 Bad Request
+            if (error?.response?.status === 400) {
+                const errorMessage = error?.response?.data?.message || "Invalid request data";
+                console.error("Bad request:", errorMessage);
+                toast.error(errorMessage);
+                return;
+            }
+            
+            // Generic error handling
+            const errorMessage = error?.response?.data?.message || error?.message || "Failed to add product. Please try again.";
+            toast.error(errorMessage);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -337,11 +506,40 @@ export default function ProductAdd() {
                     type="button"
                     variant="outline"
                     onClick={() => navigate("/products")}
+                    disabled={isLoading || isSubmitting}
                 >
                     Cancel
                 </Button>
             </div>
 
+            {isLoading ? (
+                <Card className="p-6">
+                    <div className="flex items-center justify-center py-12">
+                        <div className="text-center">
+                            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 mb-4"></div>
+                            <p className="text-slate-600">Loading products, categories, and tags...</p>
+                        </div>
+                    </div>
+                </Card>
+            ) : loadError ? (
+                <Card className="p-6">
+                    <div className="flex items-center justify-center py-12">
+                        <div className="text-center">
+                            <div className="text-rose-600 text-4xl mb-4">⚠️</div>
+                            <p className="text-slate-900 font-medium mb-2">Failed to Load</p>
+                            <p className="text-slate-600 mb-4">{loadError}</p>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => window.location.reload()}
+                            >
+                                Try Again
+                            </Button>
+                        </div>
+                    </div>
+                </Card>
+            ) : (
+                <>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Product Selection */}
                 <Card className="p-6">
@@ -366,20 +564,20 @@ export default function ProductAdd() {
                             <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                                 {filteredProducts.length > 0 ? (
                                     <>
-                                        {filteredProducts.slice(0, 10).map((product) => (
+                                        {filteredProducts.slice(0, 10).map((storeProduct) => (
                                             <div
-                                                key={product.id}
+                                                key={storeProduct.id}
                                                 className="px-4 py-2 hover:bg-slate-50 cursor-pointer flex items-center gap-3"
-                                                onClick={() => handleSelectProduct(product)}
+                                                onClick={() => handleSelectProduct(storeProduct)}
                                             >
                                                 <img
-                                                    src={product.image_url}
-                                                    alt={product.name}
+                                                    src={storeProduct.product?.image_url}
+                                                    alt={storeProduct.product?.name}
                                                     className="w-8 h-8 object-cover bg-slate-100"
                                                 />
                                                 <div>
-                                                    <p className="text-sm font-medium text-slate-900">{product.name}</p>
-                                                    <p className="text-xs text-slate-500">{product.brand}</p>
+                                                    <p className="text-sm font-medium text-slate-900">{storeProduct.product?.name}</p>
+                                                    <p className="text-xs text-slate-500">{storeProduct.product?.brand}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -418,10 +616,10 @@ export default function ProductAdd() {
                     )}
                 </Card>
 
-                {/* New Product Details (only shown when creating new product) */}
-                {isNewProduct && (
+                {/* Product Details (shown for both new and existing products) */}
+                {form.product.name && (
                     <Card className="p-6">
-                        <h3 className="font-medium text-slate-900 mb-4">New Product Details</h3>
+                        <h3 className="font-medium text-slate-900 mb-4">{isNewProduct ? "New" : ""} Product Details</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <Input
                                 label="Product Name"
@@ -476,7 +674,7 @@ export default function ProductAdd() {
                                                         <div
                                                             key={category.id}
                                                             className={`px-4 py-2 hover:bg-slate-50 cursor-pointer text-sm ${category.isParent ? "font-medium text-slate-900" : "text-slate-700 pl-6"
-                                                                } ${form.product.category_id === category.id ? "bg-orange-50 text-orange-600" : ""}`}
+                                                                } ${form.category?.id === category.id ? "bg-orange-50 text-orange-600" : ""}`}
                                                             onClick={() => handleSelectCategory(category)}
                                                         >
                                                             {category.isParent ? category.name : `↳ ${category.name}`}
@@ -524,132 +722,123 @@ export default function ProductAdd() {
                                 value={form.product.recommended_price}
                                 onChange={(e) => updateProduct({ recommended_price: e.target.value })}
                             />
-                            <Input
-                                label="Image URL"
-                                type="url"
-                                value={form.product.image_url}
-                                onChange={(e) => updateProduct({ image_url: e.target.value })}
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            <Textarea
-                                label="Description"
-                                rows={3}
-                                value={form.product.description}
-                                onChange={(e) => updateProduct({ description: e.target.value })}
-                            />
-                            <Textarea
-                                label="Ingredients"
-                                rows={3}
-                                value={form.product.ingredients}
-                                onChange={(e) => updateProduct({ ingredients: e.target.value })}
-                            />
-                        </div>
-                        <div className="mt-4" ref={productTagDropdownRef}>
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Product Tags
-                            </label>
-                            {/* Selected tags display */}
-                            <div className="flex flex-wrap gap-2 mb-2">
-                                {form.product.tags.map((tag, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-2 py-1 bg-slate-100 text-slate-700 text-sm rounded flex items-center gap-1"
-                                    >
-                                        {tag}
-                                        <button
-                                            type="button"
-                                            onClick={() => removeTag(index, "product")}
-                                            className="text-slate-400 hover:text-slate-600"
-                                        >
-                                            ×
-                                        </button>
-                                    </span>
-                                ))}
-                            </div>
-                            {/* Searchable tag input */}
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    value={productTagSearch}
-                                    onChange={(e) => {
-                                        setProductTagSearch(e.target.value);
-                                        setShowProductTagDropdown(true);
-                                    }}
-                                    onFocus={() => setShowProductTagDropdown(true)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter" && productTagSearch.trim()) {
-                                            e.preventDefault();
-                                            const exactMatch = filteredProductTags.find(
-                                                (t) => t.name.toLowerCase() === productTagSearch.toLowerCase()
-                                            );
-                                            if (exactMatch) {
-                                                updateProduct({
-                                                    tags: [...form.product.tags, exactMatch.name],
-                                                });
-                                            } else {
-                                                updateProduct({
-                                                    tags: [...form.product.tags, productTagSearch.trim()],
-                                                });
-                                            }
-                                            setProductTagSearch("");
-                                            setShowProductTagDropdown(false);
-                                        }
-                                    }}
-                                    placeholder="Search or type to add tags..."
-                                    className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70"
-                                />
-                                {/* Dropdown */}
-                                {showProductTagDropdown && (productTagSearch || filteredProductTags.length > 0) && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 shadow-lg max-h-48 overflow-y-auto">
-                                        {filteredProductTags.slice(0, 8).map((tag) => (
-                                            <button
-                                                key={tag.id}
-                                                type="button"
-                                                onClick={() => {
-                                                    updateProduct({
-                                                        tags: [...form.product.tags, tag.name],
-                                                    });
-                                                    setProductTagSearch("");
-                                                    setShowProductTagDropdown(false);
-                                                }}
-                                                className="w-full text-left px-3 py-2 hover:bg-slate-50 text-sm flex items-center justify-between"
-                                            >
-                                                <span>{tag.name}</span>
-                                                <span className="text-xs text-slate-400">{tag.category}</span>
-                                            </button>
-                                        ))}
-                                        {/* Add custom tag option */}
-                                        {productTagSearch.trim() &&
-                                            !tagsData.tags.some(
-                                                (t) => t.name.toLowerCase() === productTagSearch.toLowerCase()
-                                            ) && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        updateProduct({
-                                                            tags: [...form.product.tags, productTagSearch.trim()],
-                                                        });
-                                                        setProductTagSearch("");
-                                                        setShowProductTagDropdown(false);
-                                                    }}
-                                                    className="w-full text-left px-3 py-2 hover:bg-green-50 text-sm border-t border-slate-200 text-green-700 font-medium"
-                                                >
-                                                    + Add custom tag: "{productTagSearch.trim()}"
-                                                </button>
-                                            )}
-                                        {filteredProductTags.length === 0 && !productTagSearch.trim() && (
-                                            <div className="px-3 py-2 text-sm text-slate-500">
-                                                All tags already added
+                            {/* Product Tags - Shown for All Products */}
+                            <div ref={productTagDropdownRef}>
+                                <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    Product Tags
+                                </label>
+                                {/* Tag input and dropdown */}
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        placeholder="Search and add product tags..."
+                                        value={productTagSearch}
+                                        onChange={(e) => setProductTagSearch(e.target.value)}
+                                        onClick={() => setShowProductTagDropdown(true)}
+                                        className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 rounded"
+                                    />
+                                    {showProductTagDropdown && (
+                                        <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg">
+                                            <div className="max-h-48 overflow-y-auto">
+                                                {filteredProductTags.length > 0 ? (
+                                                    filteredProductTags.map((tag) => (
+                                                        <button
+                                                            key={tag.id}
+                                                            type="button"
+                                                            onClick={() => {
+                                                                updateProduct({
+                                                                    tags: [...form.product.tags, tag.name],
+                                                                });
+                                                                setProductTagSearch("");
+                                                                setShowProductTagDropdown(false);
+                                                            }}
+                                                            className="w-full text-left px-3 py-2 hover:bg-slate-50 text-sm flex items-center justify-between"
+                                                        >
+                                                            <span>{tag.name}</span>
+                                                            <span className="text-xs text-slate-400">{tag.category}</span>
+                                                        </button>
+                                                    ))
+                                                ) : (
+                                                    <div className="px-3 py-2 text-sm text-slate-500">
+                                                        No tags available
+                                                    </div>
+                                                )}
+                                                {/* Add custom tag option */}
+                                                {productTagSearch.trim() &&
+                                                    !apiTags.some(
+                                                        (t) => t.name.toLowerCase() === productTagSearch.toLowerCase()
+                                                    ) && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                updateProduct({
+                                                                    tags: [...form.product.tags, productTagSearch.trim()],
+                                                                });
+                                                                setProductTagSearch("");
+                                                                setShowProductTagDropdown(false);
+                                                            }}
+                                                            className="w-full text-left px-3 py-2 hover:bg-green-50 text-sm border-t border-slate-200 text-green-700 font-medium"
+                                                        >
+                                                            + Add custom tag: "{productTagSearch.trim()}"
+                                                        </button>
+                                                    )}
                                             </div>
-                                        )}
-                                    </div>
-                                )}
+                                        </div>
+                                    )}
+                                </div>
+                                {/* Selected tags display - Moved to bottom */}
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {form.product.tags.map((tag, index) => (
+                                        <span
+                                            key={`${tag}-${index}`}
+                                            className="px-2 py-1 bg-slate-100 text-slate-700 text-sm rounded flex items-center gap-1"
+                                        >
+                                            {tag}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeTag(index, "product")}
+                                                className="text-slate-400 hover:text-slate-600"
+                                            >
+                                                ✕
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                            <p className="text-xs text-slate-500 mt-1">
-                                Select from suggestions or type and press Enter to add custom tags
-                            </p>
                         </div>
+
+                        {/* Product Image Upload - Only for New Products */}
+                        {isNewProduct && (
+                            <div className="mt-4">
+                                <ImageUpload
+                                    label="Product Image"
+                                    value={form.product.image_url}
+                                    onChange={(file) => {
+                                        setProductImageFile(file);
+                                        console.log("📸 Product image selected:", file);
+                                    }}
+                                    recommendation="Recommended: 500x500px or larger, PNG or JPG"
+                                />
+                            </div>
+                        )}
+
+                        {/* Description & Ingredients - Only for New Products */}
+                        {isNewProduct && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <Textarea
+                                    label="Description"
+                                    rows={3}
+                                    value={form.product.description}
+                                    onChange={(e) => updateProduct({ description: e.target.value })}
+                                />
+                                <Textarea
+                                    label="Ingredients"
+                                    rows={3}
+                                    value={form.product.ingredients}
+                                    onChange={(e) => updateProduct({ ingredients: e.target.value })}
+                                />
+                            </div>
+                        )}
                     </Card>
                 )}
 
@@ -764,14 +953,22 @@ export default function ProductAdd() {
                 {/* Store Notes & Tags */}
                 <Card className="p-6">
                     <h3 className="font-medium text-slate-900 mb-4">Store-Specific Information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Textarea
-                            label="Store Notes"
-                            rows={3}
-                            value={form.store_notes}
-                            onChange={(e) => updateForm({ store_notes: e.target.value })}
-                            placeholder="Internal notes about this product..."
-                        />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">                        <div>
+                            <div className="flex items-center justify-between mb-1">
+                                <label className="block text-sm font-medium text-slate-700">
+                                    Store Notes
+                                </label>
+                                <span className={`text-xs ${form.store_notes.length > 500 ? 'text-rose-600 font-semibold' : 'text-slate-500'}`}>
+                                    {form.store_notes.length}/500
+                                </span>
+                            </div>
+                            <Textarea
+                                rows={3}
+                                value={form.store_notes}
+                                onChange={(e) => updateForm({ store_notes: e.target.value.substring(0, 500) })}
+                                placeholder="Internal notes about this product (max 500 characters)..."
+                            />
+                        </div>
                         <div ref={storeTagDropdownRef}>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
                                 Store-Specific Tags
@@ -780,7 +977,7 @@ export default function ProductAdd() {
                             <div className="flex flex-wrap gap-2 mb-2">
                                 {form.store_specific_tags.map((tag, index) => (
                                     <span
-                                        key={index}
+                                        key={`${tag}-${index}`}
                                         className="px-2 py-1 bg-orange-100 text-orange-700 text-sm rounded flex items-center gap-1"
                                     >
                                         {tag}
@@ -888,12 +1085,17 @@ export default function ProductAdd() {
                         type="button"
                         variant="outline"
                         onClick={() => navigate("/products")}
+                        disabled={isSubmitting}
                     >
                         Cancel
                     </Button>
-                    <Button type="submit">Add Product</Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Adding Product..." : "Add Product"}
+                    </Button>
                 </div>
             </form>
+                </>
+            )}
         </div>
     );
 }
