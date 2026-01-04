@@ -221,37 +221,55 @@ export default function ProductsInventoryDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4 border-l-4 border-slate-400">
-          <div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card className="p-4 border-l-4 border-slate-400 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-slate-50 to-white">
+            <div className="flex items-start justify-between">
+          <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Total Products</p>
-            <p className="text-2xl font-bold text-slate-900 mt-1">{stats.totalProducts}</p>
+            <p className="text-2xl font-bold text-slate-900 mt-2">{stats.totalProducts}</p>
           </div>
-        </Card>
+          <Package className="w-8 h-8 text-slate-400 opacity-80" />
+            </div>
+          </Card>
 
-        <Card className="p-4 border-l-4 border-green-500">
-          <div>
+          <Card className="p-4 border-l-4 border-green-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-green-50 to-white">
+            <div className="flex items-start justify-between">
+          <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">In Stock</p>
-            <p className="text-2xl font-bold text-green-600 mt-1">{stats.inStock}</p>
+            <p className="text-2xl font-bold text-green-600 mt-2">{stats.inStock}</p>
           </div>
-        </Card>
+          <div className="p-2 bg-green-100 rounded-lg">
+            <Package className="w-5 h-5 text-green-600" />
+          </div>
+            </div>
+          </Card>
 
-        <Card className="p-4 border-l-4 border-orange-500">
-          <div>
+          <Card className="p-4 border-l-4 border-orange-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-orange-50 to-white">
+            <div className="flex items-start justify-between">
+          <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Low Stock</p>
-            <p className="text-2xl font-bold text-orange-600 mt-1">{stats.lowStock}</p>
+            <p className="text-2xl font-bold text-orange-600 mt-2">{stats.lowStock}</p>
           </div>
-        </Card>
+          <div className="p-2 bg-orange-100 rounded-lg">
+            <AlertCircle className="w-5 h-5 text-orange-600" />
+          </div>
+            </div>
+          </Card>
 
-        <Card className="p-4 border-l-4 border-red-500">
-          <div>
+          <Card className="p-4 border-l-4 border-red-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-red-50 to-white">
+            <div className="flex items-start justify-between">
+          <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Out of Stock</p>
-            <p className="text-2xl font-bold text-red-600 mt-1">{stats.outOfStock}</p>
+            <p className="text-2xl font-bold text-red-600 mt-2">{stats.outOfStock}</p>
           </div>
-        </Card>
-      </div>
+          <div className="p-2 bg-red-100 rounded-lg">
+            <TrendingDown className="w-5 h-5 text-red-600" />
+          </div>
+            </div>
+          </Card>
+        </div>
 
-      {/* Filters */}
+        {/* Filters */}
       <Card className="p-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
