@@ -1,5 +1,5 @@
 export default function Badge({ children, variant = "default" }) {
-  const base = "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium";
+  const base = "inline-flex items-center px-2.5 py-0.5 text-xs font-medium";
   
   const variants = {
     default: "bg-slate-100 text-slate-700",

@@ -331,107 +331,103 @@ export default function ProductsInventoryDashboard() {
                 ? Math.round(((comparePrice - currentPrice) / comparePrice) * 100) 
                 : 0;
 
-              return (
-                <Card key={product.id} className="overflow-hidden hover:shadow-lg transition flex flex-col h-full">
-                  {/* Product Image */}
-                  <div className="relative h-48 bg-slate-100">
-                    {product.product?.image_url ? (
-                      <img
-                        src={product.product.image_url}
-                        alt={product.product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400">
-                        <Package className="w-8 h-8" />
+                return (
+                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full bg-white">
+                    {/* Product Image Container */}
+                    <div className="relative h-56 bg-linear-to-br from-slate-50 to-slate-100 overflow-hidden group">
+                      {product.product?.image_url ? (
+                        <img
+                          src={product.product.image_url}
+                          alt={product.product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-300">
+                          <Package className="w-12 h-12" />
+                        </div>
+                      )}
+                      
+                      {/* Status Badge */}
+                      <div className="absolute top-3 right-3">
+                        <Badge variant={status.badge} className="shadow-md">
+                          {status.label}
+                        </Badge>
                       </div>
-                    )}
-                    <Badge variant={status.badge} className="absolute top-3 right-3">
-                      {status.label}
-                    </Badge>
-                    {discountPercent > 0 && (
-                      <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        -{discountPercent}%
-                      </div>
-                    )}
-                  </div>
 
-                  {/* Product Info */}
-                  <div className="p-4 flex-1 flex flex-col">
-                    <h3 className="font-semibold text-slate-900 truncate">
-                      {product.product?.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {product.product?.brand || "No brand"}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-1">SKU: {product.sku}</p>
-
-                    {/* Pricing */}
-                    <div className="flex items-center gap-2 mt-3 mb-4">
-                      <p className="font-semibold text-slate-900">
-                        £{currentPrice.toFixed(2)}
-                      </p>
-                      {comparePrice > currentPrice && (
-                        <p className="text-xs text-slate-500 line-through">
-                          £{comparePrice.toFixed(2)}
-                        </p>
+                      {/* Discount Badge */}
+                      {discountPercent > 0 && (
+                        <div className="absolute top-3 left-3 bg-linear-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
+                          Save {discountPercent}%
+                        </div>
                       )}
                     </div>
 
-                    {/* Stock Progress */}
-                    <div className="space-y-2 mb-4 mt-auto">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-medium text-slate-700">
-                          Stock: {qty} units
-                        </span>
-                        {product.reorder_threshold && qty <= product.reorder_threshold && (
-                          <span className="text-xs text-orange-600 font-medium">
-                            Reorder: {product.reorder_quantity || 0}
-                          </span>
-                        )}
+                    {/* Content Section */}
+                    <div className="p-5 flex-1 flex flex-col">
+                      {/* Product Name & Brand */}
+                      <div className="mb-3">
+                        <h3 className="font-bold text-slate-900 text-sm leading-snug line-clamp-2 hover:text-[#556B2F] transition">
+                          {product.product?.name}
+                        </h3>
+                        <p className="text-xs text-slate-500 font-medium mt-1.5">
+                          {product.product?.brand || "No brand"} • {product.sku}
+                        </p>
                       </div>
-                      <div className="w-full bg-slate-100 rounded-full h-2">
-                        <div
-                          className={`h-full rounded-full transition-all ${
-                            qty === 0
-                              ? "bg-red-500"
-                              : qty <= product.reorder_threshold
-                              ? "bg-orange-500"
-                              : "bg-green-500"
-                          }`}
-                          style={{ width: `${Math.min((qty / Math.max(product.reorder_quantity, 20)) * 100, 100)}%` }}
-                        />
-                      </div>
-                    </div>
 
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleAdjustQuantity(product.id, product.product_id, -1)}
-                        disabled={qty === 0}
-                        className="flex-1 p-2 text-slate-500 hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed rounded transition"
-                        title="Decrease stock"
-                      >
-                        <ChevronDown className="w-4 h-4 mx-auto" />
-                      </button>
-                      <button
-                        onClick={() => handleAdjustQuantity(product.id, product.product_id, 1)}
-                        className="flex-1 p-2 text-slate-500 hover:bg-slate-100 rounded transition"
-                        title="Increase stock"
-                      >
-                        <ChevronUp className="w-4 h-4 mx-auto" />
-                      </button>
-                      <Link
-                        to={`/products/edit/${product.product_id}`}
-                        className="flex-1 p-2 text-slate-500 hover:bg-slate-100 rounded transition"
-                        title="Edit product"
-                      >
-                        <Edit2 className="w-4 h-4 mx-auto" />
-                      </Link>
+                      {/* Pricing Section */}
+                      <div className="bg-linear-to-r from-slate-50 to-slate-100 rounded-lg p-3 mb-4">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-lg font-bold text-slate-900">
+                            £{currentPrice.toFixed(2)}
+                          </span>
+                          {comparePrice > currentPrice && (
+                            <span className="text-xs text-slate-500 line-through font-medium">
+                              £{comparePrice.toFixed(2)}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Stock Progress */}
+                      <div className="space-y-2 mb-4 mt-auto">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-medium text-slate-700">
+                            Stock: {qty} units
+                          </span>
+                          {product.reorder_threshold && qty <= product.reorder_threshold && (
+                            <span className="text-xs text-orange-600 font-medium">
+                              Reorder: {product.reorder_quantity || 0}
+                            </span>
+                          )}
+                        </div>
+                        <div className="w-full bg-slate-100 rounded-full h-2">
+                          <div
+                            className={`h-full rounded-full transition-all ${
+                              qty === 0
+                                ? "bg-red-500"
+                                : qty <= product.reorder_threshold
+                                ? "bg-orange-500"
+                                : "bg-green-500"
+                            }`}
+                            style={{ width: `${Math.min((qty / Math.max(product.reorder_quantity, 20)) * 100, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div className="pt-4 border-t border-slate-200">
+                        <Link
+                          to={`/products/edit/${product.product_id}`}
+                          className="w-full py-2 px-3 text-white bg-[#556B2F] hover:bg-[#4a5d29] rounded-lg transition font-medium text-sm flex items-center justify-center gap-2"
+                          title="Edit product"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                          Edit
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              );
+                  </Card>
+                );
             })
           )}
         </div>
