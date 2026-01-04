@@ -435,7 +435,7 @@ export default function ProductsInventoryDashboard() {
                       {/* Action Button */}
                       <div className="pt-4 border-t border-slate-200">
                         <Link
-                          to={`/products/edit/${product.product_id}`}
+                          to={`/products/edit/${product.id}`}
                           className="w-full py-2 px-3 text-white bg-[#556B2F] hover:bg-[#4a5d29] rounded-lg transition font-medium text-sm flex items-center justify-center gap-2"
                           title="Edit product"
                         >
