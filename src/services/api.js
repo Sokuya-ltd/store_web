@@ -9,9 +9,12 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 async function request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
 
+    // Check if body is FormData (for multipart uploads)
+    const isFormData = options.body instanceof FormData;
+
     const config = {
         headers: {
-            "Content-Type": "application/json",
+            ...(isFormData ? {} : { "Content-Type": "application/json" }),
             Accept: "application/json",
             ...options.headers,
         },
