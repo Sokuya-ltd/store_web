@@ -431,6 +431,8 @@ export default function ProductAdd() {
             // Add images
             productImages.forEach((image, index) => {
                 if (image.file) {
+                    const fileSizeMB = (image.file.size / 1024 / 1024).toFixed(2);
+                    console.log(`📤 Uploading image ${index + 1}: ${image.file.name} (${fileSizeMB}MB)`);
                     formData.append(`images[${index}]`, image.file);
                     if (image.alt_text) {
                         formData.append(`images_alt_text[${index}]`, image.alt_text);
