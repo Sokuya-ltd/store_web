@@ -97,7 +97,7 @@ export default function Dashboard() {
   return (
     <div className="w-full space-y-8 px-6 py-6">
       {/* Hero Welcome Card */}
-      <div className="bg-linear-to-br from-[#D35400] to-[#A04000] p-12 text-white shadow-lg">
+      <div className="bg-linear-to-br from-[#D35400] to-[#A04000] p-12 text-white shadow-lg rounded-lg">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h2 className="text-4xl font-bold mb-4">Welcome back, Sokuya Store!</h2>
@@ -118,37 +118,44 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
-          return (
-            <Card key={stat.label} className="p-8">
+            const gradients = [
+            "bg-gradient-to-br from-blue-50 to-blue-100",
+            "bg-gradient-to-br from-green-50 to-green-100",
+            "bg-gradient-to-br from-orange-50 to-orange-100",
+            "bg-gradient-to-br from-purple-50 to-purple-100",
+            ];
+
+            return (
+            <Card key={stat.label} className={`p-8 rounded-lg ${gradients[stats.indexOf(stat)]}`}>
               <div className="flex items-start justify-between mb-6">
-                <div className={`p-4 bg-slate-100`}>
-                  <Icon className={`w-6 h-6 ${stat.iconColor}`} />
-                </div>
-                {stat.trend && (
-                  <div className="flex items-center gap-1">
-                    {stat.trend === "up" ? (
-                      <TrendingUp className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <TrendingDown className="w-4 h-4 text-red-600" />
-                    )}
-                    <span className={`text-sm font-semibold ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}>
-                      {stat.change}
-                    </span>
-                  </div>
+              <div className={`p-4 bg-black/5 rounded-lg`}>
+                <Icon className={`w-6 h-6 ${stat.iconColor}`} />
+              </div>
+              {stat.trend && (
+                <div className="flex items-center gap-1">
+                {stat.trend === "up" ? (
+                  <TrendingUp className="w-4 h-4 text-green-600" />
+                ) : (
+                  <TrendingDown className="w-4 h-4 text-red-600" />
                 )}
+                <span className={`text-sm font-semibold ${stat.trend === "up" ? "text-green-600" : "text-red-600"}`}>
+                  {stat.change}
+                </span>
+                </div>
+              )}
               </div>
               <p className="text-sm text-slate-600 mb-1">{stat.label}</p>
               <h3 className="text-2xl font-bold text-slate-900 mb-1">{stat.value}</h3>
               {stat.subtext && <p className="text-xs text-slate-500">{stat.subtext}</p>}
             </Card>
-          );
+            );
         })}
       </div>
 
       {/* Revenue Overview and Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="lg:col-span-2 p-8">
+        <Card className="lg:col-span-2 p-8 rounded-lg">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="font-semibold text-slate-900 text-lg mb-1">Revenue Overview</h3>
@@ -183,7 +190,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Recent Orders */}
-        <Card className="p-8">
+        <Card className="p-8 rounded-lg">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="font-semibold text-slate-900 text-lg mb-1">Recent Orders</h3>
