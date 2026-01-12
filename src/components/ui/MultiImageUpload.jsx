@@ -43,7 +43,7 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    
+
                     // Reduce dimensions to max 600x600 for aggressive compression (fits buffer)
                     let width = img.width;
                     let height = img.height;
@@ -52,11 +52,11 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                         width *= ratio;
                         height *= ratio;
                     }
-                    
+
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    
+
                     // Compress to WebP with very aggressive quality to keep request <4MB
                     // Max individual file: 1MB, starts at 50% quality and reduces if needed
                     const attemptCompress = (quality) => {
@@ -67,9 +67,9 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                                 attemptCompress(quality - 0.05);
                                 return;
                             }
-                            
-                            const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".webp"), { 
-                                type: 'image/webp' 
+
+                            const compressedFile = new File([blob], file.name.replace(/\.[^/.]+$/, ".webp"), {
+                                type: 'image/webp'
                             });
                             const originalSizeMB = (file.size / 1024 / 1024).toFixed(2);
                             const compressedSizeMB = (blob.size / 1024 / 1024).toFixed(2);
@@ -148,12 +148,12 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
 
     const handleRemoveImage = (id) => {
         const updatedImages = value.filter((img) => img.id !== id);
-        
+
         // If removed image was primary, set first image as primary
         if (updatedImages.length > 0 && !updatedImages.some(img => img.is_primary)) {
             updatedImages[0].is_primary = true;
         }
-        
+
         onChange(updatedImages);
     };
 
@@ -184,13 +184,12 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
                         onDrop={handleDrop}
-                        className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${
-                            isCompressing
-                                ? "border-orange-400 bg-orange-50"
-                                : dragActive
+                        className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors ${isCompressing
+                            ? "border-orange-400 bg-orange-50"
+                            : dragActive
                                 ? "border-[#556B2F] bg-[#556B2F]/5"
                                 : "border-slate-300 bg-slate-50 hover:border-slate-400 hover:bg-slate-100"
-                        } ${isCompressing ? 'opacity-75' : ''}`}
+                            } ${isCompressing ? 'opacity-75' : ''}`}
                     >
                         <div className="flex flex-col items-center gap-2">
                             {isCompressing ? (
@@ -246,7 +245,7 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                         {value.map((image, index) => (
                             <div
                                 key={image.id}
-                                className="border border-slate-200 rounded-lg p-4 bg-slate-50 hover:bg-slate-100 transition-colors flex-shrink-0"
+                                className="border border-slate-200 rounded-lg p-4 bg-slate-50 hover:bg-slate-100 transition-colors shrink-0"
                                 style={{ width: '320px' }}
                             >
                                 <div className="flex flex-col gap-3">
@@ -264,7 +263,7 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                                         )}
                                     </div>
 
-                    {/* Image Details and Controls */}
+                                    {/* Image Details and Controls */}
                                     <div className="flex flex-col gap-3">
                                         {/* Compression Stats */}
                                         {image.compressedSize && (
@@ -273,7 +272,7 @@ export default function MultiImageUpload({ label, value = [], onChange, maxImage
                                                 <p>{(image.originalSize / 1024 / 1024).toFixed(2)}MB → {(image.compressedSize / 1024 / 1024).toFixed(2)}MB</p>
                                             </div>
                                         )}
-                                        
+
                                         <div>
                                             <label className="block text-xs font-medium text-slate-700 mb-1">
                                                 Alt Text

@@ -330,7 +330,7 @@ export default function ProductsInventoryDashboard() {
 
       {/* Products Grid View */}
       {viewMode === "grid" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isLoading ? (
             <div className="col-span-full text-center py-12">
               <p className="text-slate-500">Loading products...</p>
@@ -430,7 +430,7 @@ export default function ProductsInventoryDashboard() {
                             style={{ width: `${Math.min((qty / Math.max(product.reorder_quantity, 20)) * 100, 100)}%` }}
                           />
                         </div>
-                      </div>
+                      </div> 
 
                       {/* Action Button */}
                       <div className="pt-4 border-t border-slate-200">
