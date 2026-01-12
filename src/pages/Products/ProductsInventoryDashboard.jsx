@@ -353,9 +353,9 @@ export default function ProductsInventoryDashboard() {
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full bg-white">
                     {/* Product Image Container */}
                     <div className="relative h-56 bg-linear-to-br from-slate-50 to-slate-100 overflow-hidden group">
-                      {product.product?.image_url ? (
+                      {product.product?.media && product.product.media.length > 0 ? (
                         <img
-                          src={product.product.image_url}
+                          src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
                           alt={product.product.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -476,9 +476,9 @@ export default function ProductsInventoryDashboard() {
                     className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
                   >
                     <div className="flex gap-4 flex-1 mb-4 md:mb-0">
-                      {product.product?.image_url ? (
+                      {product.product?.media && product.product.media.length > 0 ? (
                         <img
-                          src={product.product.image_url}
+                          src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
                           alt={product.product.name}
                           className="w-16 h-16 object-cover rounded bg-slate-100"
                         />
