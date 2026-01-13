@@ -60,13 +60,13 @@ export default function OnboardingLayout() {
             }
 
             // Navigate to success page with response data
-            navigate("/onboarding/success", { 
+            navigate("/onboarding/success", {
                 state: {
                     store_owner: response.store_owner,
                     next_steps: response.next_steps,
                     message: response.message
                 },
-                replace: true 
+                replace: true
             });
         } catch (err) {
             // Handle validation errors
@@ -99,7 +99,7 @@ export default function OnboardingLayout() {
     return (
         <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-10 gap-0 overflow-hidden">
             <ToastContainer toasts={toasts} onClose={hideToast} />
-            
+
             {/* Left content */}
             <div className="lg:col-span-6 bg-[#D35400] p-6 sm:p-8 lg:p-16 flex items-center justify-center">
                 <div className="text-white text-center lg:text-left">
@@ -121,8 +121,8 @@ export default function OnboardingLayout() {
                     <Route
                         index
                         element={
-                            <StepBusinessInfo 
-                                data={data} 
+                            <StepBusinessInfo
+                                data={data}
                                 updateData={updateDataWithClear}
                                 onSubmit={submitOnboarding}
                                 isSubmitting={isSubmitting}

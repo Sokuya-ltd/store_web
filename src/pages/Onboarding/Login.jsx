@@ -64,7 +64,7 @@ export default function Login() {
             // Check if account is not verified (check message content first)
             const errorMessage = err.message?.toLowerCase() || "";
             const dataMessage = err.data?.message?.toLowerCase() || "";
-            
+
             if (errorMessage.includes("not verified") || dataMessage.includes("not verified")) {
                 setShowVerificationMessage(true);
                 setError(null);
@@ -92,7 +92,7 @@ export default function Login() {
     return (
         <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-10 gap-0 overflow-hidden">
             <ToastContainer toasts={toasts} onClose={hideToast} />
-            
+
             {/* Left content */}
             <div className="lg:col-span-6 bg-[#D35400] p-6 sm:p-8 lg:p-16 flex items-center justify-center">
                 <div className="text-white text-center lg:text-left">
@@ -133,7 +133,7 @@ export default function Login() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="flex flex-col gap-2">
                             <Button
                                 type="button"
@@ -155,85 +155,85 @@ export default function Login() {
                         </div>
                     </div>
                 ) : (
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <Input
-                        label="Email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => updateFormData({ email: e.target.value })}
-                        error={fieldErrors.email}
-                        placeholder="you@example.com"
-                        required
-                    />
-
-                    <div className="relative">
+                    <form className="space-y-4" onSubmit={handleSubmit}>
                         <Input
-                            label="Password"
-                            type={showPassword ? "text" : "password"}
-                            value={formData.password}
-                            onChange={(e) => updateFormData({ password: e.target.value })}
-                            error={fieldErrors.password}
-                            placeholder="Enter your password"
+                            label="Email"
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => updateFormData({ email: e.target.value })}
+                            error={fieldErrors.email}
+                            placeholder="you@example.com"
                             required
                         />
-                        <button
-                            type="button"
-                            className="absolute right-3 top-8 text-slate-500 hover:text-slate-700"
-                            onClick={() => setShowPassword(!showPassword)}
+
+                        <div className="relative">
+                            <Input
+                                label="Password"
+                                type={showPassword ? "text" : "password"}
+                                value={formData.password}
+                                onChange={(e) => updateFormData({ password: e.target.value })}
+                                error={fieldErrors.password}
+                                placeholder="Enter your password"
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="absolute right-3 top-8 text-slate-500 hover:text-slate-700"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                {showPassword ? (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                    </svg>
+                                ) : (
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Forgot Password Link */}
+                        <div className="flex justify-end">
+                            <Link
+                                to="/forgot-password"
+                                className="text-sm text-[#D35400] hover:text-[#B84700] hover:underline"
+                            >
+                                Forgot password?
+                            </Link>
+                        </div>
+
+                        {/* Submit Button */}
+                        <Button
+                            type="submit"
+                            className="w-full bg-[#D35400] hover:bg-[#B84700] text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+                            disabled={isSubmitting}
                         >
-                            {showPassword ? (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                </svg>
+                            {isSubmitting ? (
+                                <span className="flex items-center justify-center gap-2">
+                                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                    </svg>
+                                    Signing in...
+                                </span>
                             ) : (
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
+                                "Sign In"
                             )}
-                        </button>
-                    </div>
+                        </Button>
 
-                    {/* Forgot Password Link */}
-                    <div className="flex justify-end">
-                        <Link
-                            to="/forgot-password"
-                            className="text-sm text-[#D35400] hover:text-[#B84700] hover:underline"
-                        >
-                            Forgot password?
-                        </Link>
-                    </div>
-
-                    {/* Submit Button */}
-                    <Button
-                        type="submit"
-                        className="w-full bg-[#000000] hover:bg-[#333333] text-white py-3 disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? (
-                            <span className="flex items-center justify-center gap-2">
-                                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                </svg>
-                                Signing in...
-                            </span>
-                        ) : (
-                            "Sign In"
-                        )}
-                    </Button>
-
-                    {/* Register Link */}
-                    <p className="text-center text-sm text-slate-600 mt-4">
-                        Don't have an account?{" "}
-                        <Link
-                            to="/onboarding"
-                            className="text-[#D35400] hover:text-[#B84700] font-medium hover:underline"
-                        >
-                            Register your store
-                        </Link>
-                    </p>
-                </form>
+                        {/* Register Link */}
+                        <p className="text-center text-sm text-slate-600 mt-4">
+                            Don't have an account?{" "}
+                            <Link
+                                to="/onboarding"
+                                className="text-[#D35400] hover:text-[#B84700] font-medium hover:underline"
+                            >
+                                Register your store
+                            </Link>
+                        </p>
+                    </form>
                 )}
             </div>
         </div>
