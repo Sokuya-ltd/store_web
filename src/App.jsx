@@ -13,6 +13,7 @@ import OrdersList from "./pages/Orders/OrdersList";
 import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
 import RegistrationSuccess from "./pages/Onboarding/RegistrationSuccess";
 import Login from "./pages/Onboarding/Login";
+import ForgotPassword from "./pages/Onboarding/ForgotPassword";
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
       {/* Guest routes - redirect to dashboard if already logged in */}
       <Route element={<GuestRoute />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/onboarding/*" element={<OnboardingLayout />} />
         <Route path="/onboarding/success" element={<RegistrationSuccess />} />
       </Route>
