@@ -97,41 +97,73 @@ export default function OnboardingLayout() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col lg:grid lg:grid-cols-10 gap-0 overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex items-center justify-center p-4 relative overflow-hidden">
+            {/* Decorative Background Elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
+            <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
-            {/* Left content */}
-            <div className="lg:col-span-6 bg-[#D35400] p-6 sm:p-8 lg:p-16 flex items-center justify-center">
-                <div className="text-white text-center lg:text-left">
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-                        Welcome to Sokuya Store
-                    </h1>
-                    <p className="text-base sm:text-lg lg:text-xl opacity-90">
-                        Set up your store in just a few steps
-                    </p>
+            <div className="w-full max-w-6xl relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    {/* Left Content */}
+                    <div className="flex flex-col justify-center order-2 lg:order-1">
+                        <div className="text-white space-y-6">
+                            <div>
+                                <h1 className="text-4xl md:text-5xl font-bold mb-3">
+                                    Welcome!
+                                </h1>
+                                <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                            </div>
+                            
+                            <p className="text-lg text-purple-200 leading-relaxed">
+                                Join thousands of store owners managing their business efficiently. Set up your store in minutes and start selling today.
+                            </p>
+
+                            <button
+                                onClick={() => window.open("https://sokuya.com/learn", "_blank")}
+                                className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-purple-900"
+                            >
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Right Content - Form */}
+                    <div className="order-1 lg:order-2">
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
+                            <h2 className="text-2xl font-bold text-white mb-2">
+                                Get Started
+                            </h2>
+                            <p className="text-sm text-purple-200 mb-8">
+                                Create your account and set up your store
+                            </p>
+
+                            {error && (
+                                <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
+                                    <p className="text-red-200 text-sm font-medium">{error}</p>
+                                </div>
+                            )}
+
+                            <Routes>
+                                <Route
+                                    index
+                                    element={
+                                        <StepBusinessInfo
+                                            data={data}
+                                            updateData={updateDataWithClear}
+                                            onSubmit={submitOnboarding}
+                                            isSubmitting={isSubmitting}
+                                            error={error}
+                                            fieldErrors={fieldErrors}
+                                        />
+                                    }
+                                />
+                            </Routes>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            {/* Right content */}
-            <div className="lg:col-span-4 bg-white p-6 sm:p-8 lg:p-12 flex flex-col overflow-y-auto justify-center">
-                <h2 className="text-xl sm:text-2xl font-semibold mb-2">Store Setup</h2>
-                <p className="text-xs sm:text-sm text-slate-500 mb-6">
-                    Tell us about your business
-                </p>
-                <Routes>
-                    <Route
-                        index
-                        element={
-                            <StepBusinessInfo
-                                data={data}
-                                updateData={updateDataWithClear}
-                                onSubmit={submitOnboarding}
-                                isSubmitting={isSubmitting}
-                                error={error}
-                                fieldErrors={fieldErrors}
-                            />
-                        }
-                    />
-                </Routes>
             </div>
         </div>
     );
