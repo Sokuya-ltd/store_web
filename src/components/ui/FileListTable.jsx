@@ -1,3 +1,5 @@
+import React from "react";
+
 const FILE_TYPES = {
     logo: { label: "Logo", color: "bg-blue-100 text-blue-700" },
     banner: { label: "Banner", color: "bg-purple-100 text-purple-700" },
@@ -7,6 +9,11 @@ const FILE_TYPES = {
 
 export default function FileListTable({ files = [], onDelete, isLoading = false }) {
     const filteredFiles = files;
+
+    // Log files for debugging
+    React.useEffect(() => {
+        console.log('FileListTable received files:', filteredFiles);
+    }, [filteredFiles]);
 
     const formatFileSize = (bytes) => {
         if (bytes === 0) return "0 Bytes";

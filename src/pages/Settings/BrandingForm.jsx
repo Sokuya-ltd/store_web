@@ -26,6 +26,24 @@ export default function BrandingForm({
     const [pendingFile, setPendingFile] = useState(null);
     const [showTypeDialog, setShowTypeDialog] = useState(false);
 
+    // Helper function to clean URLs - extract Cloudinary URL if it's been double-prefixed
+    const cleanUrl = (url) => {
+        if (!url) return '';
+        
+        // If URL is already a full Cloudinary/external URL, return as-is
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            // Check if it's been double-prefixed (storage path + full URL)
+            const cloudinaryMatch = url.match(/https?:\/\/res\.cloudinary\.com\/.+/);
+            if (cloudinaryMatch) {
+                return cloudinaryMatch[0]; // Return only the Cloudinary URL
+            }
+            return url;
+        }
+        
+        // If it's a relative path, return as-is
+        return url;
+    };
+
     // Fetch uploaded files on component mount
     useEffect(() => {
         fetchUploadedFiles();
@@ -38,7 +56,9 @@ export default function BrandingForm({
 
             // Fetch images - separate call as per backend route handler
             try {
+                console.log('Fetching images...');
                 const imagesResponse = await retrieveStoreFiles('images');
+                console.log('Images response:', imagesResponse);
                 const imagesData = imagesResponse.data || imagesResponse;
                 
                 if (imagesData.images) {
@@ -48,8 +68,8 @@ export default function BrandingForm({
                                 id: `${type}_${Date.now()}`,
                                 name: `${type.charAt(0).toUpperCase() + type.slice(1)}`,
                                 type: type, // 'logo' or 'banner'
-                                size: 0,
-                                url: image.url,
+                                size: image.size || 0,
+                                url: cleanUrl(image.url),
                                 uploadedAt: new Date().toISOString(),
                                 filePath: image.path
                             });
@@ -57,14 +77,18 @@ export default function BrandingForm({
                     });
                 }
             } catch (imageError) {
-                // Continue even if images fail
+                console.error('Error fetching images:', imageError);
             }
             
             // Fetch documents - separate call as per backend route handler
             try {
+                console.log('Fetching documents...');
                 const docsResponse = await retrieveStoreFiles('documents');
+                console.log('Documents response:', docsResponse);
                 
                 const docsData = docsResponse.data || docsResponse;
+                let documents = [];
+                
                 // Handle various response formats from backend
                 if (Array.isArray(docsData.documents)) {
                     documents = docsData.documents;
@@ -73,6 +97,8 @@ export default function BrandingForm({
                 } else if (Array.isArray(docsData)) {
                     documents = docsData;
                 }
+                
+                console.log('Parsed documents:', documents);
                 
                 if (documents && documents.length > 0) {
                     documents.forEach((doc, idx) => {
@@ -83,9 +109,9 @@ export default function BrandingForm({
                             name: doc.filename || doc.file_name || doc.name,
                             type: 'document',
                             size: parseFloat(doc.size_mb) || doc.size || 0,
-                            url: doc.url || downloadUrl,
+                            url: cleanUrl(doc.url || downloadUrl),
                             uploadedAt: doc.uploaded_at || doc.createdAt || new Date().toISOString(),
-                            filePath: doc.url || downloadUrl,
+                            filePath: cleanUrl(doc.url || downloadUrl),
                             documentType: doc.type,
                             canDownload: doc.can_download !== false
                         };
@@ -93,9 +119,10 @@ export default function BrandingForm({
                     });
                 }
             } catch (docError) {
-                // Continue even if documents fail
+                console.error('Error fetching documents:', docError);
             }
 
+            console.log('Total files to display:', allFiles);
             setUploadedFiles(allFiles);
 
         } catch (error) {
@@ -108,12 +135,24 @@ export default function BrandingForm({
     const handleLogoUpload = async (file) => {
         setUploading(prev => ({ ...prev, logo: true }));
         try {
+            console.log('Uploading logo...');
             const response = await uploadStoreFile(file, 'logo');
+            console.log('Logo upload response:', response);
+            
             const data = response.data || response;
-            updateForm({ ...form, store_logo: data.url || data.file_path });
-            showSuccess(response.message || 'Logo uploaded successfully!');
+            const logoUrl = data.url || data.file_path || data.path;
+            
+            if (logoUrl) {
+                updateForm({ ...form, store_logo: cleanUrl(logoUrl) });
+            }
+            
+            showSuccess('✓ Logo uploaded successfully!');
+            
+            // Refresh files list
+            setTimeout(() => fetchUploadedFiles(), 800);
         } catch (error) {
-            showError('Failed to upload logo: ' + error.message);
+            console.error('Logo upload error:', error);
+            showError('✗ Failed to upload logo: ' + (error.message || 'Unknown error'));
         } finally {
             setUploading(prev => ({ ...prev, logo: false }));
         }
@@ -122,12 +161,24 @@ export default function BrandingForm({
     const handleBannerUpload = async (file) => {
         setUploading(prev => ({ ...prev, banner: true }));
         try {
+            console.log('Uploading banner...');
             const response = await uploadStoreFile(file, 'banner');
+            console.log('Banner upload response:', response);
+            
             const data = response.data || response;
-            updateForm({ ...form, store_banner: data.url || data.file_path });
-            showSuccess(response.message || 'Banner uploaded successfully!');
+            const bannerUrl = data.url || data.file_path || data.path;
+            
+            if (bannerUrl) {
+                updateForm({ ...form, store_banner: cleanUrl(bannerUrl) });
+            }
+            
+            showSuccess('✓ Banner uploaded successfully!');
+            
+            // Refresh files list
+            setTimeout(() => fetchUploadedFiles(), 800);
         } catch (error) {
-            showError('Failed to upload banner: ' + error.message);
+            console.error('Banner upload error:', error);
+            showError('✗ Failed to upload banner: ' + (error.message || 'Unknown error'));
         } finally {
             setUploading(prev => ({ ...prev, banner: false }));
         }
@@ -155,6 +206,13 @@ export default function BrandingForm({
             // Get auth token using the same method as API service
             const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
             
+            console.log('Uploading document:', {
+                filename: pendingFile.name,
+                size: pendingFile.size,
+                type: documentType,
+                documentType: documentType
+            });
+            
             const response = await fetch(`${import.meta.env.VITE_API_URL}/store/upload`, {
                 method: 'POST',
                 headers: {
@@ -167,7 +225,9 @@ export default function BrandingForm({
             let data;
             try {
                 data = await response.json();
+                console.log('Document upload response:', data);
             } catch (e) {
+                console.error('Failed to parse response:', e);
                 throw new Error('Server returned invalid JSON response');
             }
             
@@ -191,25 +251,28 @@ export default function BrandingForm({
                 documentType: documentType
             };
             
+            console.log('Adding document to list:', newFile);
+            
             // Add immediately to UI
             setUploadedFiles(prev => [...prev, newFile]);
-            showSuccess('Document uploaded successfully!');
+            showSuccess('✓ Document uploaded successfully!');
             
             // Refresh the file list to stay in sync with backend
             setTimeout(async () => {
+                console.log('Refreshing file list...');
                 await fetchUploadedFiles();
-            }, 500);
+            }, 800);
         } catch (error) {
             // Handle specific error messages from backend
             if (error.status === 422 && error.errors) {
                 const errorMessages = Object.entries(error.errors)
                     .map(([field, msgs]) => `${field}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
                     .join(' | ');
-                showError(`Validation Error: ${errorMessages}`);
+                showError(`✗ Validation Error: ${errorMessages}`);
             } else if (error.status === 422) {
-                showError(error.message || 'Validation failed');
+                showError(`✗ ${error.message || 'Validation failed'}`);
             } else {
-                showError('Failed to upload document: ' + (error.message || 'Unknown error'));
+                showError('✗ Failed to upload document: ' + (error.message || 'Unknown error'));
             }
         } finally {
             setUploading(prev => ({ ...prev, documents: false }));
