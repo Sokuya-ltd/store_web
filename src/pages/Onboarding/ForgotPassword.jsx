@@ -54,7 +54,7 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
@@ -62,7 +62,7 @@ export default function ForgotPassword() {
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
-            <div className="w-full max-w-6xl relative z-10">
+            <div className="w-full max-w-6xl relative z-10 flex items-center justify-center">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Left Content */}
                     <div className="flex flex-col justify-center order-2 lg:order-1">
