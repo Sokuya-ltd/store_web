@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
 import ProductsInventoryDashboard from "./pages/Products/ProductsInventoryDashboard";
 import ProductAdd from "./pages/Products/ProductAdd";
+import ProductView from "./pages/Products/ProductView";
 import ProductEdit from "./pages/Products/ProductEdit";
 import OrdersList from "./pages/Orders/OrdersList";
 import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
@@ -33,6 +34,7 @@ function AppRoutes() {
           <Route path="settings" element={<SettingsLayout />} />
           <Route path="products" element={<ProductsInventoryDashboard />} />
           <Route path="products/add" element={<ProductAdd />} />
+          <Route path="products/view/:id" element={<ProductView />} />
           <Route path="products/edit/:id" element={<ProductEdit />} />
           <Route path="orders" element={<OrdersList />} />
         </Route>

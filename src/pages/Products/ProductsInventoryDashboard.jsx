@@ -352,7 +352,7 @@ export default function ProductsInventoryDashboard() {
                 return (
                   <Link 
                     key={product.id} 
-                    to={`/products/edit/${product.id}`}
+                    to={`/products/view/${product.id}`}
                     className="no-underline"
                   >
                     <Card className="overflow-hidden flex flex-col h-full bg-white rounded-lg shadow-2xl hover:shadow-lg transition-shadow cursor-pointer">
@@ -467,7 +467,7 @@ export default function ProductsInventoryDashboard() {
                 return (
                   <Link
                     key={product.id}
-                    to={`/products/edit/${product.product_id}`}
+                    to={`/products/view/${product.id}`}
                     className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition cursor-pointer"
                   >
                     <div className="flex gap-4 flex-1 mb-4 md:mb-0">

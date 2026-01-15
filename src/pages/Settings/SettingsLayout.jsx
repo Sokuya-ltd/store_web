@@ -239,7 +239,10 @@ export default function SettingsLayout() {
         return (
             <div className="p-8 w-full flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: colors.accent.olive }}></div>
+                    <div
+                        className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto"
+                        style={{ borderColor: colors.accent.purple }}
+                    ></div>
                     <p className="mt-4 text-gray-600">Loading profile...</p>
                 </div>
             </div>
@@ -301,28 +304,28 @@ export default function SettingsLayout() {
                     <nav className="flex space-x-2 md:space-x-4 min-w-max md:min-w-0" aria-label="Tabs">
                         <button
                             className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 0 ? colors.accent.olive : 'transparent', color: activeTab === 0 ? colors.accent.olive : '#d1d5db' }}
+                            style={{ borderColor: activeTab === 0 ? colors.accent.purple : 'transparent', color: activeTab === 0 ? colors.accent.purple : '#d1d5db' }}
                             onClick={() => setActiveTab(0)}
                         >
                             Store Profile
                         </button>
                         <button
                             className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 1 ? colors.accent.olive : 'transparent', color: activeTab === 1 ? colors.accent.olive : '#d1d5db' }}
+                            style={{ borderColor: activeTab === 1 ? colors.accent.purple : 'transparent', color: activeTab === 1 ? colors.accent.purple : '#d1d5db' }}
                             onClick={() => setActiveTab(1)}
                         >
                             Branding
                         </button>
                         <button
                             className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 2 ? colors.accent.olive : 'transparent', color: activeTab === 2 ? colors.accent.olive : '#d1d5db' }}
+                            style={{ borderColor: activeTab === 2 ? colors.accent.purple : 'transparent', color: activeTab === 2 ? colors.accent.purple : '#d1d5db' }}
                             onClick={() => setActiveTab(2)}
                         >
                             Account Security
                         </button>
                         <button
                             className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 3 ? colors.accent.olive : 'transparent', color: activeTab === 3 ? colors.accent.olive : '#d1d5db' }}
+                            style={{ borderColor: activeTab === 3 ? colors.accent.purple : 'transparent', color: activeTab === 3 ? colors.accent.purple : '#d1d5db' }}
                             onClick={() => setActiveTab(3)}
                         >
                             Finance Information

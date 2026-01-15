@@ -316,9 +316,9 @@ export default function FinanceInformationForm({ initialData = {} }) {
             onClick={handleBankInfoSubmit}
             disabled={loadingSection === "bank"}
             className="py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: colors.accent.olive }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+            style={{ backgroundColor: colors.primary.main }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
           >
             {loadingSection === "bank" ? "Saving..." : "Save Bank Details"}
           </Button>

@@ -182,7 +182,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             onChange={e => updateForm({ ...form, store_latitude: e.target.value })}
                                             placeholder="Auto-fill →"
                                             className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm"
-                                            style={{ outlineColor: colors.accent.olive }}
+                                            style={{ outlineColor: colors.primary.main }}
                                         />
                                         <button
                                             type="button"
@@ -190,9 +190,9 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             disabled={geoLoading}
                                             title="Get current location"
                                             className="px-2 sm:px-3 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                                            style={{ backgroundColor: colors.accent.olive }}
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+                                            style={{ backgroundColor: colors.primary.main }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
@@ -215,7 +215,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             onChange={e => updateForm({ ...form, store_longitude: e.target.value })}
                                             placeholder="Auto-fill →"
                                             className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm"
-                                            style={{ outlineColor: colors.accent.olive }}
+                                            style={{ outlineColor: colors.primary.main }}
                                         />
                                         <button
                                             type="button"
@@ -223,9 +223,9 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             disabled={geoLoading}
                                             title="Get current location"
                                             className="px-2 sm:px-3 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
-                                            style={{ backgroundColor: colors.accent.olive }}
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+                                            style={{ backgroundColor: colors.primary.main }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
@@ -338,7 +338,10 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                 <Button
                     type="submit"
                     disabled={submitting}
-                    className="py-2 px-4 md:px-6 bg-[#000000] text-white font-semibold shadow hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                    style={{ backgroundColor: colors.primary.main }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                    className="py-2 px-4 md:px-6 text-white font-semibold shadow disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                 >
                     {submitting ? (
                         <span className="flex items-center gap-2">

@@ -7,6 +7,7 @@ import Card from "../../components/ui/Card";
 import ToastContainer from "../../components/ui/ToastContainer";
 import { Image, FileText } from "lucide-react";
 import { useToast } from "../../hooks/useToast";
+import { colors } from "../../lib/colors";
 import { uploadStoreFile, retrieveStoreFiles } from "../../services/api";
 
 export default function BrandingForm({ 
