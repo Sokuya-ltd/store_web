@@ -2,16 +2,17 @@
 export const colors = {
     // Primary colors
     primary: {
-        main: '#D35400',      // Your orange
+        main: '#D35400',      // Orange
         dark: '#A04000',
         light: '#FF6B1A',
     },
 
     // Accent colors
     accent: {
-        olive: '#556B2F',     // Your olive green
+        olive: '#556B2F',     // Olive green
         teal: '#00CED1',
-        purple: '#6366F1',
+        purple: '#9333EA',    // Main purple (matches onboarding)
+        purpleDark: '#6D28D9',
         pink: '#EC4899',
     },
 

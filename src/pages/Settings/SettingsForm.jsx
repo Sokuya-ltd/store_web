@@ -5,6 +5,7 @@ import OperatingHoursEditor from "../../components/ui/OperatingHoursEditor";
 import Button from "../../components/ui/Button";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import Card from "../../components/ui/Card";
+import { colors } from "../../lib/colors";
 
 export default function SettingsForm({ form, updateForm, onSubmit, submitting, submitError, submitSuccess }) {
     const [geoLoading, setGeoLoading] = useState(false);
@@ -180,14 +181,18 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             value={form.store_latitude}
                                             onChange={e => updateForm({ ...form, store_latitude: e.target.value })}
                                             placeholder="Auto-fill →"
-                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                                            style={{ outlineColor: colors.accent.olive }}
                                         />
                                         <button
                                             type="button"
                                             onClick={handleGetLocation}
                                             disabled={geoLoading}
                                             title="Get current location"
-                                            className="px-2 sm:px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                            className="px-2 sm:px-3 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                            style={{ backgroundColor: colors.accent.olive }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>
@@ -209,14 +214,18 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                                             value={form.store_longitude}
                                             onChange={e => updateForm({ ...form, store_longitude: e.target.value })}
                                             placeholder="Auto-fill →"
-                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm"
+                                            className="flex-1 px-2 sm:px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:border-transparent text-sm"
+                                            style={{ outlineColor: colors.accent.olive }}
                                         />
                                         <button
                                             type="button"
                                             onClick={handleGetLocation}
                                             disabled={geoLoading}
                                             title="Get current location"
-                                            className="px-2 sm:px-3 py-2 bg-[#556B2F] text-white rounded hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                            className="px-2 sm:px-3 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+                                            style={{ backgroundColor: colors.accent.olive }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
                                         >
                                             {geoLoading ? (
                                                 <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white inline-block"></span>

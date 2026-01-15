@@ -5,6 +5,7 @@ import Card from "../../components/ui/Card";
 import Input from "../../components/ui/Input";
 import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
+import { colors } from "../../lib/colors";
 
 export default function FinanceInformationForm({ initialData = {} }) {
   const toast = useToast();
@@ -212,7 +213,10 @@ export default function FinanceInformationForm({ initialData = {} }) {
           <Button
             onClick={handleBusinessInfoSubmit}
             disabled={loadingSection === "business"}
-            className="py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: colors.accent.olive }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
           >
             {loadingSection === "business" ? "Saving..." : "Save Business Info"}
           </Button>
@@ -311,7 +315,10 @@ export default function FinanceInformationForm({ initialData = {} }) {
           <Button
             onClick={handleBankInfoSubmit}
             disabled={loadingSection === "bank"}
-            className="py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: colors.accent.olive }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
           >
             {loadingSection === "bank" ? "Saving..." : "Save Bank Details"}
           </Button>

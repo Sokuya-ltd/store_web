@@ -7,6 +7,7 @@ import { useStoreProfile } from "../../hooks/useStoreProfile";
 import { useToast } from "../../hooks/useToast";
 import ToastContainer from "../../components/ui/ToastContainer";
 import api from "../../services/api";
+import { colors } from "../../lib/colors";
 
 export default function SettingsLayout() {
     const { profile, loading, error, refetch } = useStoreProfile();
@@ -238,7 +239,7 @@ export default function SettingsLayout() {
         return (
             <div className="p-8 w-full flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#556B2F] mx-auto"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto" style={{ borderColor: colors.accent.olive }}></div>
                     <p className="mt-4 text-gray-600">Loading profile...</p>
                 </div>
             </div>
@@ -299,29 +300,29 @@ export default function SettingsLayout() {
                 <div className="border-b border-slate-200 mb-4 overflow-x-auto">
                     <nav className="flex space-x-2 md:space-x-4 min-w-max md:min-w-0" aria-label="Tabs">
                         <button
-                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 0 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
-                                }`}
+                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
+                            style={{ borderColor: activeTab === 0 ? colors.accent.olive : 'transparent', color: activeTab === 0 ? colors.accent.olive : '#d1d5db' }}
                             onClick={() => setActiveTab(0)}
                         >
                             Store Profile
                         </button>
                         <button
-                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 1 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
-                                }`}
+                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
+                            style={{ borderColor: activeTab === 1 ? colors.accent.olive : 'transparent', color: activeTab === 1 ? colors.accent.olive : '#d1d5db' }}
                             onClick={() => setActiveTab(1)}
                         >
                             Branding
                         </button>
                         <button
-                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 2 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
-                                }`}
+                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
+                            style={{ borderColor: activeTab === 2 ? colors.accent.olive : 'transparent', color: activeTab === 2 ? colors.accent.olive : '#d1d5db' }}
                             onClick={() => setActiveTab(2)}
                         >
                             Account Security
                         </button>
                         <button
-                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap ${activeTab === 3 ? "border-[#556B2F] text-[#556B2F]" : "border-transparent text-gray-500"
-                                }`}
+                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
+                            style={{ borderColor: activeTab === 3 ? colors.accent.olive : 'transparent', color: activeTab === 3 ? colors.accent.olive : '#d1d5db' }}
                             onClick={() => setActiveTab(3)}
                         >
                             Finance Information

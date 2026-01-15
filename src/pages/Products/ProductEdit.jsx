@@ -6,6 +6,7 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import { useToast } from "../../hooks/useToast";
+import { colors } from "../../lib/colors";
 import api from "../../services/api";
 
 export default function ProductEdit() {
@@ -426,9 +427,15 @@ export default function ProductEdit() {
                     <Card className="p-6">
                         <h3 className="font-medium text-slate-900 mb-4">Product Information</h3>
                         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg">
-                            {product?.image_url ? (
+                            {media && media.length > 0 && media.find(m => m.is_primary) ? (
                                 <img
-                                    src={product?.image_url}
+                                    src={media.find(m => m.is_primary)?.url}
+                                    alt={product?.name}
+                                    className="w-20 h-20 object-cover rounded bg-slate-200"
+                                />
+                            ) : media && media.length > 0 ? (
+                                <img
+                                    src={media[0]?.url}
                                     alt={product?.name}
                                     className="w-20 h-20 object-cover rounded bg-slate-200"
                                 />
@@ -873,10 +880,17 @@ export default function ProductEdit() {
                         type="button"
                         variant="outline"
                         onClick={() => navigate("/products")}
+                        style={{ borderColor: colors.neutral[300], color: colors.neutral[700] }}
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" disabled={isSaving}>
+                    <Button 
+                      type="submit" 
+                      disabled={isSaving}
+                      style={{ backgroundColor: colors.primary.main }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                    >
                         {isSaving ? "Saving..." : "Update Product"}
                     </Button>
                 </div>

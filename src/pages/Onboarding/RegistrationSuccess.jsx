@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
+import { colors } from "../../lib/colors";
 
 export default function RegistrationSuccess() {
     const location = useLocation();
@@ -14,7 +15,7 @@ export default function RegistrationSuccess() {
     const { store_owner, next_steps } = data;
 
     return (
-        <div className="min-h-screen bg-[#D35400] flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: colors.primary.main }}>
             <div className="max-w-lg w-full bg-white shadow-xl p-8 text-center">
                 {/* Success Icon */}
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -30,7 +31,7 @@ export default function RegistrationSuccess() {
                 <p className="text-slate-600 mb-6">
                     Welcome to Sokuya, <span className="font-semibold">{store_owner?.name}</span>!
                     <br />
-                    Your store <span className="font-semibold text-[#D35400]">"{store_owner?.store_name}"</span> has been created.
+                    Your store <span style={{ color: colors.primary.main }} className="font-semibold">"{store_owner?.store_name}"</span> has been created.
                 </p>
 
                 {/* Store Owner Info */}
@@ -96,7 +97,10 @@ export default function RegistrationSuccess() {
                 <div className="space-y-3">
                     <Button
                         onClick={() => navigate("/login")}
-                        className="w-full bg-[#D35400] hover:bg-[#B84700] text-white py-3"
+                        className="w-full text-white py-3"
+                        style={{ backgroundColor: colors.primary.main }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary.dark}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary.main}
                     >
                         Go to Login
                     </Button>

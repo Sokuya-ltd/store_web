@@ -8,6 +8,7 @@ import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import ImageUpload from "../../components/ui/ImageUpload";
 import MultiImageUpload from "../../components/ui/MultiImageUpload";
 import { useToast } from "../../context/ToastContext";
+import { colors } from "../../lib/colors";
 import api from "../../services/api";
 
 export default function ProductAdd() {
@@ -567,7 +568,10 @@ export default function ProductAdd() {
                                                     </div>
                                                 ))}
                                                 <div
-                                                    className="px-4 py-3 border-t border-slate-100 hover:bg-orange-50 cursor-pointer text-orange-600 font-medium text-sm"
+                                                    className="px-4 py-3 border-t border-slate-100 cursor-pointer font-medium text-sm"
+                                                    style={{ backgroundColor: "transparent", color: colors.primary.main }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.primary.main}15`}
+                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                                                     onClick={handleCreateNew}
                                                 >
                                                     + Create new product "{searchQuery}"
@@ -575,7 +579,10 @@ export default function ProductAdd() {
                                             </>
                                         ) : (
                                             <div
-                                                className="px-4 py-3 hover:bg-orange-50 cursor-pointer text-orange-600 font-medium text-sm"
+                                                className="px-4 py-3 cursor-pointer font-medium text-sm"
+                                                style={{ backgroundColor: "transparent", color: colors.primary.main }}
+                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.primary.main}15`}
+                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
                                                 onClick={handleCreateNew}
                                             >
                                                 + Create new product "{searchQuery}"
@@ -1067,10 +1074,17 @@ export default function ProductAdd() {
                                 variant="outline"
                                 onClick={() => navigate("/products")}
                                 disabled={isSubmitting}
+                                style={{ borderColor: colors.neutral[300], color: colors.neutral[700] }}
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" disabled={isSubmitting}>
+                            <Button 
+                              type="submit" 
+                              disabled={isSubmitting}
+                              style={{ backgroundColor: colors.primary.main }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                            >
                                 {isSubmitting ? "Adding Product..." : "Add Product"}
                             </Button>
                         </div>

@@ -6,6 +6,7 @@ import ToastContainer from "../../components/ui/ToastContainer";
 import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
+import { colors } from "../../lib/colors";
 import { Mail, Lock, Eye, EyeOff, Facebook, Instagram, Twitch } from "lucide-react";
 
 export default function Login() {

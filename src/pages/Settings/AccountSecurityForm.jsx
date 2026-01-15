@@ -4,6 +4,7 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
+import { colors } from "../../lib/colors";
 
 export default function AccountSecurityForm() {
     const toast = useToast();
@@ -422,7 +423,10 @@ export default function AccountSecurityForm() {
                                 <Button
                                     type="submit"
                                     disabled={passwordLoading}
-                                    className="w-full py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                    style={{ backgroundColor: colors.accent.olive }}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
                                 >
                                     {passwordLoading ? "Updating..." : "Update Password"}
                                 </Button>
@@ -497,7 +501,10 @@ export default function AccountSecurityForm() {
                                             type="button"
                                             onClick={handleVerify2FA}
                                             disabled={twoFALoading || otpCode.length !== 6}
-                                            className="flex-1 py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex-1 py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                            style={{ backgroundColor: colors.accent.olive }}
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
                                         >
                                             {twoFALoading ? "Verifying..." : "Verify Code"}
                                         </Button>
@@ -544,7 +551,10 @@ export default function AccountSecurityForm() {
                                     type="button"
                                     onClick={handleResendVerification}
                                     disabled={emailVerificationLoading}
-                                    className="w-full py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29] disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                                    style={{ backgroundColor: colors.accent.olive }}
+                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
+                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
                                 >
                                     {emailVerificationLoading ? "Sending..." : "Resend Verification Email"}
                                 </Button>
@@ -630,11 +640,13 @@ export default function AccountSecurityForm() {
                                                 key={page}
                                                 onClick={() => fetchAuditLogs(page)}
                                                 disabled={auditLogsLoading}
-                                                className={`px-2 py-1 text-xs rounded transition-colors ${
-                                                    auditLogsPagination.current_page === page
-                                                        ? "bg-[#556B2F] text-white font-semibold"
-                                                        : "border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                }`}
+                                                className="px-2 py-1 text-xs rounded transition-colors border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                style={{
+                                                    backgroundColor: auditLogsPagination.current_page === page ? colors.accent.olive : 'transparent',
+                                                    color: auditLogsPagination.current_page === page ? 'white' : '#6b7280',
+                                                    fontWeight: auditLogsPagination.current_page === page ? '600' : 'normal',
+                                                    borderColor: auditLogsPagination.current_page === page ? colors.accent.olive : '#d1d5db'
+                                                }}
                                             >
                                                 {page}
                                             </button>

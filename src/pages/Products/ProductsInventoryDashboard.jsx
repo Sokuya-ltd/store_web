@@ -6,9 +6,6 @@ import {
   TrendingDown,
   Search,
   Filter,
-  ChevronDown,
-  ChevronUp,
-  Edit2,
   Trash2,
   Plus,
 } from "lucide-react";
@@ -16,7 +13,8 @@ import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Badge from "../../components/ui/Badge";
-import { useToast } from "../../context/ToastContext"; 
+import { useToast } from "../../context/ToastContext";
+import { colors } from "../../lib/colors"; 
 import api from "../../services/api";
 
 export default function ProductsInventoryDashboard() {
@@ -212,7 +210,7 @@ export default function ProductsInventoryDashboard() {
         </div>
         <div className="flex gap-2 flex-wrap">
           <Link to="/products/add">
-            <Button className="flex items-center gap-2 py-2 px-4 bg-[#556B2F] text-white font-semibold hover:bg-[#4a5d29]">
+            <Button className="flex items-center gap-2 py-2 px-4 text-white font-semibold rounded-lg transition-all" style={{ backgroundColor: colors.primary.main }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}>
               <Plus className="w-4 h-4" />
               Add Product
             </Button>
@@ -222,41 +220,43 @@ export default function ProductsInventoryDashboard() {
 
       {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="p-4 border-l-4 border-slate-400 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-slate-50 to-white">
+          <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Total Products</p>
             <p className="text-2xl font-bold text-slate-900 mt-2">{stats.totalProducts}</p>
           </div>
-          <Package className="w-8 h-8 text-slate-400 opacity-80" />
+          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.primary.main}15` }}>
+            <Package className="w-5 h-5" style={{ color: colors.primary.main }} />
+          </div>
             </div>
           </Card>
 
-          <Card className="p-4 border-l-4 border-green-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-green-50 to-white">
+          <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">In Stock</p>
-            <p className="text-2xl font-bold text-green-600 mt-2">{stats.inStock}</p>
+            <p className="text-2xl font-bold mt-2" style={{ color: colors.accent.olive }}>{stats.inStock}</p>
           </div>
-          <div className="p-2 bg-green-100 rounded-lg">
-            <Package className="w-5 h-5 text-green-600" />
+          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.accent.olive}15` }}>
+            <Package className="w-5 h-5" style={{ color: colors.accent.olive }} />
           </div>
             </div>
           </Card>
 
-          <Card className="p-4 border-l-4 border-orange-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-orange-50 to-white">
+          <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Low Stock</p>
-            <p className="text-2xl font-bold text-orange-600 mt-2">{stats.lowStock}</p>
+            <p className="text-2xl font-bold mt-2" style={{ color: colors.accent.purple }}>{stats.lowStock}</p>
           </div>
-          <div className="p-2 bg-orange-100 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-orange-600" />
+          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.accent.purple}15` }}>
+            <AlertCircle className="w-5 h-5" style={{ color: colors.accent.purple }} />
           </div>
             </div>
           </Card>
 
-          <Card className="p-4 border-l-4 border-red-500 hover:shadow-lg transition-shadow duration-300 bg-linear-to-br from-red-50 to-white">
+          <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-xs font-medium text-slate-600">Out of Stock</p>
@@ -270,7 +270,7 @@ export default function ProductsInventoryDashboard() {
         </div>
 
         {/* Filters */}
-      <Card className="p-4">
+      <Card className="p-5 shadow-2xl rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -350,101 +350,95 @@ export default function ProductsInventoryDashboard() {
                 : 0;
 
                 return (
-                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow flex flex-col h-full bg-white">
-                    {/* Product Image Container */}
-                    <div className="relative h-56 bg-linear-to-br from-slate-50 to-slate-100 overflow-hidden group">
-                      {product.product?.media && product.product.media.length > 0 ? (
-                        <img
-                          src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
-                          alt={product.product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-300">
-                          <Package className="w-12 h-12" />
-                        </div>
-                      )}
-                      
-                      {/* Status Badge */}
-                      <div className="absolute top-3 right-3">
-                        <Badge variant={status.badge} className="shadow-md">
-                          {status.label}
-                        </Badge>
-                      </div>
-
-                      {/* Discount Badge */}
-                      {discountPercent > 0 && (
-                        <div className="absolute top-3 left-3 bg-linear-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
-                          Save {discountPercent}%
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-5 flex-1 flex flex-col">
-                      {/* Product Name & Brand */}
-                      <div className="mb-3">
-                        <h3 className="font-bold text-slate-900 text-sm leading-snug line-clamp-2 hover:text-[#556B2F] transition">
-                          {product.product?.name}
-                        </h3>
-                        <p className="text-xs text-slate-500 font-medium mt-1.5">
-                          {product.product?.brand || "No brand"} • {product.sku}
-                        </p>
-                      </div>
-
-                      {/* Pricing Section */}
-                      <div className="bg-linear-to-r from-slate-50 to-slate-100 rounded-lg p-3 mb-4">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-lg font-bold text-slate-900">
-                            £{currentPrice.toFixed(2)}
-                          </span>
-                          {comparePrice > currentPrice && (
-                            <span className="text-xs text-slate-500 line-through font-medium">
-                              £{comparePrice.toFixed(2)}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Stock Progress */}
-                      <div className="space-y-2 mb-4 mt-auto">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-medium text-slate-700">
-                            Stock: {qty} units
-                          </span>
-                          {product.reorder_threshold && qty <= product.reorder_threshold && (
-                            <span className="text-xs text-orange-600 font-medium">
-                              Reorder: {product.reorder_quantity || 0}
-                            </span>
-                          )}
-                        </div>
-                        <div className="w-full bg-slate-100 rounded-full h-2">
-                          <div
-                            className={`h-full rounded-full transition-all ${
-                              qty === 0
-                                ? "bg-red-500"
-                                : qty <= product.reorder_threshold
-                                ? "bg-orange-500"
-                                : "bg-green-500"
-                            }`}
-                            style={{ width: `${Math.min((qty / Math.max(product.reorder_quantity, 20)) * 100, 100)}%` }}
+                  <Link 
+                    key={product.id} 
+                    to={`/products/edit/${product.id}`}
+                    className="no-underline"
+                  >
+                    <Card className="overflow-hidden flex flex-col h-full bg-white rounded-lg shadow-2xl hover:shadow-lg transition-shadow cursor-pointer">
+                      {/* Product Image Container */}
+                      <div className="relative h-56 bg-linear-to-br from-slate-50 to-slate-100 overflow-hidden group">
+                        {product.product?.media && product.product.media.length > 0 ? (
+                          <img
+                            src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
+                            alt={product.product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-300">
+                            <Package className="w-12 h-12" />
+                          </div>
+                        )}
+                        
+                        {/* Status Badge */}
+                        <div className="absolute top-3 right-3">
+                          <Badge variant={status.badge} className="shadow-md">
+                            {status.label}
+                          </Badge>
                         </div>
-                      </div> 
 
-                      {/* Action Button */}
-                      <div className="pt-4 border-t border-slate-200">
-                        <Link
-                          to={`/products/edit/${product.id}`}
-                          className="w-full py-2 px-3 text-white bg-[#556B2F] hover:bg-[#4a5d29] rounded-lg transition font-medium text-sm flex items-center justify-center gap-2"
-                          title="Edit product"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                          Edit
-                        </Link>
+                        {/* Discount Badge */}
+                        {discountPercent > 0 && (
+                          <div className="absolute top-3 left-3 bg-linear-to-r from-red-500 to-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
+                            Save {discountPercent}%
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  </Card>
+
+                      {/* Content Section */}
+                      <div className="p-5 flex-1 flex flex-col">
+                        {/* Product Name & Brand */}
+                        <div className="mb-3">
+                          <h3 className="font-bold text-slate-900 text-sm leading-snug line-clamp-2 hover:text-[#556B2F] transition">
+                            {product.product?.name}
+                          </h3>
+                          <p className="text-xs text-slate-500 font-medium mt-1.5">
+                            {product.product?.brand || "No brand"} • {product.sku}
+                          </p>
+                        </div>
+
+                        {/* Pricing Section */}
+                        <div className="bg-linear-to-r from-slate-50 to-slate-100 rounded-lg p-3 mb-4">
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-lg font-bold text-slate-900">
+                              £{currentPrice.toFixed(2)}
+                            </span>
+                            {comparePrice > currentPrice && (
+                              <span className="text-xs text-slate-500 line-through font-medium">
+                                £{comparePrice.toFixed(2)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Stock Progress */}
+                        <div className="space-y-2 mb-4 mt-auto">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-medium text-slate-700">
+                              Stock: {qty} units
+                            </span>
+                            {product.reorder_threshold && qty <= product.reorder_threshold && (
+                              <span className="text-xs text-orange-600 font-medium">
+                                Reorder: {product.reorder_quantity || 0}
+                              </span>
+                            )}
+                          </div>
+                          <div className="w-full bg-slate-100 rounded-full h-2">
+                            <div
+                              className={`h-full rounded-full transition-all ${
+                                qty === 0
+                                  ? "bg-red-500"
+                                  : qty <= product.reorder_threshold
+                                  ? "bg-orange-500"
+                                  : "bg-green-500"
+                              }`}
+                              style={{ width: `${Math.min((qty / Math.max(product.reorder_quantity, 20)) * 100, 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
                 );
             })
           )}
@@ -471,9 +465,10 @@ export default function ProductsInventoryDashboard() {
                 const comparePrice = parseFloat(product.compare_at_price || 0);
 
                 return (
-                  <div
+                  <Link
                     key={product.id}
-                    className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition"
+                    to={`/products/edit/${product.product_id}`}
+                    className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition cursor-pointer"
                   >
                     <div className="flex gap-4 flex-1 mb-4 md:mb-0">
                       {product.product?.media && product.product.media.length > 0 ? (
@@ -515,33 +510,8 @@ export default function ProductsInventoryDashboard() {
                           )}
                         </div>
                       </div>
-
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleAdjustQuantity(product.id, product.product_id, -1)}
-                          disabled={qty === 0}
-                          className="p-2 text-slate-500 hover:bg-slate-200 disabled:opacity-50 rounded transition"
-                          title="Decrease stock"
-                        >
-                          <ChevronDown className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleAdjustQuantity(product.id, product.product_id, 1)}
-                          className="p-2 text-slate-500 hover:bg-slate-200 rounded transition"
-                          title="Increase stock"
-                        >
-                          <ChevronUp className="w-4 h-4" />
-                        </button>
-                        <Link
-                          to={`/products/edit/${product.product_id}`}
-                          className="p-2 text-slate-500 hover:bg-slate-200 rounded transition"
-                          title="Edit product"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </Link>
-                      </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
