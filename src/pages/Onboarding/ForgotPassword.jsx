@@ -102,11 +102,11 @@ export default function ForgotPassword() {
                     </div>
 
                     {/* Right Content - Form */}
-                    <div className="order-1 lg:order-2">
+                    <div className="order-1 lg:order-2 animate-slide-up">
                         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
                             {successMessage ? (
                                 // Success State
-                                <div className="text-center space-y-6">
+                                <div className="text-center space-y-6 animate-slide-down">
                                     <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto">
                                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -145,7 +145,7 @@ export default function ForgotPassword() {
                                     </p>
 
                                     {error && (
-                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
+                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg animate-shake">
                                             <p className="text-red-200 text-sm font-medium">{error}</p>
                                         </div>
                                     )}

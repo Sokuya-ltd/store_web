@@ -126,7 +126,7 @@ export default function Login() {
                     </div>
 
                     {/* Right Content - Login Form */}
-                    <div className="order-1 lg:order-2">
+                    <div className="order-1 lg:order-2 animate-slide-up">
                         <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
                             <h2 className="text-3xl font-bold text-white mb-2">
                                 Sign in
@@ -137,7 +137,7 @@ export default function Login() {
 
                             {/* Error Message */}
                             {error && !showVerificationMessage && (
-                                <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
+                                <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg animate-shake">
                                     <p className="text-red-200 text-sm font-medium">{error}</p>
                                 </div>
                             )}

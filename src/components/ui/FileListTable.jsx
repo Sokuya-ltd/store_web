@@ -75,20 +75,20 @@ export default function FileListTable({ files = [], onDelete, isLoading = false 
                             {filteredFiles.map((file) => {
                                 const typeConfig = getFileTypeConfig(file.type);
                                 return (
-                                    <tr key={file.id} className="hover:bg-slate-50 transition-colors">
+                                    <tr key={file.id} className="hover:bg-slate-50 transition-colors duration-200 hover:shadow-sm">
                                         <td className="px-4 py-3">
                                             <a
                                                 href={file.url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-blue-600 hover:underline truncate max-w-sm block"
+                                                className="text-blue-600 hover:text-blue-700 hover:underline truncate max-w-sm block transition-colors duration-150"
                                                 title={file.name}
                                             >
                                                 {file.name}
                                             </a>
                                         </td>
                                         <td className="px-4 py-3">
-                                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${typeConfig.color}`}>
+                                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${typeConfig.color} transition-transform duration-200 hover:scale-105`}>
                                                 {typeConfig.label}
                                             </span>
                                         </td>

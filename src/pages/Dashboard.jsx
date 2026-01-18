@@ -87,16 +87,16 @@ export default function Dashboard() {
   return (
     <div className="w-full space-y-8 px-6 py-6">
       {/* Hero Welcome Card with Purple Gradient */}
-      <div className="p-12 text-white shadow-2xl rounded-lg" style={{ backgroundImage: `linear-gradient(135deg, ${colors.accent.purple} 0%, ${colors.accent.purpleDark} 100%)` }}>
+      <div className="p-12 text-white shadow-2xl rounded-lg animate-fade-in" style={{ backgroundImage: `linear-gradient(135deg, ${colors.accent.purple} 0%, ${colors.accent.purpleDark} 100%)` }}>
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h2 className="text-4xl font-bold mb-4">Welcome back, Sokuya Store!</h2>
             <p className="text-white/80 mb-8">You have 4 new orders to prepare and 2 low stock alerts.</p>
             <div className="flex gap-4">
-              <button className="bg-white px-8 py-3 font-semibold hover:bg-gray-50 transition rounded-lg" style={{ color: colors.primary.main }}>
+              <button className="bg-white px-8 py-3 font-semibold hover:bg-gray-50 hover:scale-105 transition-all duration-200 rounded-lg" style={{ color: colors.primary.main }}>
                 Manage Orders
               </button>
-              <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white/10 transition rounded-lg">
+              <button className="border-2 border-white text-white px-8 py-3 font-semibold hover:bg-white/10 hover:scale-105 transition-all duration-200 rounded-lg">
                 View Reports
               </button>
             </div>
@@ -117,7 +117,14 @@ export default function Dashboard() {
             const theme = cardBackgrounds[idx % cardBackgrounds.length];
 
             return (
-            <Card key={stat.label} className={`p-8 rounded-lg shadow ${theme.bg}`} style={{ borderLeftColor: theme.accentBorder }}>
+            <Card 
+              key={stat.label} 
+              className={`p-8 rounded-lg shadow ${theme.bg} animate-fade-in hover:shadow-lg hover:-translate-y-1 transition-all duration-300`}
+              style={{ 
+                borderLeftColor: theme.accentBorder,
+                animationDelay: `${idx * 100}ms`
+              }}
+            >
               <div className="flex items-start justify-between mb-6">
               <div className={`p-4 rounded-lg`} style={{ backgroundColor: `${theme.accentBorder}15` }}>
                 <Icon className={`w-6 h-6`} style={{ color: theme.accentBorder }} />
@@ -146,7 +153,7 @@ export default function Dashboard() {
       {/* Revenue Overview and Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="lg:col-span-2 p-8 rounded-lg">
+        <Card className="lg:col-span-2 p-8 rounded-lg animate-slide-up">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="font-semibold text-slate-900 text-lg mb-1">Revenue Overview</h3>

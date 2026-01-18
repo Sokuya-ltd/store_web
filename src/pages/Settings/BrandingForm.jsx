@@ -343,15 +343,15 @@ export default function BrandingForm({
             
             {/* Success Message */}
             {submitSuccess && (
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3">
-                    Branding updated successfully!
+                <div className="animate-slide-down bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg shadow-sm">
+                    <p className="font-medium">✓ Branding updated successfully!</p>
                 </div>
             )}
             
             {/* Error Message */}
             {submitError && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3">
-                    <p className="font-medium">Failed to update branding</p>
+                <div className="animate-shake bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg shadow-sm">
+                    <p className="font-medium">✗ Failed to update branding</p>
                     {typeof submitError === 'object' ? (
                         <ul className="text-sm list-disc list-inside mt-1">
                             {Object.entries(submitError).map(([field, messages]) => (
@@ -373,34 +373,40 @@ export default function BrandingForm({
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Store Logo Card */}
-                    <FileUploadCard
-                        icon={Image}
-                        title="Store Logo"
-                        formats={["PNG", "JPG", "WebP"]}
-                        maxSize={5 * 1024 * 1024}
-                        onFileSelect={handleLogoUpload}
-                        isLoading={uploading.logo}
-                    />
+                    <div className="animate-fade-in" style={{ animationDelay: '0ms' }}>
+                        <FileUploadCard
+                            icon={Image}
+                            title="Store Logo"
+                            formats={["PNG", "JPG", "WebP"]}
+                            maxSize={5 * 1024 * 1024}
+                            onFileSelect={handleLogoUpload}
+                            isLoading={uploading.logo}
+                        />
+                    </div>
 
                     {/* Store Banner Card */}
-                    <FileUploadCard
-                        icon={Image}
-                        title="Store Banner"
-                        formats={["PNG", "JPG", "WebP"]}
-                        maxSize={5 * 1024 * 1024}
-                        onFileSelect={handleBannerUpload}
-                        isLoading={uploading.banner}
-                    />
+                    <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+                        <FileUploadCard
+                            icon={Image}
+                            title="Store Banner"
+                            formats={["PNG", "JPG", "WebP"]}
+                            maxSize={5 * 1024 * 1024}
+                            onFileSelect={handleBannerUpload}
+                            isLoading={uploading.banner}
+                        />
+                    </div>
 
                     {/* Documents Card */}
-                    <FileUploadCard
-                        icon={FileText}
-                        title="Documents"
-                        formats={["PDF", "DOC"]}
-                        maxSize={10 * 1024 * 1024}
-                        onFileSelect={handleDocumentUpload}
-                        isLoading={uploading.documents}
-                    />
+                    <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+                        <FileUploadCard
+                            icon={FileText}
+                            title="Documents"
+                            formats={["PDF", "DOC"]}
+                            maxSize={10 * 1024 * 1024}
+                            onFileSelect={handleDocumentUpload}
+                            isLoading={uploading.documents}
+                        />
+                    </div>
                 </div>
             </div>
 
