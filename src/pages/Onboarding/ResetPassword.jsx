@@ -198,7 +198,7 @@ export default function ResetPassword() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-4 relative overflow-hidden animate-fade-in">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
@@ -206,35 +206,35 @@ export default function ResetPassword() {
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
-            <div className="w-full max-w-6xl relative z-10 flex items-center justify-center">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                    {/* Left Content */}
-                    <div className="flex flex-col justify-center order-2 lg:order-1">
+            <div className="w-full max-w-5xl relative z-10 flex items-center justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 w-full">
+                    {/* Left Content - Hidden on mobile */}
+                    <div className="hidden md:flex flex-col justify-center order-2 lg:order-1">
                         <div className="text-white space-y-6">
                             <div>
-                                <h1 className="text-5xl md:text-6xl font-bold mb-3">
-                                    Create New Password
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
+                                    Reset Password
                                 </h1>
                                 <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
                             </div>
 
-                            <p className="text-lg text-purple-200 leading-relaxed">
-                                Choose a strong password to secure your account. Make sure it's unique and you haven't used it before.
+                            <p className="text-base md:text-lg text-purple-200 leading-relaxed">
+                                Create a strong new password to secure your account. Make sure to use a combination of letters, numbers, and special characters.
                             </p>
 
-                            <div className="space-y-3 bg-blue-500/20 border border-blue-400/50 rounded-lg p-4">
-                                <h3 className="text-sm font-semibold text-blue-300">Password Tips:</h3>
-                                <ul className="space-y-2 text-blue-200 text-sm">
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-400 font-bold">✓</span>
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold text-orange-400">Password Tips</h3>
+                                <ul className="space-y-2 text-purple-200 text-sm">
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-green-400 font-bold">✓</span>
                                         <span>At least 8 characters long</span>
                                     </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-400 font-bold">✓</span>
-                                        <span>Mix of uppercase and lowercase letters</span>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-green-400 font-bold">✓</span>
+                                        <span>Mix of upper and lower case letters</span>
                                     </li>
-                                    <li className="flex items-start gap-2">
-                                        <span className="text-blue-400 font-bold">✓</span>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-green-400 font-bold">✓</span>
                                         <span>Include numbers and special characters</span>
                                     </li>
                                 </ul>
@@ -243,11 +243,11 @@ export default function ResetPassword() {
                     </div>
 
                     {/* Right Content - Form */}
-                    <div className="order-1 lg:order-2 animate-slide-up">
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
+                    <div className="order-1 md:order-2">
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl">
                             {successMessage ? (
                                 // Success State
-                                <div className="text-center space-y-6 animate-slide-down">
+                                <div className="text-center space-y-6">
                                     <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto">
                                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -273,15 +273,15 @@ export default function ResetPassword() {
                             ) : (
                                 // Form State
                                 <>
-                                    <h2 className="text-2xl font-bold text-white mb-2">
-                                        Reset Your Password
+                                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                                        Reset Password
                                     </h2>
-                                    <p className="text-sm text-purple-200 mb-8">
-                                        Enter your new password below
+                                    <p className="text-xs md:text-sm text-purple-200 mb-8">
+                                        Enter a new password to secure your account
                                     </p>
 
                                     {(error || localError) && (
-                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg animate-shake">
+                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
                                             <p className="text-red-200 text-sm font-medium">{error || localError}</p>
                                         </div>
                                     )}

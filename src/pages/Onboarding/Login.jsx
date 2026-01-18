@@ -92,7 +92,7 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
@@ -100,19 +100,19 @@ export default function Login() {
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
-            <div className="w-full max-w-6xl relative z-10 flex items-center justify-center">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                    {/* Left Content - Welcome Section */}
-                    <div className="flex flex-col justify-center order-2 lg:order-1">
+            <div className="w-full max-w-5xl relative z-10 flex items-center justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 w-full">
+                    {/* Left Content - Welcome Section - Hidden on mobile, shown on tablet+ */}
+                    <div className="hidden md:flex flex-col justify-center order-2 lg:order-1">
                         <div className="text-white space-y-6">
                             <div>
-                                <h1 className="text-5xl md:text-6xl font-bold mb-3">
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
                                     Welcome!
                                 </h1>
                                 <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
                             </div>
                             
-                            <p className="text-lg text-purple-200 leading-relaxed">
+                            <p className="text-base md:text-lg text-purple-200 leading-relaxed">
                                 Manage your store effortlessly. Access your dashboard, track orders, manage inventory, and grow your business with powerful tools designed for sellers.
                             </p>
 
@@ -126,18 +126,18 @@ export default function Login() {
                     </div>
 
                     {/* Right Content - Login Form */}
-                    <div className="order-1 lg:order-2 animate-slide-up">
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
-                            <h2 className="text-3xl font-bold text-white mb-2">
+                    <div className="order-1 md:order-2">
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl">
+                            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                                 Sign in
                             </h2>
-                            <p className="text-sm text-purple-200 mb-8">
+                            <p className="text-xs md:text-sm text-purple-200 mb-8">
                                 Enter your credentials to access your dashboard
                             </p>
 
                             {/* Error Message */}
                             {error && !showVerificationMessage && (
-                                <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg animate-shake">
+                                <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
                                     <p className="text-red-200 text-sm font-medium">{error}</p>
                                 </div>
                             )}

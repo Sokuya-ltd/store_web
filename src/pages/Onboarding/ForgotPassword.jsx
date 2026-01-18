@@ -57,7 +57,7 @@ export default function ForgotPassword() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
@@ -65,25 +65,25 @@ export default function ForgotPassword() {
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
-            <div className="w-full max-w-6xl relative z-10 flex items-center justify-center">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-                    {/* Left Content */}
-                    <div className="flex flex-col justify-center order-2 lg:order-1">
+            <div className="w-full max-w-5xl relative z-10 flex items-center justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 w-full">
+                    {/* Left Content - Hidden on mobile */}
+                    <div className="hidden md:flex flex-col justify-center order-2 lg:order-1">
                         <div className="text-white space-y-6">
                             <div>
-                                <h1 className="text-5xl md:text-6xl font-bold mb-3">
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
                                     Password Recovery
                                 </h1>
                                 <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
                             </div>
 
-                            <p className="text-lg text-purple-200 leading-relaxed">
+                            <p className="text-base md:text-lg text-purple-200 leading-relaxed">
                                 Don't worry! It happens to the best of us. Enter your email address and we'll send you a link to reset your password.
                             </p>
 
                             <div className="space-y-3">
                                 <h3 className="text-sm font-semibold text-orange-400">What happens next?</h3>
-                                <ul className="space-y-2 text-purple-200">
+                                <ul className="space-y-2 text-purple-200 text-sm">
                                     <li className="flex items-start gap-3">
                                         <span className="text-orange-400 font-bold">1</span>
                                         <span>Enter your email address below</span>
@@ -102,11 +102,11 @@ export default function ForgotPassword() {
                     </div>
 
                     {/* Right Content - Form */}
-                    <div className="order-1 lg:order-2 animate-slide-up">
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl">
+                    <div className="order-1 md:order-2">
+                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl">
                             {successMessage ? (
                                 // Success State
-                                <div className="text-center space-y-6 animate-slide-down">
+                                <div className="text-center space-y-6">
                                     <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto">
                                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -145,7 +145,7 @@ export default function ForgotPassword() {
                                     </p>
 
                                     {error && (
-                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg animate-shake">
+                                        <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
                                             <p className="text-red-200 text-sm font-medium">{error}</p>
                                         </div>
                                     )}
