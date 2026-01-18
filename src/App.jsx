@@ -15,6 +15,7 @@ import OnboardingLayout from "./pages/Onboarding/OnboardingLayout";
 import RegistrationSuccess from "./pages/Onboarding/RegistrationSuccess";
 import Login from "./pages/Onboarding/Login";
 import ForgotPassword from "./pages/Onboarding/ForgotPassword";
+import ResetPassword from "./pages/Onboarding/ResetPassword";
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
       <Route element={<GuestRoute />}>
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/password-reset" element={<ResetPassword />} />
         <Route path="/onboarding/*" element={<OnboardingLayout />} />
         <Route path="/onboarding/success" element={<RegistrationSuccess />} />
       </Route>

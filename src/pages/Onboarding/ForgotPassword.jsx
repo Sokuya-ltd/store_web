@@ -36,7 +36,9 @@ export default function ForgotPassword() {
 
         try {
             // Call forgot password endpoint
+            console.log('Submitting forgot password request for email:', email);
             const response = await api.post("/store/forgot-password", { email });
+            console.log('Forgot password response:', response);
 
             showSuccess(response.message || "Password reset link sent to your email!");
             setSuccessMessage(true);
@@ -46,6 +48,7 @@ export default function ForgotPassword() {
                 navigate("/login", { replace: true });
             }, 3000);
         } catch (err) {
+            console.error('Forgot password error:', err);
             showError(err.message || "Failed to send reset link", 8000);
             setError(err.message || "Failed to send reset link. Please try again.");
         } finally {

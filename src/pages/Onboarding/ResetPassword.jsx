@@ -80,6 +80,8 @@ export default function ResetPassword() {
         }
 
         try {
+            console.log('Submitting password reset request:', { token, email, password: '***' });
+            
             const response = await api.post("/store/reset-password", {
                 token,
                 email,
@@ -87,6 +89,8 @@ export default function ResetPassword() {
                 password_confirmation: formData.password_confirmation,
             });
 
+            console.log('Password reset response:', response);
+            
             showSuccess(response.message || "Password reset successful!");
             setSuccessMessage(true);
 
@@ -95,13 +99,35 @@ export default function ResetPassword() {
                 navigate("/login", { replace: true });
             }, 2000);
         } catch (err) {
-            const errorMsg = err.message || "Failed to reset password";
-            showError(errorMsg, 8000);
-            setError(errorMsg);
-
-            // Check for specific error messages
-            if (errorMsg.includes("expired") || errorMsg.includes("invalid")) {
-                setIsTokenValid(false);
+            console.error('Password reset error:', err);
+            
+            // Handle specific error cases from backend
+            if (err.status === 422) {
+                // Validation errors
+                if (err.errors) {
+                    setFieldErrors(err.errors);
+                    const errorMessages = Object.entries(err.errors)
+                        .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+                        .join('\n');
+                    setError(`Validation failed:\n${errorMessages}`);
+                } else {
+                    setError(err.message || "Validation failed");
+                }
+            } else if (err.status === 401) {
+                // Invalid or expired token
+                setError("Invalid or expired reset token. Please request a new password reset.");
+                showError("Invalid or expired reset token. Redirecting to forgot password...", 8000);
+                setTimeout(() => {
+                    navigate("/forgot-password", { replace: true });
+                }, 3000);
+            } else if (err.status === 404) {
+                // Account not found
+                setError("No account found with this email address.");
+                showError("Account not found. Please check your email and try again.", 8000);
+            } else {
+                const errorMsg = err.message || "Failed to reset password";
+                showError(errorMsg, 8000);
+                setError(errorMsg);
             }
         } finally {
             setIsSubmitting(false);
@@ -254,7 +280,7 @@ export default function ResetPassword() {
 
                                     {error && (
                                         <div className="mb-6 p-4 bg-red-500/20 border border-red-400/50 rounded-lg">
-                                            <p className="text-red-200 text-sm font-medium">{error}</p>
+                                            <p className="text-red-200 text-sm font-medium whitespace-pre-wrap">{error}</p>
                                         </div>
                                     )}
 
