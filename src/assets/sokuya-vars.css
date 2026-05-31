@@ -1,0 +1,233 @@
+/**
+ * Sokuya Design System — CSS Custom Properties
+ * Import this once in your main.jsx or App.jsx:
+ *   import './sokuya-vars.css'
+ */
+
+:root {
+  /* ── Orange (Brand) ──────────────────────────────────── */
+  --color-orange-50:   #FEF0DC;
+  --color-orange-100:  #FDD8A8;
+  --color-orange-200:  #FAC775;
+  --color-orange-300:  #F8AA3F;
+  --color-orange-400:  #F5820A;
+  --color-orange-500:  #D96E06;
+  --color-orange-600:  #C5620A;
+  --color-orange-700:  #A04E07;
+  --color-orange-800:  #7A3A05;
+  --color-orange-900:  #4F2503;
+
+  /* ── Navy (Dark) ─────────────────────────────────────── */
+  --color-navy-50:     #E8EAF0;
+  --color-navy-100:    #C5CAD8;
+  --color-navy-200:    #9FA8BF;
+  --color-navy-300:    #7884A4;
+  --color-navy-400:    #566590;
+  --color-navy-500:    #384A7A;
+  --color-navy-600:    #2C3A66;
+  --color-navy-700:    #243055;
+  --color-navy-800:    #1E2535;
+  --color-navy-900:    #121520;
+
+  /* ── Neutral (Warm Gray) ─────────────────────────────── */
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #F5F3EE;
+  --color-neutral-100: #EAE8E3;
+  --color-neutral-200: #E2E0D8;
+  --color-neutral-300: #CCCAC2;
+  --color-neutral-400: #B0AEA6;
+  --color-neutral-500: #9A9890;
+  --color-neutral-600: #7A7870;
+  --color-neutral-700: #5E5C55;
+  --color-neutral-800: #4A4845;
+  --color-neutral-900: #2C2C2A;
+
+  /* ── Semantic: Backgrounds ───────────────────────────── */
+  --bg-page:           var(--color-neutral-50);
+  --bg-surface:        var(--color-neutral-0);
+  --bg-dark:           var(--color-navy-800);
+  --bg-dark-deep:      var(--color-navy-900);
+  --bg-brand:          var(--color-orange-400);
+  --bg-brand-light:    var(--color-orange-50);
+  --bg-brand-hover:    var(--color-orange-500);
+
+  /* ── Semantic: Text ──────────────────────────────────── */
+  --text-primary:      var(--color-neutral-900);
+  --text-secondary:    var(--color-neutral-800);
+  --text-muted:        var(--color-neutral-500);
+  --text-on-dark:      var(--color-neutral-0);
+  --text-brand:        var(--color-orange-400);
+  --text-brand-dark:   var(--color-orange-800);
+
+  /* ── Semantic: Borders ───────────────────────────────── */
+  --border-default:    var(--color-neutral-200);
+  --border-strong:     var(--color-neutral-300);
+  --border-brand:      var(--color-orange-400);
+
+  /* ── Typography ──────────────────────────────────────── */
+  --font-sans:         'Inter', system-ui, sans-serif;
+  --font-display:      'Sora', 'Inter', sans-serif;
+  --font-mono:         'JetBrains Mono', monospace;
+
+  /* ── Radius ──────────────────────────────────────────── */
+  --radius-sm:         4px;
+  --radius-md:         8px;
+  --radius-lg:         12px;
+  --radius-xl:         16px;
+  --radius-2xl:        20px;
+  --radius-full:       9999px;
+
+  /* ── Shadows ─────────────────────────────────────────── */
+  --shadow-sm:         0 1px 2px 0 rgba(30, 37, 53, 0.06);
+  --shadow-md:         0 4px 16px 0 rgba(30, 37, 53, 0.12);
+  --shadow-lg:         0 8px 32px 0 rgba(30, 37, 53, 0.14);
+
+  /* ── Transitions ─────────────────────────────────────── */
+  --transition-fast:   150ms ease;
+  --transition:        200ms ease;
+  --transition-slow:   350ms ease;
+}
+
+/* ── Base reset & defaults ────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family:      var(--font-sans);
+  background-color: var(--bg-page);
+  color:            var(--text-primary);
+  line-height:      1.75;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color:       var(--text-primary);
+  line-height: 1.1;
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────────── */
+
+/* Buttons */
+.btn {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             8px;
+  padding:         12px 24px;
+  border-radius:   var(--radius-full);
+  font-family:     var(--font-sans);
+  font-size:       0.9375rem;
+  font-weight:     600;
+  cursor:          pointer;
+  transition:      background-color var(--transition), transform var(--transition-fast);
+  border:          none;
+  text-decoration: none;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background-color: var(--bg-brand);
+  color:            var(--color-neutral-0);
+}
+.btn-primary:hover { background-color: var(--bg-brand-hover); }
+
+.btn-outline {
+  background-color: transparent;
+  color:            var(--text-primary);
+  border:           1.5px solid var(--border-default);
+}
+.btn-outline:hover { border-color: var(--border-strong); }
+
+.btn-ghost-dark {
+  background-color: transparent;
+  color:            var(--text-on-dark);
+  border:           1.5px solid rgba(255, 255, 255, 0.25);
+}
+.btn-ghost-dark:hover { background-color: rgba(255, 255, 255, 0.08); }
+
+/* Cards */
+.card {
+  background:    var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border:        1px solid var(--border-default);
+  padding:       24px;
+}
+
+.card-dark {
+  background:    var(--color-navy-700);
+  border-radius: var(--radius-lg);
+  border:        1px solid rgba(255, 255, 255, 0.08);
+  padding:       24px;
+  color:         var(--text-on-dark);
+}
+
+/* Tags / Chips */
+.chip {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             6px;
+  padding:         4px 12px;
+  border-radius:   var(--radius-full);
+  font-size:       0.75rem;
+  font-weight:     500;
+}
+
+.chip-brand {
+  background-color: var(--bg-brand-light);
+  color:            var(--text-brand-dark);
+}
+
+.chip-dark {
+  background-color: rgba(255, 255, 255, 0.12);
+  color:            var(--text-on-dark);
+}
+
+/* Section containers */
+.section-light {
+  background-color: var(--bg-page);
+  padding:          80px 0;
+}
+
+.section-dark {
+  background-color: var(--bg-dark);
+  padding:          80px 0;
+  color:            var(--text-on-dark);
+}
+
+.container {
+  max-width:    1200px;
+  margin:       0 auto;
+  padding:      0 24px;
+}
+
+/* Accent heading (orange word style from Sokuya) */
+.accent {
+  color: var(--text-brand);
+}
+
+/* Step/icon badge */
+.step-badge {
+  width:            32px;
+  height:           32px;
+  border-radius:    var(--radius-full);
+  background-color: var(--bg-brand);
+  color:            var(--color-neutral-0);
+  display:          flex;
+  align-items:      center;
+  justify-content:  center;
+  font-size:        0.8125rem;
+  font-weight:      700;
+  flex-shrink:      0;
+}

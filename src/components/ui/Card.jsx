@@ -1,6 +1,7 @@
-export default function Card({ children, className = "" }) {
+export default function Card({ children, className = "", transparent = false }) {
+  const bg = transparent ? "" : "bg-white/7 backdrop-blur-sm";
   return (
-    <div className={`bg-white shadow-sm border border-slate-200 ${className}`}>
+    <div className={`${bg} border border-white/10 ${className}`}>
       {children}
     </div>
   );

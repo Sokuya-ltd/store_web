@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Eye, EyeOff, Lock, ArrowLeft } from "lucide-react";
+import logo from "../../assets/logo.png";
 import ToastContainer from "../../components/ui/ToastContainer";
 import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
@@ -139,7 +140,7 @@ export default function ResetPassword() {
     // Loading state
     if (isValidating) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex items-center justify-center">
+            <div className="min-h-screen bg-linear-to-br from-navy-900 via-navy-800 to-navy-900 flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <svg className="animate-spin h-8 w-8 text-orange-500 mx-auto" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -154,14 +155,14 @@ export default function ResetPassword() {
     // Invalid token state
     if (!isTokenValid) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex items-center justify-center p-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
-                <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
+            <div className="min-h-screen bg-linear-to-br from-navy-900 via-navy-800 to-navy-900 flex items-center justify-center p-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-navy-700/30 rounded-full blur-3xl -mr-48 -mt-48"></div>
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
 
                 <ToastContainer toasts={toasts} onClose={hideToast} />
 
                 <div className="max-w-md w-full relative z-10">
-                    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 shadow-2xl text-center space-y-6">
+                    <div className="bg-white/7 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl text-center space-y-6">
                         <div className="w-16 h-16 bg-red-500/20 border border-red-400/50 rounded-full flex items-center justify-center mx-auto">
                             <svg className="w-8 h-8 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 4v2M6.343 4.343a8.968 8.968 0 0111.314 0m-1.414 1.414a6.968 6.968 0 00-9.9 0m11.314 9.9a8.968 8.968 0 01-11.314 0m1.414-1.414a6.968 6.968 0 009.9 0" />
@@ -172,14 +173,14 @@ export default function ResetPassword() {
                             <h2 className="text-2xl font-bold text-white mb-2">
                                 Link Expired
                             </h2>
-                            <p className="text-purple-200">
+                            <p className="text-neutral-300">
                                 The password reset link has expired or is invalid. Please request a new one.
                             </p>
                         </div>
 
                         <button
                             onClick={() => navigate("/forgot-password")}
-                            className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
+                            className="w-full py-3 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
                         >
                             Request New Link
                         </button>
@@ -198,11 +199,11 @@ export default function ResetPassword() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-linear-to-br from-navy-900 via-navy-800 to-navy-900 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
-            <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-navy-700/30 rounded-full blur-3xl -mr-48 -mt-48"></div>
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
+            <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-orange-400/10 rounded-full blur-3xl"></div>
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
@@ -211,20 +212,21 @@ export default function ResetPassword() {
                     {/* Left Content - Hidden on mobile */}
                     <div className="hidden md:flex flex-col justify-center order-2 lg:order-1">
                         <div className="text-white space-y-6">
+                            <img src={logo} alt="Sokuya" className="h-40 w-auto mb-2" />
                             <div>
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
                                     Reset Password
                                 </h1>
-                                <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                                <div className="w-16 h-1 bg-orange-400 rounded-full"></div>
                             </div>
 
-                            <p className="text-base md:text-lg text-purple-200 leading-relaxed">
+                            <p className="text-base md:text-lg text-neutral-300 leading-relaxed">
                                 Create a strong new password to secure your account. Make sure to use a combination of letters, numbers, and special characters.
                             </p>
 
                             <div className="space-y-3">
                                 <h3 className="text-sm font-semibold text-orange-400">Password Tips</h3>
-                                <ul className="space-y-2 text-purple-200 text-sm">
+                                <ul className="space-y-2 text-neutral-300 text-sm">
                                     <li className="flex items-start gap-3">
                                         <span className="text-green-400 font-bold">✓</span>
                                         <span>At least 8 characters long</span>
@@ -244,11 +246,15 @@ export default function ResetPassword() {
 
                     {/* Right Content - Form */}
                     <div className="order-1 md:order-2">
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl">
+                        {/* Logo - mobile only */}
+                        <div className="flex justify-center mb-6 md:hidden">
+                            <img src={logo} alt="Sokuya" className="h-35 w-auto" />
+                        </div>
+                        <div className="bg-white/7 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl">
                             {successMessage ? (
                                 // Success State
                                 <div className="text-center space-y-6">
-                                    <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto">
+                                    <div className="w-16 h-16 bg-linear-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto">
                                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                         </svg>
@@ -258,14 +264,14 @@ export default function ResetPassword() {
                                         <h2 className="text-2xl font-bold text-white mb-2">
                                             Password Reset!
                                         </h2>
-                                        <p className="text-purple-200">
+                                        <p className="text-neutral-300">
                                             Your password has been successfully reset. You can now sign in with your new password.
                                         </p>
                                     </div>
 
                                     <button
                                         onClick={() => navigate("/login")}
-                                        className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
+                                        className="w-full py-3 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02]"
                                     >
                                         Go to Login
                                     </button>
@@ -276,7 +282,7 @@ export default function ResetPassword() {
                                     <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                                         Reset Password
                                     </h2>
-                                    <p className="text-xs md:text-sm text-purple-200 mb-8">
+                                    <p className="text-xs md:text-sm text-neutral-400 mb-8">
                                         Enter a new password to secure your account
                                     </p>
 
@@ -289,7 +295,7 @@ export default function ResetPassword() {
                                     <form className="space-y-5" onSubmit={handleSubmit}>
                                         {/* New Password */}
                                         <div>
-                                            <label htmlFor="password" className="block text-sm font-medium text-purple-100 mb-2">
+                                            <label htmlFor="password" className="block text-sm font-medium text-neutral-200 mb-2">
                                                 New Password
                                                 <span className="text-orange-400 ml-1">*</span>
                                             </label>
@@ -303,12 +309,12 @@ export default function ResetPassword() {
                                                     required
                                                     aria-invalid={!!fieldErrors.password}
                                                     aria-describedby={fieldErrors.password ? "password-error" : undefined}
-                                                    className="w-full bg-white/10 border border-white/30 text-white placeholder-purple-300/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all backdrop-blur-sm"
+                                                    className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                                                 />
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowPassword(!showPassword)}
-                                                    className="absolute right-3 top-3.5 text-purple-300/50 hover:text-purple-200 transition-colors"
+                                                    className="absolute right-3 top-3.5 text-neutral-500 hover:text-neutral-300 transition-colors"
                                                     aria-label={showPassword ? "Hide password" : "Show password"}
                                                 >
                                                     {showPassword ? (
@@ -327,7 +333,7 @@ export default function ResetPassword() {
 
                                         {/* Confirm Password */}
                                         <div>
-                                            <label htmlFor="password_confirmation" className="block text-sm font-medium text-purple-100 mb-2">
+                                            <label htmlFor="password_confirmation" className="block text-sm font-medium text-neutral-200 mb-2">
                                                 Confirm Password
                                                 <span className="text-orange-400 ml-1">*</span>
                                             </label>
@@ -341,12 +347,12 @@ export default function ResetPassword() {
                                                     required
                                                     aria-invalid={!!fieldErrors.password_confirmation}
                                                     aria-describedby={fieldErrors.password_confirmation ? "confirm-error" : undefined}
-                                                    className="w-full bg-white/10 border border-white/30 text-white placeholder-purple-300/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all backdrop-blur-sm"
+                                                    className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                                                 />
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                    className="absolute right-3 top-3.5 text-purple-300/50 hover:text-purple-200 transition-colors"
+                                                    className="absolute right-3 top-3.5 text-neutral-500 hover:text-neutral-300 transition-colors"
                                                     aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                                                 >
                                                     {showConfirmPassword ? (
@@ -367,7 +373,7 @@ export default function ResetPassword() {
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-orange-500/50 disabled:to-orange-600/50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-purple-900 mt-6"
+                                            className="w-full py-3 px-4 bg-orange-400 hover:bg-orange-500 disabled:bg-orange-400/50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-navy-900 mt-6"
                                         >
                                             {isSubmitting ? (
                                                 <span className="flex items-center justify-center gap-2">

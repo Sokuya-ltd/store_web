@@ -6,7 +6,6 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import { useToast } from "../../hooks/useToast";
-import { colors } from "../../lib/colors";
 import api from "../../services/api";
 
 export default function ProductEdit() {
@@ -360,8 +359,8 @@ export default function ProductEdit() {
         return (
             <div className="w-full flex items-center justify-center py-20">
                 <div className="text-center">
-                    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-slate-600">Loading product...</p>
+                    <div className="w-8 h-8 border-4 border-white/20 border-t-orange-400 rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-neutral-400">Loading product...</p>
                 </div>
             </div>
         );
@@ -373,9 +372,9 @@ export default function ProductEdit() {
             <div className="w-full space-y-6 py-6">
                 <Card className="p-6">
                     <div className="text-center py-10">
-                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="w-16 h-16 bg-red-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
                             <svg
-                                className="w-8 h-8 text-red-600"
+                                className="w-8 h-8 text-red-400"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -388,10 +387,10 @@ export default function ProductEdit() {
                                 />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-medium text-slate-900 mb-2">
+                        <h3 className="text-lg font-medium text-white mb-2">
                             {error === "Product not found" ? "Product Not Found" : "Error Loading Product"}
                         </h3>
-                        <p className="text-slate-600 mb-4">{error}</p>
+                        <p className="text-neutral-400 mb-4">{error}</p>
                         <Button onClick={() => navigate("/products")}>
                             Back to Products
                         </Button>
@@ -408,8 +407,8 @@ export default function ProductEdit() {
         <div className="w-full space-y-6 py-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-semibold text-slate-900">Edit Product</h2>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <h2 className="text-xl font-semibold text-white">Edit Product</h2>
+                    <p className="text-sm text-neutral-400 mt-1">
                         {product?.name}
                     </p>
                 </div>
@@ -425,24 +424,18 @@ export default function ProductEdit() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 {product && (
                     <Card className="p-6">
-                        <h3 className="font-medium text-slate-900 mb-4">Product Information</h3>
-                        <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-lg">
+                        <h3 className="font-medium text-white mb-4">Product Information</h3>
+                        <div className="flex items-center gap-4 p-4 bg-white/5 rounded-lg">
                             {media && media.length > 0 && media.find(m => m.is_primary) ? (
                                 <img
                                     src={media.find(m => m.is_primary)?.url}
                                     alt={product?.name}
-                                    className="w-20 h-20 object-cover rounded bg-slate-200"
-                                />
-                            ) : media && media.length > 0 ? (
-                                <img
-                                    src={media[0]?.url}
-                                    alt={product?.name}
-                                    className="w-20 h-20 object-cover rounded bg-slate-200"
+                                    className="w-20 h-20 object-cover rounded bg-white/15"
                                 />
                             ) : (
-                                <div className="w-20 h-20 bg-slate-200 rounded flex items-center justify-center">
+                                <div className="w-20 h-20 bg-white/10 rounded flex items-center justify-center">
                                     <svg
-                                        className="w-10 h-10 text-slate-400"
+                                        className="w-10 h-10 text-neutral-600"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -457,11 +450,11 @@ export default function ProductEdit() {
                                 </div>
                             )}
                             <div className="flex-1">
-                                <p className="font-medium text-slate-900">{product?.name}</p>
-                                <p className="text-sm text-slate-600 mt-1">
+                                <p className="font-medium text-white">{product?.name}</p>
+                                <p className="text-sm text-neutral-400 mt-1">
                                     {product?.brand} • {product?.unit}
                                 </p>
-                                <div className="text-sm text-slate-500 mt-2 relative group">
+                                <div className="text-sm text-neutral-500 mt-2 relative group">
                                     <p className="truncate" dangerouslySetInnerHTML={{ __html: product?.description?.substring(0, 50) }}></p>
                                     {product?.description?.length > 50 && (
                                         <div className="absolute left-0 top-full mt-1 hidden group-hover:block bg-slate-900 text-white text-xs rounded py-2 px-3 whitespace-normal max-w-xs z-10"
@@ -472,8 +465,8 @@ export default function ProductEdit() {
                             </div>
                             {currentCategory && (
                                 <div className="text-right">
-                                    <p className="text-xs text-slate-500 uppercase">Category</p>
-                                    <p className="text-sm font-medium text-slate-700 mt-1">
+                                    <p className="text-xs text-neutral-500 uppercase">Category</p>
+                                    <p className="text-sm font-medium text-neutral-300 mt-1">
                                         {currentCategory.name}
                                     </p>
                                 </div>
@@ -485,18 +478,18 @@ export default function ProductEdit() {
                 {/* Image Management */}
                 {product && (
                     <Card className="p-6">
-                        <h3 className="font-medium text-slate-900 mb-4">Image Management</h3>
+                        <h3 className="font-medium text-white mb-4">Image Management</h3>
                         {media && media.length > 0 ? (
                             <div className="space-y-4">
                                 {media.map((image) => (
                                     <div
                                         key={image.id}
-                                        className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg border border-slate-200"
+                                        className="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/10"
                                     >
                                         <img
                                             src={image.url}
                                             alt={image.alt_text || "Product image"}
-                                            className="w-24 h-24 object-cover rounded bg-slate-200"
+                                            className="w-24 h-24 object-cover rounded bg-white/15"
                                         />
                                         <div className="flex-1">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -523,7 +516,7 @@ export default function ProductEdit() {
                                                 />
                                                 <div className="flex items-end gap-2">
                                                     <div className="flex-1">
-                                                        <label className="text-sm font-medium text-slate-700 block mb-2">
+                                                        <label className="text-sm font-medium text-neutral-200 block mb-2">
                                                             Primary Image
                                                         </label>
                                                         <label className="flex items-center gap-2 cursor-pointer">
@@ -538,13 +531,13 @@ export default function ProductEdit() {
                                                                 disabled={mediaUpdating[image.id]}
                                                                 className="w-4 h-4 cursor-pointer"
                                                             />
-                                                            <span className="text-sm text-slate-600">
+                                                            <span className="text-sm text-neutral-400">
                                                                 {image.is_primary ? "Primary image" : "Set as primary"}
                                                             </span>
                                                         </label>
                                                     </div>
                                                     {mediaUpdating[image.id] && (
-                                                        <div className="text-xs text-slate-500">Updating...</div>
+                                                        <div className="text-xs text-neutral-500">Updating...</div>
                                                     )}
                                                 </div>
                                             </div>
@@ -553,16 +546,16 @@ export default function ProductEdit() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="text-center py-8 text-slate-500">
+                            <div className="text-center py-8 text-neutral-400">
                                 <p>No images available for this product</p>
                             </div>
                         )}
 
                         {/* Image Upload Form */}
-                        <div className="mt-6 pt-6 border-t border-slate-200">
-                            <h4 className="font-medium text-slate-900 mb-4">Upload New Image</h4>
+                        <div className="mt-6 pt-6 border-t border-white/10">
+                            <h4 className="font-medium text-white mb-4">Upload New Image</h4>
                             <div className="space-y-4">
-                                <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-slate-400 transition">
+                                <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-white/40 transition">
                                     <input
                                         ref={fileInputRef}
                                         type="file"
@@ -574,7 +567,7 @@ export default function ProductEdit() {
                                     <label htmlFor="image-upload" className="cursor-pointer block">
                                         <div className="flex flex-col items-center gap-2">
                                             <svg
-                                                className="w-12 h-12 text-slate-400"
+                                                className="w-12 h-12 text-neutral-500"
                                                 fill="none"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
@@ -587,10 +580,10 @@ export default function ProductEdit() {
                                                 />
                                             </svg>
                                             <div>
-                                                <p className="font-medium text-slate-900">
+                                                <p className="font-medium text-white">
                                                     {selectedFile ? selectedFile.name : "Click to upload or drag and drop"}
                                                 </p>
-                                                <p className="text-sm text-slate-500 mt-1">
+                                                <p className="text-sm text-neutral-500 mt-1">
                                                     PNG, JPG, GIF, WebP • Max 5MB
                                                 </p>
                                             </div>
@@ -626,7 +619,7 @@ export default function ProductEdit() {
 
                 {/* Store Product Details */}
                 <Card className="p-6">
-                    <h3 className="font-medium text-slate-900 mb-4">Pricing & Inventory</h3>
+                    <h3 className="font-medium text-white mb-4">Pricing &amp; Inventory</h3>
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <Input
                             label="Selling Price (£)"
@@ -660,10 +653,10 @@ export default function ProductEdit() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
                         <div className="relative group">
                             <div className="flex items-center gap-1 mb-1">
-                                <label className="text-sm font-medium text-slate-700">SKU</label>
+                                <label className="text-sm font-medium text-neutral-200">SKU</label>
                                 <span className="relative">
                                     <svg
-                                        className="w-4 h-4 text-slate-400 hover:text-slate-600 cursor-help"
+                                        className="w-4 h-4 text-neutral-500 hover:text-neutral-300 cursor-help"
                                         fill="currentColor"
                                         viewBox="0 0 20 20"
                                     >
@@ -698,7 +691,7 @@ export default function ProductEdit() {
                             onChange={(e) => updateForm({ weight: e.target.value })}
                         />
                         <div className="flex flex-col justify-end">
-                            <label className="mb-1 text-sm font-medium text-slate-700">Status</label>
+                            <label className="mb-1 text-sm font-medium text-neutral-200">Status</label>
                             <ToggleButtonGroup
                                 options={[
                                     { label: "Active", value: "active" },
@@ -715,7 +708,7 @@ export default function ProductEdit() {
                 {/* Variant Options */}
                 {form.variant_options && (
                     <Card className="p-6">
-                        <h3 className="font-medium text-slate-900 mb-4">Variant Options</h3>
+                        <h3 className="font-medium text-white mb-4">Variant Options</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Input
                                 label="Size"
@@ -750,14 +743,14 @@ export default function ProductEdit() {
 
                 {/* Store Notes & Tags */}
                 <Card className="p-6">
-                    <h3 className="font-medium text-slate-900 mb-4">Store-Specific Information</h3>
+                        <h3 className="font-medium text-white mb-4">Store-Specific Information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <div className="flex justify-between items-center mb-1">
-                                <label className="text-sm font-medium text-slate-700">Store Notes</label>
+                                <label className="text-sm font-medium text-neutral-200">Store Notes</label>
                                 <span className={`text-xs ${(form.store_notes || "").length > 500
-                                    ? "text-red-600 font-medium"
-                                    : "text-slate-500"
+                                    ? "text-red-400 font-medium"
+                                    : "text-neutral-500"
                                     }`}>
                                     {(form.store_notes || "").length}/500
                                 </span>
@@ -771,7 +764,7 @@ export default function ProductEdit() {
                             />
                         </div>
                         <div ref={storeTagDropdownRef} className="relative">
-                            <label className="block text-sm font-medium text-slate-700 mb-1">
+                            <label className="block text-sm font-medium text-neutral-200 mb-1">
                                 Store-Specific Tags
                             </label>
                             <div className="flex flex-wrap gap-2 mb-2">
@@ -823,7 +816,7 @@ export default function ProductEdit() {
                                     className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 rounded"
                                 />
                                 {showStoreTagDropdown && (storeTagSearch || filteredStoreTags.length > 0) && (
-                                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 shadow-lg max-h-48 overflow-y-auto rounded">
+                                    <div className="absolute z-10 w-full mt-1 bg-navy-800 border border-white/10 shadow-lg max-h-48 overflow-y-auto rounded">
                                         {filteredStoreTags.slice(0, 8).map((tag) => (
                                             <button
                                                 key={tag.id}
@@ -838,7 +831,7 @@ export default function ProductEdit() {
                                                 className="w-full text-left px-3 py-2 hover:bg-orange-50 text-sm flex items-center justify-between"
                                             >
                                                 <span>{tag.name}</span>
-                                                <span className="text-xs text-slate-400">{tag.slug}</span>
+                                                <span className="text-xs text-neutral-500">{tag.slug}</span>
                                             </button>
                                         ))}
                                         {storeTagSearch.trim() &&
@@ -854,20 +847,20 @@ export default function ProductEdit() {
                                                         setStoreTagSearch("");
                                                         setShowStoreTagDropdown(false);
                                                     }}
-                                                    className="w-full text-left px-3 py-2 hover:bg-green-50 text-sm border-t border-slate-200 text-green-700 font-medium"
+                                                    className="w-full text-left px-3 py-2 hover:bg-green-400/10 text-sm border-t border-white/10 text-green-400 font-medium"
                                                 >
                                                     + Add custom tag: "{storeTagSearch.trim()}"
                                                 </button>
                                             )}
                                         {filteredStoreTags.length === 0 && !storeTagSearch.trim() && (
-                                            <div className="px-3 py-2 text-sm text-slate-500">
+                                            <div className="px-3 py-2 text-sm text-neutral-500">
                                                 All tags already added
                                             </div>
                                         )}
                                     </div>
                                 )}
                             </div>
-                            <p className="text-xs text-slate-500 mt-1">
+                            <p className="text-xs text-neutral-500 mt-1">
                                 Select from suggestions or type and press Enter to add custom tags
                             </p>
                         </div>
@@ -880,16 +873,13 @@ export default function ProductEdit() {
                         type="button"
                         variant="outline"
                         onClick={() => navigate("/products")}
-                        style={{ borderColor: colors.neutral[300], color: colors.neutral[700] }}
                     >
                         Cancel
                     </Button>
                     <Button 
                       type="submit" 
                       disabled={isSaving}
-                      style={{ backgroundColor: colors.primary.main }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                      className="bg-orange-400 hover:bg-orange-500 text-white"
                     >
                         {isSaving ? "Saving..." : "Update Product"}
                     </Button>

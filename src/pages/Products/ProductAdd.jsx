@@ -8,7 +8,6 @@ import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import ImageUpload from "../../components/ui/ImageUpload";
 import MultiImageUpload from "../../components/ui/MultiImageUpload";
 import { useToast } from "../../context/ToastContext";
-import { colors } from "../../lib/colors";
 import api from "../../services/api";
 
 export default function ProductAdd() {
@@ -485,8 +484,8 @@ export default function ProductAdd() {
         <div className="w-full space-y-6 py-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-xl font-semibold text-slate-900">Add New Product</h2>
-                    <p>Add a new product to your store with images and pricing details</p>
+                    <h2 className="text-xl font-semibold text-white">Add New Product</h2>
+                    <p className="text-neutral-400">Add a new product to your store with images and pricing details</p>
                 </div>
                 <Button
                     type="button"
@@ -502,8 +501,8 @@ export default function ProductAdd() {
                 <Card className="p-6">
                     <div className="flex items-center justify-center py-12">
                         <div className="text-center">
-                            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 mb-4"></div>
-                            <p className="text-slate-600">Loading products, categories, and tags...</p>
+                            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-400 mb-4"></div>
+                            <p className="text-neutral-400">Loading products, categories, and tags...</p>
                         </div>
                     </div>
                 </Card>
@@ -512,8 +511,8 @@ export default function ProductAdd() {
                     <div className="flex items-center justify-center py-12">
                         <div className="text-center">
                             <div className="text-rose-600 text-4xl mb-4">⚠️</div>
-                            <p className="text-slate-900 font-medium mb-2">Failed to Load</p>
-                            <p className="text-slate-600 mb-4">{loadError}</p>
+                            <p className="text-white font-medium mb-2">Failed to Load</p>
+                            <p className="text-neutral-400 mb-4">{loadError}</p>
                             <Button
                                 type="button"
                                 variant="outline"
@@ -529,7 +528,7 @@ export default function ProductAdd() {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* Product Selection */}
                         <Card className="p-6 rounded-lg">
-                            <h3 className="font-medium text-slate-900 mb-4">Product Selection</h3>
+                            <h3 className="font-medium text-white mb-4">Product Selection</h3>
                             <div className="relative" ref={dropdownRef}>
                                 <Input
                                     label="Search or Create Product"
@@ -547,31 +546,28 @@ export default function ProductAdd() {
                                     placeholder="Type to search products..."
                                 />
                                 {showDropdown && searchQuery && (
-                                    <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                                    <div className="absolute z-50 w-full mt-1 bg-navy-800 border border-white/10 rounded-xl shadow-lg max-h-60 overflow-y-auto">
                                         {filteredProducts.length > 0 ? (
                                             <>
                                                 {filteredProducts.slice(0, 10).map((storeProduct) => (
                                                     <div
                                                         key={storeProduct.id}
-                                                        className="px-4 py-2 hover:bg-slate-50 cursor-pointer flex items-center gap-3"
+                                                        className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center gap-3"
                                                         onClick={() => handleSelectProduct(storeProduct)}
                                                     >
                                                         <img
                                                             src={storeProduct.product?.image_url}
                                                             alt={storeProduct.product?.name}
-                                                            className="w-8 h-8 object-cover bg-slate-100"
+                                                            className="w-8 h-8 object-cover bg-white/10"
                                                         />
                                                         <div>
-                                                            <p className="text-sm font-medium text-slate-900">{storeProduct.product?.name}</p>
-                                                            <p className="text-xs text-slate-500">{storeProduct.product?.brand}</p>
+                                                            <p className="text-sm font-medium text-white">{storeProduct.product?.name}</p>
+                                                            <p className="text-xs text-neutral-500">{storeProduct.product?.brand}</p>
                                                         </div>
                                                     </div>
                                                 ))}
                                                 <div
-                                                    className="px-4 py-3 border-t border-slate-100 cursor-pointer font-medium text-sm"
-                                                    style={{ backgroundColor: "transparent", color: colors.primary.main }}
-                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.primary.main}15`}
-                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                                                    className="px-4 py-3 border-t border-white/10 cursor-pointer font-medium text-sm text-orange-400 hover:bg-orange-400/10 transition-colors"
                                                     onClick={handleCreateNew}
                                                 >
                                                     + Create new product "{searchQuery}"
@@ -579,10 +575,7 @@ export default function ProductAdd() {
                                             </>
                                         ) : (
                                             <div
-                                                className="px-4 py-3 cursor-pointer font-medium text-sm"
-                                                style={{ backgroundColor: "transparent", color: colors.primary.main }}
-                                                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = `${colors.primary.main}15`}
-                                                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                                                className="px-4 py-3 cursor-pointer font-medium text-sm text-orange-400 hover:bg-orange-400/10 transition-colors"
                                                 onClick={handleCreateNew}
                                             >
                                                 + Create new product "{searchQuery}"
@@ -593,16 +586,16 @@ export default function ProductAdd() {
                             </div>
 
                             {form.product.name && !isNewProduct && (
-                                <div className="mt-4 p-4 bg-slate-50 rounded-xl flex items-center gap-4">
+                                <div className="mt-4 p-4 bg-white/5 rounded-xl flex items-center gap-4">
                                     <img
                                         src={form.product.image_url}
                                         alt={form.product.name}
-                                        className="w-16 h-16 object-cover bg-slate-200"
+                                        className="w-16 h-16 object-cover bg-white/15"
                                     />
                                     <div>
-                                        <p className="font-medium text-slate-900">{form.product.name}</p>
-                                        <p className="text-sm text-slate-500">{form.product.brand} • {form.product.unit}</p>
-                                        <p className="text-xs text-slate-400 mt-1">{form.product.description}</p>
+                                        <p className="font-medium text-white">{form.product.name}</p>
+                                        <p className="text-sm text-neutral-400">{form.product.brand} • {form.product.unit}</p>
+                                        <p className="text-xs text-neutral-500 mt-1">{form.product.description}</p>
                                     </div>
                                 </div>
                             )}
@@ -611,7 +604,7 @@ export default function ProductAdd() {
                         {/* Product Details (shown for both new and existing products) */}
                         {form.product.name && (
                             <Card className="p-6 rounded-lg">
-                                <h3 className="font-medium text-slate-900 mb-4">{isNewProduct ? "New" : ""} Product Details</h3>
+                                <h3 className="font-medium text-white mb-4">{isNewProduct ? "New" : ""} Product Details</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <Input
                                         label="Product Name"
@@ -633,29 +626,29 @@ export default function ProductAdd() {
                                         onChange={(e) => updateProduct({ brand: e.target.value })}
                                     />
                                     <div className="relative" ref={categoryDropdownRef}>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        <label className="block text-sm font-medium text-neutral-200 mb-1">
                                             Category
                                         </label>
                                         <div
-                                            className="w-full border border-slate-300 px-3 py-2 text-sm cursor-pointer bg-white flex items-center justify-between"
+                                            className="w-full bg-white/10 border border-white/20 px-3 py-2 text-sm cursor-pointer rounded-lg flex items-center justify-between text-white"
                                             onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
                                         >
-                                            <span className={selectedCategoryName ? "text-slate-900" : "text-slate-400"}>
+                                            <span className={selectedCategoryName ? "text-white" : "text-neutral-500"}>
                                                 {selectedCategoryName || "Select category..."}
                                             </span>
-                                            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                             </svg>
                                         </div>
                                         {showCategoryDropdown && (
-                                            <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg">
-                                                <div className="p-2 border-b border-slate-100">
+                                            <div className="absolute z-50 w-full mt-1 bg-navy-800 border border-white/10 rounded-xl shadow-lg">
+                                                <div className="p-2 border-b border-white/10">
                                                     <input
                                                         type="text"
                                                         value={categorySearch}
                                                         onChange={(e) => setCategorySearch(e.target.value)}
                                                         placeholder="Search categories..."
-                                                        className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 rounded-lg"
+                                                        className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-lg"
                                                         autoFocus
                                                     />
                                                 </div>
@@ -665,8 +658,8 @@ export default function ProductAdd() {
                                                             {filteredCategories.map((category) => (
                                                                 <div
                                                                     key={category.id}
-                                                                    className={`px-4 py-2 hover:bg-slate-50 cursor-pointer text-sm ${category.isParent ? "font-medium text-slate-900" : "text-slate-700 pl-6"
-                                                                        } ${form.category?.id === category.id ? "bg-orange-50 text-orange-600" : ""}`}
+                                                                    className={`px-4 py-2 hover:bg-white/10 cursor-pointer text-sm ${category.isParent ? "font-medium text-white" : "text-neutral-300 pl-6"
+                                                                        } ${form.category?.id === category.id ? "bg-orange-400/20 text-orange-400" : ""}`}
                                                                     onClick={() => handleSelectCategory(category)}
                                                                 >
                                                                     {category.isParent ? category.name : `↳ ${category.name}`}
@@ -683,12 +676,12 @@ export default function ProductAdd() {
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <div className="px-4 py-3 text-sm text-slate-500">
+                                                            <div className="px-4 py-3 text-sm text-neutral-500">
                                                                 No categories found
                                                             </div>
                                                             {categorySearch.trim() && (
                                                                 <div
-                                                                    className="px-4 py-3 border-t border-slate-100 hover:bg-orange-50 cursor-pointer text-orange-600 font-medium text-sm"
+                                                                    className="px-4 py-3 border-t border-white/10 hover:bg-orange-400/10 cursor-pointer text-orange-400 font-medium text-sm"
                                                                     onClick={handleSuggestCategory}
                                                                 >
                                                                     ✨ Suggest new category: "{categorySearch}"
@@ -716,7 +709,7 @@ export default function ProductAdd() {
                                     />
                                     {/* Product Tags - Shown for All Products */}
                                     <div ref={productTagDropdownRef}>
-                                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                                        <label className="block text-sm font-medium text-neutral-200 mb-1">
                                             Product Tags
                                         </label>
                                         {/* Tag input and dropdown */}
@@ -727,10 +720,10 @@ export default function ProductAdd() {
                                                 value={productTagSearch}
                                                 onChange={(e) => setProductTagSearch(e.target.value)}
                                                 onClick={() => setShowProductTagDropdown(true)}
-                                                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 rounded-lg"
+                                                className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-lg"
                                             />
                                             {showProductTagDropdown && (
-                                                <div className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-xl shadow-lg">
+                                                <div className="absolute z-50 w-full mt-1 bg-navy-800 border border-white/10 rounded-xl shadow-lg">
                                                     <div className="max-h-48 overflow-y-auto">
                                                         {filteredProductTags.length > 0 ? (
                                                             filteredProductTags.map((tag) => (
@@ -744,14 +737,14 @@ export default function ProductAdd() {
                                                                         setProductTagSearch("");
                                                                         setShowProductTagDropdown(false);
                                                                     }}
-                                                                    className="w-full text-left px-3 py-2 hover:bg-slate-50 text-sm flex items-center justify-between"
+                                                                    className="w-full text-left px-3 py-2 hover:bg-white/10 text-sm flex items-center justify-between text-neutral-200"
                                                                 >
                                                                     <span>{tag.name}</span>
-                                                                    <span className="text-xs text-slate-400">{tag.category}</span>
+                                                                    <span className="text-xs text-neutral-500">{tag.category}</span>
                                                                 </button>
                                                             ))
                                                         ) : (
-                                                            <div className="px-3 py-2 text-sm text-slate-500">
+                                                            <div className="px-3 py-2 text-sm text-neutral-500">
                                                                 No tags available
                                                             </div>
                                                         )}
@@ -783,13 +776,13 @@ export default function ProductAdd() {
                                             {form.product.tags.map((tag, index) => (
                                                 <span
                                                     key={`${tag}-${index}`}
-                                                    className="px-2 py-1 bg-slate-100 text-slate-700 text-sm rounded-full flex items-center gap-1"
+                                                    className="px-2 py-1 bg-white/10 text-neutral-300 text-sm rounded-full flex items-center gap-1"
                                                 >
                                                     {tag}
                                                     <button
                                                         type="button"
                                                         onClick={() => removeTag(index, "product")}
-                                                        className="text-slate-400 hover:text-slate-600"
+                                                        className="text-neutral-500 hover:text-neutral-200"
                                                     >
                                                         ✕
                                                     </button>
@@ -832,7 +825,7 @@ export default function ProductAdd() {
 
                         {/* Store Product Details */}
                         <Card className="p-6 rounded-lg">
-                            <h3 className="font-medium text-slate-900 mb-4">Pricing & Inventory</h3>
+                            <h3 className="font-medium text-white mb-4">Pricing &amp; Inventory</h3>
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 <Input
                                     label="Selling Price (£)"
@@ -866,9 +859,9 @@ export default function ProductAdd() {
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
                                 <div className="relative group">
                                     <div className="flex items-center gap-1 mb-1">
-                                        <label className="text-sm font-medium text-slate-700">SKU</label>
+                                        <label className="text-sm font-medium text-neutral-200">SKU</label>
                                         <span className="relative">
-                                            <svg className="w-4 h-4 text-slate-400 hover:text-slate-600 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-4 h-4 text-neutral-500 hover:text-neutral-300 cursor-help" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                                             </svg>
                                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-slate-900 text-white text-xs rounded py-1 px-2 whitespace-nowrap z-10">
@@ -896,7 +889,7 @@ export default function ProductAdd() {
                                     onChange={(e) => updateForm({ weight: e.target.value })}
                                 />
                                 <div className="flex flex-col justify-end">
-                                    <label className="mb-1 text-sm font-medium text-slate-700">Status</label>
+                                    <label className="mb-1 text-sm font-medium text-neutral-200">Status</label>
                                     <ToggleButtonGroup
                                         options={[
                                             { label: "Active", value: "active" },
@@ -912,7 +905,7 @@ export default function ProductAdd() {
 
                         {/* Variants */}
                         <Card className="p-6 rounded-lg">
-                            <h3 className="font-medium text-slate-900 mb-4">Variant Options</h3>
+                            <h3 className="font-medium text-white mb-4">Variant Options</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <Input
                                     label="Size"
@@ -940,13 +933,13 @@ export default function ProductAdd() {
 
                         {/* Store Notes & Tags */}
                         <Card className="p-6 rounded-lg">
-                            <h3 className="font-medium text-slate-900 mb-4">Store-Specific Information</h3>
+                            <h3 className="font-medium text-white mb-4">Store-Specific Information</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">                        <div>
                                 <div className="flex items-center justify-between mb-1">
-                                    <label className="block text-sm font-medium text-slate-700">
+                                    <label className="block text-sm font-medium text-neutral-200">
                                         Store Notes
                                     </label>
-                                    <span className={`text-xs ${form.store_notes.length > 500 ? 'text-rose-600 font-semibold' : 'text-slate-500'}`}>
+                                    <span className={`text-xs ${form.store_notes.length > 500 ? 'text-red-400 font-semibold' : 'text-neutral-500'}`}>
                                         {form.store_notes.length}/500
                                     </span>
                                 </div>
@@ -958,7 +951,7 @@ export default function ProductAdd() {
                                 />
                             </div>
                                 <div ref={storeTagDropdownRef}>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                                    <label className="block text-sm font-medium text-neutral-200 mb-1">
                                         Store-Specific Tags
                                     </label>
                                     {/* Selected tags display */}
@@ -1011,11 +1004,11 @@ export default function ProductAdd() {
                                                 }
                                             }}
                                             placeholder="Search or type to add tags..."
-                                            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/70 rounded-lg"
+                                            className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 rounded-lg"
                                         />
                                         {/* Dropdown */}
                                         {showStoreTagDropdown && (storeTagSearch || filteredStoreTags.length > 0) && (
-                                            <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 shadow-lg max-h-48 overflow-y-auto rounded-xl">
+                                            <div className="absolute z-10 w-full mt-1 bg-navy-800 border border-white/10 shadow-lg max-h-48 overflow-y-auto rounded-xl">
                                                 {filteredStoreTags.slice(0, 8).map((tag) => (
                                                     <button
                                                         key={tag.id}
@@ -1027,10 +1020,10 @@ export default function ProductAdd() {
                                                             setStoreTagSearch("");
                                                             setShowStoreTagDropdown(false);
                                                         }}
-                                                        className="w-full text-left px-3 py-2 hover:bg-orange-50 text-sm flex items-center justify-between"
+                                                        className="w-full text-left px-3 py-2 hover:bg-orange-400/10 text-sm flex items-center justify-between text-neutral-200"
                                                     >
                                                         <span>{tag.name}</span>
-                                                        <span className="text-xs text-slate-400">{tag.category}</span>
+                                                        <span className="text-xs text-neutral-500">{tag.category}</span>
                                                     </button>
                                                 ))}
                                                 {/* Add custom tag option */}
@@ -1047,20 +1040,20 @@ export default function ProductAdd() {
                                                                 setStoreTagSearch("");
                                                                 setShowStoreTagDropdown(false);
                                                             }}
-                                                            className="w-full text-left px-3 py-2 hover:bg-green-50 text-sm border-t border-slate-200 text-green-700 font-medium"
+                                                            className="w-full text-left px-3 py-2 hover:bg-green-400/10 text-sm border-t border-white/10 text-green-400 font-medium"
                                                         >
                                                             + Add custom tag: "{storeTagSearch.trim()}"
                                                         </button>
                                                     )}
                                                 {filteredStoreTags.length === 0 && !storeTagSearch.trim() && (
-                                                    <div className="px-3 py-2 text-sm text-slate-500">
+                                                    <div className="px-3 py-2 text-sm text-neutral-500">
                                                         All tags already added
                                                     </div>
                                                 )}
                                             </div>
                                         )}
                                     </div>
-                                    <p className="text-xs text-slate-500 mt-1">
+                                    <p className="text-xs text-neutral-500 mt-1">
                                         Select from suggestions or type and press Enter to add custom tags
                                     </p>
                                 </div>
@@ -1074,16 +1067,13 @@ export default function ProductAdd() {
                                 variant="outline"
                                 onClick={() => navigate("/products")}
                                 disabled={isSubmitting}
-                                style={{ borderColor: colors.neutral[300], color: colors.neutral[700] }}
                             >
                                 Cancel
                             </Button>
                             <Button 
                               type="submit" 
                               disabled={isSubmitting}
-                              style={{ backgroundColor: colors.primary.main }}
-                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
-                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                              className="bg-orange-400 hover:bg-orange-500 text-white"
                             >
                                 {isSubmitting ? "Adding Product..." : "Add Product"}
                             </Button>

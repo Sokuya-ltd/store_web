@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { DollarSign, Lock, CreditCard, PoundSterlingIcon, Eye, EyeOff } from "lucide-react";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import SettingsCard from "../../components/ui/SettingsCard";
 import Input from "../../components/ui/Input";
 import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
-import { colors } from "../../lib/colors";
 
 export default function FinanceInformationForm({ initialData = {} }) {
   const toast = useToast();
@@ -173,18 +173,18 @@ export default function FinanceInformationForm({ initialData = {} }) {
   return (
     <form className="space-y-6">
       {/* Business Information Card */}
-      <Card className="p-4 md:p-6">
+      <SettingsCard className="p-4 md:p-6">
         <div className="mb-4 flex items-center gap-3">
-          <PoundSterlingIcon className="w-6 h-6 text-slate-700" />
+          <PoundSterlingIcon className="w-6 h-6 text-neutral-400" />
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Business Information</h3>
-            <p className="text-sm text-slate-600">Provide your business registration and tax information for compliance and invoicing.</p>
+            <h3 className="text-lg font-semibold text-white">Business Information</h3>
+            <p className="text-sm text-neutral-400">Provide your business registration and tax information for compliance and invoicing.</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Business Registration Number
             </label>
             <Input
@@ -197,7 +197,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Tax ID / VAT Number
             </label>
             <Input
@@ -213,36 +213,33 @@ export default function FinanceInformationForm({ initialData = {} }) {
           <Button
             onClick={handleBusinessInfoSubmit}
             disabled={loadingSection === "business"}
-            className="py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: colors.accent.olive }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+            className="bg-orange-400 hover:bg-orange-500 text-white py-2 px-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingSection === "business" ? "Saving..." : "Save Business Info"}
           </Button>
         </div>
-      </Card>
+      </SettingsCard>
 
       {/* Bank Information Card */}
-      <Card className="p-4 md:p-6 border-blue-200 bg-linear-to-br from-blue-50 to-transparent">
+      <SettingsCard className="p-4 md:p-6">
         <div className="mb-4 flex items-center gap-3">
-          <CreditCard className="w-6 h-6 text-blue-700" />
+          <CreditCard className="w-6 h-6 text-blue-400" />
           <div>
-            <h3 className="text-lg font-semibold text-slate-900">Bank Account Details</h3>
-            <p className="text-sm text-slate-600">Your bank details are encrypted and stored securely.</p>
+            <h3 className="text-lg font-semibold text-white">Bank Account Details</h3>
+            <p className="text-sm text-neutral-400">Your bank details are encrypted and stored securely.</p>
           </div>
         </div>
 
-        <div className="mb-3 flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <Lock className="w-4 h-4 text-blue-600" />
-          <p className="text-xs text-blue-900">
+        <div className="mb-3 flex items-center gap-2 p-3 bg-blue-500/10 border border-blue-400/30 rounded-lg">
+          <Lock className="w-4 h-4 text-blue-400" />
+          <p className="text-xs text-blue-200">
             All bank information is encrypted using industry-standard security protocols.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Bank Name
             </label>
             <Input
@@ -255,7 +252,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Account Holder Name
             </label>
             <Input
@@ -265,13 +262,13 @@ export default function FinanceInformationForm({ initialData = {} }) {
               placeholder="Full name on account"
               error={errors.bank_account_holder}
               readOnly
-              className="bg-slate-50 cursor-not-allowed"
+              className="bg-white/5 cursor-not-allowed"
             />
-            <p className="text-xs text-slate-500 mt-1">Auto-populated from store owner name</p>
+            <p className="text-xs text-neutral-500 mt-1">Auto-populated from store owner name</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Bank Routing Number
             </label>
             <Input
@@ -284,7 +281,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
+            <label className="block text-sm font-medium text-neutral-200 mb-1">
               Bank Account Number
             </label>
             <div className="relative">
@@ -299,7 +296,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
               <button
                 type="button"
                 onClick={() => setShowBankAccountNumber(!showBankAccountNumber)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-500 hover:text-slate-700 focus:outline-none"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-500 hover:text-neutral-300 focus:outline-none"
               >
                 {showBankAccountNumber ? (
                   <EyeOff className="w-4 h-4" />
@@ -308,22 +305,19 @@ export default function FinanceInformationForm({ initialData = {} }) {
                 )}
               </button>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Your account number is encrypted and secure</p>
+            <p className="text-xs text-neutral-500 mt-1">Your account number is encrypted and secure</p>
           </div>
         </div>
         <div className="mt-4">
           <Button
             onClick={handleBankInfoSubmit}
             disabled={loadingSection === "bank"}
-            className="py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: colors.primary.main }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+            className="bg-orange-400 hover:bg-orange-500 text-white py-2 px-4 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loadingSection === "bank" ? "Saving..." : "Save Bank Details"}
           </Button>
         </div>
-      </Card>
+      </SettingsCard>
     </form>
   );
 }

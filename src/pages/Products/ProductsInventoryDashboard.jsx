@@ -14,7 +14,6 @@ import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import Badge from "../../components/ui/Badge";
 import { useToast } from "../../context/ToastContext";
-import { colors } from "../../lib/colors"; 
 import api from "../../services/api";
 
 export default function ProductsInventoryDashboard() {
@@ -145,11 +144,11 @@ export default function ProductsInventoryDashboard() {
     const reorderThreshold = item.reorder_threshold || 5;
 
     if (qty === 0) {
-      return { label: "Out of Stock", color: "bg-red-100 text-red-700", badge: "error" };
+      return { label: "Out of Stock", color: "bg-red-400/20 text-red-300", badge: "error" };
     } else if (qty <= reorderThreshold) {
-      return { label: "Low Stock", color: "bg-orange-100 text-orange-700", badge: "warning" };
+      return { label: "Low Stock", color: "bg-orange-400/20 text-orange-300", badge: "warning" };
     }
-    return { label: "In Stock", color: "bg-green-100 text-green-700", badge: "success" };
+    return { label: "In Stock", color: "bg-green-400/20 text-green-300", badge: "success" };
   };
 
   // Filter and sort products
@@ -205,12 +204,12 @@ export default function ProductsInventoryDashboard() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Products & Inventory</h1>
-          <p className="text-slate-600 mt-1">Manage products and track stock levels.</p>
+          <h1 className="text-3xl font-bold text-white">Products & Inventory</h1>
+          <p className="text-neutral-400 mt-1">Manage products and track stock levels.</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <Link to="/products/add">
-            <Button className="flex items-center gap-2 py-2 px-4 text-white font-semibold rounded-lg transition-all" style={{ backgroundColor: colors.primary.main }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}>
+            <Button className="flex items-center gap-2 py-2 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-lg transition-all">
               <Plus className="w-4 h-4" />
               Add Product
             </Button>
@@ -223,23 +222,11 @@ export default function ProductsInventoryDashboard() {
           <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-xs font-medium text-slate-600">Total Products</p>
-            <p className="text-2xl font-bold text-slate-900 mt-2">{stats.totalProducts}</p>
+            <p className="text-xs font-medium text-neutral-400">Total Products</p>
+            <p className="text-2xl font-bold text-white mt-2">{stats.totalProducts}</p>
           </div>
-          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.primary.main}15` }}>
-            <Package className="w-5 h-5" style={{ color: colors.primary.main }} />
-          </div>
-            </div>
-          </Card>
-
-          <Card className="p-4 shadow-xl rounded-xl">
-            <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <p className="text-xs font-medium text-slate-600">In Stock</p>
-            <p className="text-2xl font-bold mt-2" style={{ color: colors.accent.olive }}>{stats.inStock}</p>
-          </div>
-          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.accent.olive}15` }}>
-            <Package className="w-5 h-5" style={{ color: colors.accent.olive }} />
+          <div className="p-2 bg-orange-400/15 rounded-lg">
+            <Package className="w-5 h-5 text-orange-400" />
           </div>
             </div>
           </Card>
@@ -247,11 +234,11 @@ export default function ProductsInventoryDashboard() {
           <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-xs font-medium text-slate-600">Low Stock</p>
-            <p className="text-2xl font-bold mt-2" style={{ color: colors.accent.purple }}>{stats.lowStock}</p>
+            <p className="text-xs font-medium text-neutral-400">In Stock</p>
+            <p className="text-2xl font-bold text-green-400 mt-2">{stats.inStock}</p>
           </div>
-          <div className="p-2 rounded-lg" style={{ backgroundColor: `${colors.accent.purple}15` }}>
-            <AlertCircle className="w-5 h-5" style={{ color: colors.accent.purple }} />
+          <div className="p-2 bg-green-400/15 rounded-lg">
+            <Package className="w-5 h-5 text-green-400" />
           </div>
             </div>
           </Card>
@@ -259,11 +246,23 @@ export default function ProductsInventoryDashboard() {
           <Card className="p-4 shadow-xl rounded-xl">
             <div className="flex items-start justify-between">
           <div className="flex-1">
-            <p className="text-xs font-medium text-slate-600">Out of Stock</p>
-            <p className="text-2xl font-bold text-red-600 mt-2">{stats.outOfStock}</p>
+            <p className="text-xs font-medium text-neutral-400">Low Stock</p>
+            <p className="text-2xl font-bold text-orange-400 mt-2">{stats.lowStock}</p>
           </div>
-          <div className="p-2 bg-red-100 rounded-lg">
-            <TrendingDown className="w-5 h-5 text-red-600" />
+          <div className="p-2 bg-orange-400/15 rounded-lg">
+            <AlertCircle className="w-5 h-5 text-orange-400" />
+          </div>
+            </div>
+          </Card>
+
+          <Card className="p-4 shadow-xl rounded-xl">
+            <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-xs font-medium text-neutral-400">Out of Stock</p>
+            <p className="text-2xl font-bold text-red-400 mt-2">{stats.outOfStock}</p>
+          </div>
+          <div className="p-2 bg-red-400/15 rounded-lg">
+            <TrendingDown className="w-5 h-5 text-red-400" />
           </div>
             </div>
           </Card>
@@ -273,7 +272,7 @@ export default function ProductsInventoryDashboard() {
       <Card className="p-5 shadow-2xl rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-500" />
             <Input
               type="text"
               placeholder="Search products..."
@@ -286,21 +285,21 @@ export default function ProductsInventoryDashboard() {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] text-sm"
+            className="px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
           >
-            <option value="all">All Status</option>
-            <option value="in-stock">In Stock</option>
-            <option value="low-stock">Low Stock</option>
-            <option value="out-of-stock">Out of Stock</option>
+            <option value="all" className="bg-navy-800 text-white">All Status</option>
+            <option value="in-stock" className="bg-navy-800 text-white">In Stock</option>
+            <option value="low-stock" className="bg-navy-800 text-white">Low Stock</option>
+            <option value="out-of-stock" className="bg-navy-800 text-white">Out of Stock</option>
           </select>
 
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#556B2F] text-sm"
+            className="px-3 py-2 bg-white/10 border border-white/20 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm"
           >
-            <option value="name">Sort by Name</option>
-            <option value="stock">Sort by Stock</option>
+            <option value="name" className="bg-navy-800 text-white">Sort by Name</option>
+            <option value="stock" className="bg-navy-800 text-white">Sort by Stock</option>
           </select>
 
           <div className="flex gap-2">
@@ -308,8 +307,8 @@ export default function ProductsInventoryDashboard() {
               onClick={() => setViewMode("grid")}
               className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition ${
                 viewMode === "grid"
-                  ? "bg-[#556B2F] text-white"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  ? "bg-orange-400 text-white"
+                  : "bg-white/10 text-neutral-300 hover:bg-white/20"
               }`}
             >
               Grid
@@ -318,8 +317,8 @@ export default function ProductsInventoryDashboard() {
               onClick={() => setViewMode("list")}
               className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition ${
                 viewMode === "list"
-                  ? "bg-[#556B2F] text-white"
-                  : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  ? "bg-orange-400 text-white"
+                  : "bg-white/10 text-neutral-300 hover:bg-white/20"
               }`}
             >
               List
@@ -333,11 +332,11 @@ export default function ProductsInventoryDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {isLoading ? (
             <div className="col-span-full text-center py-12">
-              <p className="text-slate-500">Loading products...</p>
+              <p className="text-neutral-400">Loading products...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="col-span-full text-center py-12">
-              <p className="text-slate-500">No products found</p>
+              <p className="text-neutral-400">No products found</p>
             </div>
           ) : (
             filteredProducts.map((product) => {
@@ -355,9 +354,9 @@ export default function ProductsInventoryDashboard() {
                     to={`/products/view/${product.id}`}
                     className="no-underline"
                   >
-                    <Card className="overflow-hidden flex flex-col h-full bg-white rounded-lg shadow-2xl hover:shadow-lg transition-shadow cursor-pointer">
+                    <Card className="overflow-hidden flex flex-col h-full rounded-lg shadow-2xl hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer">
                       {/* Product Image Container */}
-                      <div className="relative h-56 bg-linear-to-br from-slate-50 to-slate-100 overflow-hidden group">
+                      <div className="relative h-56 bg-navy-700/50 overflow-hidden group">
                         {product.product?.media && product.product.media.length > 0 ? (
                           <img
                             src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
@@ -365,7 +364,7 @@ export default function ProductsInventoryDashboard() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-slate-300">
+                          <div className="w-full h-full flex items-center justify-center text-neutral-600">
                             <Package className="w-12 h-12" />
                           </div>
                         )}
@@ -389,22 +388,22 @@ export default function ProductsInventoryDashboard() {
                       <div className="p-5 flex-1 flex flex-col">
                         {/* Product Name & Brand */}
                         <div className="mb-3">
-                          <h3 className="font-bold text-slate-900 text-sm leading-snug line-clamp-2 hover:text-[#556B2F] transition">
+                          <h3 className="font-bold text-white text-sm leading-snug line-clamp-2 hover:text-orange-400 transition">
                             {product.product?.name}
                           </h3>
-                          <p className="text-xs text-slate-500 font-medium mt-1.5">
+                          <p className="text-xs text-neutral-500 font-medium mt-1.5">
                             {product.product?.brand || "No brand"} • {product.sku}
                           </p>
                         </div>
 
                         {/* Pricing Section */}
-                        <div className="bg-linear-to-r from-slate-50 to-slate-100 rounded-lg p-3 mb-4">
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 mb-4">
                           <div className="flex items-baseline gap-2">
-                            <span className="text-lg font-bold text-slate-900">
+                            <span className="text-lg font-bold text-white">
                               £{currentPrice.toFixed(2)}
                             </span>
                             {comparePrice > currentPrice && (
-                              <span className="text-xs text-slate-500 line-through font-medium">
+                              <span className="text-xs text-neutral-500 line-through font-medium">
                                 £{comparePrice.toFixed(2)}
                               </span>
                             )}
@@ -414,16 +413,16 @@ export default function ProductsInventoryDashboard() {
                         {/* Stock Progress */}
                         <div className="space-y-2 mb-4 mt-auto">
                           <div className="flex justify-between items-center">
-                            <span className="text-xs font-medium text-slate-700">
+                            <span className="text-xs font-medium text-neutral-300">
                               Stock: {qty} units
                             </span>
                             {product.reorder_threshold && qty <= product.reorder_threshold && (
-                              <span className="text-xs text-orange-600 font-medium">
+                              <span className="text-xs text-orange-400 font-medium">
                                 Reorder: {product.reorder_quantity || 0}
                               </span>
                             )}
                           </div>
-                          <div className="w-full bg-slate-100 rounded-full h-2">
+                          <div className="w-full bg-white/10 rounded-full h-1.5">
                             <div
                               className={`h-full rounded-full transition-all ${
                                 qty === 0
@@ -450,11 +449,11 @@ export default function ProductsInventoryDashboard() {
         <Card className="p-6">
           {isLoading ? (
             <div className="text-center py-12">
-              <p className="text-slate-500">Loading products...</p>
+              <p className="text-neutral-400">Loading products...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-slate-500">No products found</p>
+              <p className="text-neutral-400">No products found</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -468,25 +467,25 @@ export default function ProductsInventoryDashboard() {
                   <Link
                     key={product.id}
                     to={`/products/view/${product.id}`}
-                    className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition cursor-pointer"
+                    className="flex flex-col md:flex-row md:items-center justify-between p-4 border border-white/10 rounded-lg hover:bg-white/5 hover:border-white/20 transition cursor-pointer"
                   >
                     <div className="flex gap-4 flex-1 mb-4 md:mb-0">
                       {product.product?.media && product.product.media.length > 0 ? (
                         <img
                           src={product.product.media.find(m => m.is_primary)?.url || product.product.media[0]?.url}
                           alt={product.product.name}
-                          className="w-16 h-16 object-cover rounded bg-slate-100"
+                          className="w-16 h-16 object-cover rounded bg-white/15"
                         />
                       ) : (
-                        <div className="w-16 h-16 rounded bg-slate-100 flex items-center justify-center text-slate-400">
+                        <div className="w-16 h-16 rounded bg-white/10 flex items-center justify-center text-neutral-500">
                           <Package className="w-6 h-6" />
                         </div>
                       )}
                       <div className="flex-1">
-                        <h3 className="font-semibold text-slate-900">
+                        <h3 className="font-semibold text-white">
                           {product.product?.name}
                         </h3>
-                        <p className="text-xs text-slate-500 mt-1">
+                        <p className="text-xs text-neutral-500 mt-1">
                           {product.product?.brand || "No brand"} • SKU: {product.sku}
                         </p>
                         <Badge variant={status.badge} className="mt-2">
@@ -497,16 +496,16 @@ export default function ProductsInventoryDashboard() {
 
                     <div className="flex flex-col md:flex-row md:items-center gap-6 w-full md:w-auto">
                       <div className="flex-1 md:flex-none">
-                        <p className="text-xs text-slate-500 mb-1">Stock</p>
-                        <p className="font-semibold text-slate-900">{qty} units</p>
+                        <p className="text-xs text-neutral-500 mb-1">Stock</p>
+                        <p className="font-semibold text-white">{qty} units</p>
                       </div>
 
                       <div className="flex-1 md:flex-none">
-                        <p className="text-xs text-slate-500 mb-1">Price</p>
+                        <p className="text-xs text-neutral-500 mb-1">Price</p>
                         <div className="flex items-center gap-2">
-                          <p className="font-semibold text-slate-900">£{currentPrice.toFixed(2)}</p>
+                          <p className="font-semibold text-white">£{currentPrice.toFixed(2)}</p>
                           {comparePrice > currentPrice && (
-                            <p className="text-xs text-slate-500 line-through">£{comparePrice.toFixed(2)}</p>
+                            <p className="text-xs text-neutral-500 line-through">£{comparePrice.toFixed(2)}</p>
                           )}
                         </div>
                       </div>

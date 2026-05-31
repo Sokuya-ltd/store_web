@@ -7,7 +7,6 @@ import { useStoreProfile } from "../../hooks/useStoreProfile";
 import { useToast } from "../../hooks/useToast";
 import ToastContainer from "../../components/ui/ToastContainer";
 import api from "../../services/api";
-import { colors } from "../../lib/colors";
 
 export default function SettingsLayout() {
     const { profile, loading, error, refetch } = useStoreProfile();
@@ -239,11 +238,8 @@ export default function SettingsLayout() {
         return (
             <div className="p-8 w-full flex items-center justify-center">
                 <div className="text-center">
-                    <div
-                        className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto"
-                        style={{ borderColor: colors.accent.purple }}
-                    ></div>
-                    <p className="mt-4 text-gray-600">Loading profile...</p>
+                    <div className="animate-spin rounded-full h-12 w-12 border-4 border-white/20 border-t-orange-400 mx-auto"></div>
+                    <p className="mt-4 text-neutral-400">Loading profile...</p>
                 </div>
             </div>
         );
@@ -252,7 +248,7 @@ export default function SettingsLayout() {
     if (error) {
         return (
             <div className="p-8 w-full">
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <div className="bg-red-400/10 border border-red-400/30 text-red-300 px-4 py-3 rounded">
                     <p className="font-medium">Error loading profile</p>
                     <p className="text-sm">{error}</p>
                     <button
@@ -271,12 +267,12 @@ export default function SettingsLayout() {
             {/* Header with Title and Status Toggle */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex-1">
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-900">Store Profile</h1>
-                    <p className="text-slate-600 text-sm mt-1">Manage your store's public information and settings.</p>
+                    <h1 className="text-xl md:text-2xl font-bold text-white">Store Profile</h1>
+                    <p className="text-neutral-400 text-sm mt-1">Manage your store's public information and settings.</p>
                 </div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
-                    <span className="text-sm font-medium text-slate-700">Store Status:</span>
-                    <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 px-3 py-2">
+                    <span className="text-sm font-medium text-neutral-300">Store Status:</span>
+                    <div className="flex items-center gap-2 bg-white/10 rounded-lg border border-white/20 px-3 py-2">
                         <div className={`h-2 w-2 rounded-full ${form.is_active ? 'bg-green-500' : 'bg-red-500'}`}></div>
                         <span className={`text-sm font-medium ${form.is_active ? 'text-green-600' : 'text-red-600'}`}>
                             {form.is_active ? 'Open' : 'Closed'}
@@ -285,7 +281,7 @@ export default function SettingsLayout() {
                             type="button"
                             onClick={() => updateForm({ ...form, is_active: !form.is_active })}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                form.is_active ? 'bg-green-500' : 'bg-slate-300'
+                                form.is_active ? 'bg-green-500' : 'bg-white/20'
                             }`}
                         >
                             <span
@@ -299,33 +295,29 @@ export default function SettingsLayout() {
             </div>
 
             {/* Main Content */}
-            <div className="bg-white shadow rounded-lg p-4 md:p-6 w-full">
-                <div className="border-b border-slate-200 mb-4 overflow-x-auto">
+            <div className="bg-white/7 backdrop-blur-sm border border-white/10 rounded-lg p-4 md:p-6 w-full">
+                <div className="border-b border-white/10 mb-4 overflow-x-auto">
                     <nav className="flex space-x-2 md:space-x-4 min-w-max md:min-w-0" aria-label="Tabs">
                         <button
-                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 0 ? colors.accent.purple : 'transparent', color: activeTab === 0 ? colors.accent.purple : '#d1d5db' }}
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors ${activeTab === 0 ? 'border-orange-400 text-orange-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
                             onClick={() => setActiveTab(0)}
                         >
                             Store Profile
                         </button>
                         <button
-                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 1 ? colors.accent.purple : 'transparent', color: activeTab === 1 ? colors.accent.purple : '#d1d5db' }}
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors ${activeTab === 1 ? 'border-orange-400 text-orange-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
                             onClick={() => setActiveTab(1)}
                         >
                             Branding
                         </button>
                         <button
-                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 2 ? colors.accent.purple : 'transparent', color: activeTab === 2 ? colors.accent.purple : '#d1d5db' }}
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors ${activeTab === 2 ? 'border-orange-400 text-orange-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
                             onClick={() => setActiveTab(2)}
                         >
                             Account Security
                         </button>
                         <button
-                            className="py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors"
-                            style={{ borderColor: activeTab === 3 ? colors.accent.purple : 'transparent', color: activeTab === 3 ? colors.accent.purple : '#d1d5db' }}
+                            className={`py-2 px-2 md:px-4 font-medium text-xs md:text-sm border-b-2 whitespace-nowrap transition-colors ${activeTab === 3 ? 'border-orange-400 text-orange-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
                             onClick={() => setActiveTab(3)}
                         >
                             Finance Information

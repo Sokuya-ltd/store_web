@@ -1,7 +1,6 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { LayoutDashboard, Package, Settings, ShoppingCart, User, HelpCircle, LogOut, Bell, Menu, X, Store } from "lucide-react";
-import { colors } from "../../lib/colors";
 import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import ToastContainer from "../ui/ToastContainer";
@@ -40,16 +39,16 @@ export default function AppLayout() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-100 flex">
+    <div className="min-h-screen bg-navy-900 flex">
       {/* Desktop Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-64 hidden md:flex flex-col bg-white border-r border-slate-200" style={{ backgroundImage: `linear-gradient(135deg, ${colors.accent.purple} 0%, ${colors.accent.purpleDark} 100%)` }}>
+      <aside className="fixed left-0 top-0 h-screen w-64 hidden md:flex flex-col bg-navy-800 border-r border-white/10">
         {SidebarContent}
       </aside>
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 flex">
-          <aside className="h-full w-64 flex flex-col shadow-xl animate-slide-in border-r border-slate-200" style={{ backgroundImage: `linear-gradient(135deg, ${colors.accent.purple} 0%, ${colors.accent.purpleDark} 100%)` }}>
+          <aside className="h-full w-64 flex flex-col shadow-xl animate-slide-in bg-navy-800 border-r border-white/10">
             <button className="absolute top-4 right-4 text-white hover:bg-white/10 p-1 rounded transition-colors" onClick={() => setSidebarOpen(false)} aria-label="Close sidebar">
               <X size={28} />
             </button>
@@ -61,82 +60,82 @@ export default function AppLayout() {
       )}
 
       <div className="flex-1 flex flex-col w-full md:ml-64">
-        <header className="h-15.5 flex items-center justify-between px-4 bg-white border-b border-slate-200">
+        <header className="h-15.5 flex items-center justify-between px-4 bg-navy-800 border-b border-white/10">
           <div className="flex items-center gap-3">
             {/* Hamburger for mobile */}
-            <button className="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 " onClick={() => setSidebarOpen(true)} aria-label="Open sidebar">
+              <button className="md:hidden p-2 text-neutral-400 hover:text-white hover:bg-white/10 transition-colors" onClick={() => setSidebarOpen(true)} aria-label="Open sidebar">
               <Menu size={24} />
             </button>
-            <span className="font-semibold">Welcome back 👋</span>
+            <span className="font-semibold text-white">Welcome back 👋</span>
           </div>
           <div className="flex items-center gap-5">
             {/* Notifications */}
             <div className="relative group">
-              <button className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100  transition-colors">
+              <button className="relative p-2 text-neutral-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
                 <Bell size={20} />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500"></span>
                 <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">5</span>
               </button>
               {/* Notifications Dropdown */}
-              <div className="absolute right-0 top-12 w-80 bg-white border border-slate-200  shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
-                <div className="p-3 border-b border-slate-200 flex items-center justify-between">
-                  <h3 className="font-semibold text-slate-900">Notifications</h3>
-                  <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1">5 unread</span>
+              <div className="absolute right-0 top-12 w-80 bg-navy-800 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                <div className="p-3 border-b border-white/10 flex items-center justify-between">
+                  <h3 className="font-semibold text-white">Notifications</h3>
+                  <span className="text-xs text-neutral-400 bg-white/10 px-2 py-1 rounded">5 unread</span>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
-                  <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                  <a href="#" className="block px-4 py-3 hover:bg-white/5 border-b border-white/10 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-blue-500 mt-1.5 shrink-0"></div>
+                      <div className="w-2 h-2 bg-blue-400 mt-1.5 shrink-0 rounded-full"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">New order received</p>
-                        <p className="text-xs text-slate-500 mt-0.5">Order #1234 from John Doe</p>
-                        <p className="text-xs text-slate-400 mt-1">2 minutes ago</p>
+                        <p className="text-sm font-medium text-white truncate">New order received</p>
+                        <p className="text-xs text-neutral-400 mt-0.5">Order #1234 from John Doe</p>
+                        <p className="text-xs text-neutral-500 mt-1">2 minutes ago</p>
                       </div>
                     </div>
                   </a>
-                  <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                  <a href="#" className="block px-4 py-3 hover:bg-white/5 border-b border-white/10 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-green-500 mt-1.5 shrink-0"></div>
+                      <div className="w-2 h-2 bg-green-400 mt-1.5 shrink-0 rounded-full"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">Payment confirmed</p>
-                        <p className="text-xs text-slate-500 mt-0.5">£299.99 received for order #1233</p>
-                        <p className="text-xs text-slate-400 mt-1">1 hour ago</p>
+                        <p className="text-sm font-medium text-white truncate">Payment confirmed</p>
+                        <p className="text-xs text-neutral-400 mt-0.5">£299.99 received for order #1233</p>
+                        <p className="text-xs text-neutral-500 mt-1">1 hour ago</p>
                       </div>
                     </div>
                   </a>
-                  <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                  <a href="#" className="block px-4 py-3 hover:bg-white/5 border-b border-white/10 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-orange-500 mt-1.5 shrink-0"></div>
+                      <div className="w-2 h-2 bg-orange-400 mt-1.5 shrink-0 rounded-full"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">Low stock alert</p>
-                        <p className="text-xs text-slate-500 mt-0.5">Blue Hoodie - Only 3 items left</p>
-                        <p className="text-xs text-slate-400 mt-1">3 hours ago</p>
+                        <p className="text-sm font-medium text-white truncate">Low stock alert</p>
+                        <p className="text-xs text-neutral-400 mt-0.5">Blue Hoodie - Only 3 items left</p>
+                        <p className="text-xs text-neutral-500 mt-1">3 hours ago</p>
                       </div>
                     </div>
                   </a>
-                  <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                  <a href="#" className="block px-4 py-3 hover:bg-white/5 border-b border-white/10 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-purple-500 mt-1.5 shrink-0"></div>
+                      <div className="w-2 h-2 bg-purple-400 mt-1.5 shrink-0 rounded-full"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">New customer review</p>
-                        <p className="text-xs text-slate-500 mt-0.5">5 stars for Red T-Shirt</p>
-                        <p className="text-xs text-slate-400 mt-1">5 hours ago</p>
+                        <p className="text-sm font-medium text-white truncate">New customer review</p>
+                        <p className="text-xs text-neutral-400 mt-0.5">5 stars for Red T-Shirt</p>
+                        <p className="text-xs text-neutral-500 mt-1">5 hours ago</p>
                       </div>
                     </div>
                   </a>
-                  <a href="#" className="block px-4 py-3 hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                  <a href="#" className="block px-4 py-3 hover:bg-white/5 border-b border-white/10 transition-colors">
                     <div className="flex gap-3">
-                      <div className="w-2 h-2 bg-red-500 mt-1.5 shrink-0"></div>
+                      <div className="w-2 h-2 bg-red-400 mt-1.5 shrink-0 rounded-full"></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 truncate">Order cancelled</p>
-                        <p className="text-xs text-slate-500 mt-0.5">Customer cancelled order #1230</p>
-                        <p className="text-xs text-slate-400 mt-1">1 day ago</p>
+                        <p className="text-sm font-medium text-white truncate">Order cancelled</p>
+                        <p className="text-xs text-neutral-400 mt-0.5">Customer cancelled order #1230</p>
+                        <p className="text-xs text-neutral-500 mt-1">1 day ago</p>
                       </div>
                     </div>
                   </a>
                 </div>
-                <div className="p-3 border-t border-slate-200">
-                  <a href="#" className="block text-center text-sm font-medium text-blue-600 hover:text-blue-700">
+                <div className="p-3 border-t border-white/10">
+                  <a href="#" className="block text-center text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
                     View all notifications
                   </a>
                 </div>
@@ -144,24 +143,24 @@ export default function AppLayout() {
             </div>
 
             <div className="flex flex-col items-end">
-              <span className="text-sm text-slate-500">{user?.name || "User"}</span>
-              <span className="text-xs text-slate-400">{storeInfo?.name || "Store"} Admin</span>
+              <span className="text-sm text-neutral-300">{user?.name || "User"}</span>
+              <span className="text-xs text-neutral-500">{storeInfo?.name || "Store"} Admin</span>
             </div>
             <div className="relative group">
-              <div className="w-8 h-8 bg-[#D35400] hover:bg-[#d26015] rounded-b-full transition-colors flex items-center justify-center text-xs font-semibold text-white cursor-pointer shadow-md">
+              <div className="w-8 h-8 bg-orange-400 hover:bg-orange-500 rounded-full transition-colors flex items-center justify-center text-xs font-semibold text-white cursor-pointer shadow-md">
                 {getInitials(user?.name)}
               </div>
-              <div className="absolute right-0 top-10 w-48 bg-white border border-slate-200  shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+              <div className="absolute right-0 top-10 w-48 bg-navy-800 border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                 <div className="py-1">
-                  <a href="/settings" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                  <a href="/settings" className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-300 hover:bg-white/10 hover:text-white transition-colors">
                     <User size={16} />
                     <span>Profile Settings</span>
                   </a>
-                  <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                  <a href="#" className="flex items-center gap-3 px-4 py-2 text-sm text-neutral-300 hover:bg-white/10 hover:text-white transition-colors">
                     <HelpCircle size={16} />
                     <span>Support</span>
                   </a>
-                  <hr className="my-1 border-slate-200" />
+                  <hr className="my-1 border-white/10" />
                   <button
                     onClick={handleLogout}
                     className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"

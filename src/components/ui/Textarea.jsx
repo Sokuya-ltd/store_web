@@ -26,7 +26,7 @@ export default function Textarea({
     return (
         <div className={`space-y-1 ${className}`}>
             {label && (
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-neutral-200">
                     {label}
                 </label>
             )}
@@ -44,7 +44,7 @@ export default function Textarea({
                 {...props}
             />
             {error && (
-                <p className="text-xs text-rose-600">{error}</p>
+                <p className="text-xs text-red-300">{error}</p>
             )}
         </div>
     );

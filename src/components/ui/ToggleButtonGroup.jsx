@@ -15,12 +15,12 @@ export default function ToggleButtonGroup({
     return (
         <div className="space-y-1">
             {label && (
-                <label className="block text-sm font-medium text-slate-700">
+                <label className="block text-sm font-medium text-neutral-200">
                     {label}
                 </label>
             )}
             <div
-                className={`flex border border-slate-700 rounded overflow-hidden w-fit ${error ? "border-rose-500" : ""
+                className={`flex border border-white/20 rounded overflow-hidden w-fit ${error ? "border-red-400" : ""
                     } ${className}`}
                 {...props}
             >
@@ -37,8 +37,8 @@ export default function ToggleButtonGroup({
                         <label
                             htmlFor={`${name}-${opt.value}`}
                             className={`px-4 py-2 cursor-pointer font-medium transition-all duration-150 ${value === opt.value
-                                ? "bg-slate-700 text-white"
-                                : "bg-white text-slate-700"} ${idx < options.length - 1 ? "border-r border-slate-700" : ""}`}
+                                ? "bg-orange-400 text-white"
+                                : "bg-white/10 text-neutral-300 hover:bg-white/20"} ${idx < options.length - 1 ? "border-r border-white/20" : ""}`}
                             style={{ minWidth: 70, textAlign: "center" }}
                         >
                             {opt.label}

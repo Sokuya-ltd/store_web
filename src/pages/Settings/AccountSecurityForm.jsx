@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { Eye, EyeOff, Lock, Mail, Shield, Clock, Copy, Check } from "lucide-react";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import SettingsCard from "../../components/ui/SettingsCard";
 import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
-import { colors } from "../../lib/colors";
 
 export default function AccountSecurityForm() {
     const toast = useToast();
@@ -247,18 +247,18 @@ export default function AccountSecurityForm() {
                 {/* Left Column - Change Password */}
                 <div className="flex-1">
                     {/* Change Password Section */}
-                    <Card className="p-4 md:p-6">
+                    <SettingsCard className="p-4 md:p-6">
                         <form onSubmit={handlePasswordChange} autoComplete="off">
                             <div className="mb-4 flex items-center gap-3">
-                                <Lock className="w-6 h-6 text-slate-700" />
+                                <Lock className="w-6 h-6 text-neutral-400" />
                                 <div>
-                                    <h3 className="text-lg font-semibold text-slate-900">Change Password</h3>
-                                    <p className="text-sm text-slate-600">Update your password regularly to keep your account secure</p>
+                                    <h3 className="text-lg font-semibold text-white">Change Password</h3>
+                                    <p className="text-sm text-neutral-400">Update your password regularly to keep your account secure</p>
                                 </div>
                             </div>
                             {/* Warning Banner */}
-                            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                <p className="text-xs text-amber-800">
+                            <div className="my-7 p-3 bg-amber-500/10 border border-amber-400/30 rounded-lg">
+                                <p className="text-xs text-amber-300">
                                     <span className="font-semibold">⚠️ Note:</span> After changing your password, you'll need to log in again with your new password.
                                 </p>
                             </div>
@@ -266,7 +266,7 @@ export default function AccountSecurityForm() {
                             <div className="space-y-4">
                                 {/* Current Password */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Current Password</label>
+                                    <label className="block text-sm font-medium text-neutral-200 mb-1">Current Password</label>
                                     <div className="relative">
                                         <input
                                             type={showPasswords.current ? "text" : "password"}
@@ -277,9 +277,9 @@ export default function AccountSecurityForm() {
                                                     current_password: e.target.value,
                                                 })
                                             }
-                                            className={`w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm ${passwordErrors.current_password
+                                            className={`w-full bg-white/10 border text-white placeholder-neutral-500 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm ${passwordErrors.current_password
                                                 ? "border-red-500"
-                                                : "border-slate-300"
+                                                : "border-white/20"
                                                 }`}
                                             placeholder="Enter current password"
                                         />
@@ -291,7 +291,7 @@ export default function AccountSecurityForm() {
                                                     current: !showPasswords.current,
                                                 })
                                             }
-                                            className="absolute right-3 top-2.5 text-slate-600 hover:text-slate-900"
+                                            className="absolute right-3 top-2.5 text-neutral-400 hover:text-white"
                                         >
                                             {showPasswords.current ? (
                                                 <EyeOff className="w-5 h-5" />
@@ -307,7 +307,7 @@ export default function AccountSecurityForm() {
 
                                 {/* New Password */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+                                    <label className="block text-sm font-medium text-neutral-200 mb-1">New Password</label>
                                     <div className="relative">
                                         <input
                                             type={showPasswords.new ? "text" : "password"}
@@ -318,9 +318,9 @@ export default function AccountSecurityForm() {
                                                     new_password: e.target.value,
                                                 })
                                             }
-                                            className={`w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm ${passwordErrors.new_password
+                                            className={`w-full bg-white/10 border text-white placeholder-neutral-500 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm ${passwordErrors.new_password
                                                 ? "border-red-500"
-                                                : "border-slate-300"
+                                                : "border-white/20"
                                                 }`}
                                             placeholder="Enter new password"
                                         />
@@ -332,7 +332,7 @@ export default function AccountSecurityForm() {
                                                     new: !showPasswords.new,
                                                 })
                                             }
-                                            className="absolute right-3 top-2.5 text-slate-600 hover:text-slate-900"
+                                            className="absolute right-3 top-2.5 text-neutral-400 hover:text-white"
                                         >
                                             {showPasswords.new ? (
                                                 <EyeOff className="w-5 h-5" />
@@ -346,19 +346,19 @@ export default function AccountSecurityForm() {
                                     {passwordForm.new_password && (
                                         <div className="mt-2">
                                             <div className="flex items-center gap-2 mb-2">
-                                                <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
+                                                <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
                                                     <div
                                                         className={`h-full transition-all ${strengthColors[Math.max(0, passwordStrength - 1)]}`}
                                                         style={{ width: `${(passwordStrength / 5) * 100}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-xs font-medium text-slate-600">
+                                                <span className="text-xs font-medium text-neutral-400">
                                                     {strengthLabels[passwordStrength]}
                                                 </span>
                                             </div>
 
                                             {/* Requirements Checklist */}
-                                            <div className="space-y-1 text-xs text-slate-600">
+                                            <div className="space-y-1 text-xs text-neutral-400">
                                                 <div className={passwordForm.new_password.length >= 8 ? "text-green-600" : ""}>
                                                     {passwordForm.new_password.length >= 8 ? "✓" : "○"} At least 8 characters
                                                 </div>
@@ -381,7 +381,7 @@ export default function AccountSecurityForm() {
 
                                 {/* Confirm Password */}
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+                                    <label className="block text-sm font-medium text-neutral-200 mb-1">Confirm Password</label>
                                     <div className="relative">
                                         <input
                                             type={showPasswords.confirm ? "text" : "password"}
@@ -392,9 +392,9 @@ export default function AccountSecurityForm() {
                                                     password_confirmation: e.target.value,
                                                 })
                                             }
-                                            className={`w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm ${passwordErrors.password_confirmation
+                                            className={`w-full bg-white/10 border text-white placeholder-neutral-500 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm ${passwordErrors.password_confirmation
                                                 ? "border-red-500"
-                                                : "border-slate-300"
+                                                : "border-white/20"
                                                 }`}
                                             placeholder="Confirm new password"
                                         />
@@ -406,7 +406,7 @@ export default function AccountSecurityForm() {
                                                     confirm: !showPasswords.confirm,
                                                 })
                                             }
-                                            className="absolute right-3 top-2.5 text-slate-600 hover:text-slate-900"
+                                            className="absolute right-3 top-2.5 text-neutral-400 hover:text-white"
                                         >
                                             {showPasswords.confirm ? (
                                                 <EyeOff className="w-5 h-5" />
@@ -423,37 +423,34 @@ export default function AccountSecurityForm() {
                                 <Button
                                     type="submit"
                                     disabled={passwordLoading}
-                                    className="w-full py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                    style={{ backgroundColor: colors.primary.main }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.primary.dark}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.primary.main}
+                                    className="w-full py-2 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {passwordLoading ? "Updating..." : "Update Password"}
                                 </Button>
                             </div>
                         </form>
-                    </Card>
+                    </SettingsCard>
                 </div>
 
                 {/* Right Column - 2FA and Email Verification */}
                 <div className="flex-1 space-y-6">
                     {/* Two-Factor Authentication Section */}
-                    <Card className="p-4 md:p-6">
+                    <SettingsCard className="p-4 md:p-6">
                         <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
                             <div className="mb-4 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <Shield className="w-6 h-6 text-slate-700" />
+                                <Shield className="w-6 h-6 text-neutral-400" />
                                     <div>
-                                        <h3 className="text-lg font-semibold text-slate-900">Two-Factor Authentication</h3>
-                                        <p className="text-sm text-slate-600">
+                                        <h3 className="text-lg font-semibold text-white">Two-Factor Authentication</h3>
+                                        <p className="text-sm text-neutral-400">
                                             {twoFAEnabled ? "Enabled - Extra layer of security" : "Add extra security to your account"}
                                         </p>
                                     </div>
                                 </div>
                                 <div
-                                    className={`px-3 py-1-full text-xs font-medium ${twoFAEnabled
-                                        ? "bg-green-100 text-green-700"
-                                        : "bg-yellow-100 text-yellow-700"
+                                    className={`px-3 py-1-full text-xs font-medium rounded ${twoFAEnabled
+                                        ? "bg-green-400/20 text-green-300"
+                                        : "bg-yellow-400/20 text-yellow-300"
                                         }`}
                                 >
                                     {twoFAEnabled ? "Enabled" : "Disabled"}
@@ -462,14 +459,13 @@ export default function AccountSecurityForm() {
 
                             {!showOTPInput ? (
                                 <div className="flex items-center justify-center py-4">
-                                    <span className="px-4 py-2 bg-slate-100 text-slate-600 font-semibold rounded text-sm">
+                                    <span className="px-4 py-2 bg-white/10 text-neutral-300 font-semibold rounded text-sm">
                                         Coming Soon
                                     </span>
                                 </div>
                             ) : (
                                 <div className="space-y-4">
-                                    <p className="text-sm text-slate-600">
-                                        Enter the verification code sent to your email
+                                    <p className="text-sm text-neutral-400">
                                     </p>
                                     <div>
                                         <input
@@ -478,7 +474,7 @@ export default function AccountSecurityForm() {
                                             onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                                             placeholder="000000"
                                             maxLength="6"
-                                            className={`w-full px-3 py-2 border focus:outline-none focus:ring-2 focus:ring-[#556B2F] focus:border-transparent text-sm text-center tracking-widest font-mono ${otpErrors ? "border-red-500" : "border-slate-300"
+                                            className={`w-full bg-white/10 border text-white placeholder-neutral-500 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm text-center tracking-widest font-mono ${otpErrors ? "border-red-500" : "border-white/20"
                                                 }`}
                                         />
                                         {otpErrors && (
@@ -493,7 +489,7 @@ export default function AccountSecurityForm() {
                                                 setOtpCode("");
                                                 setOtpErrors(null);
                                             }}
-                                            className="flex-1 py-2 px-4 border border-slate-300 text-slate-900 font-semibold hover:bg-slate-50"
+                                            className="flex-1 py-2 px-4 border border-white/20 text-neutral-200 font-semibold hover:bg-white/10 rounded"
                                         >
                                             Cancel
                                         </Button>
@@ -501,10 +497,7 @@ export default function AccountSecurityForm() {
                                             type="button"
                                             onClick={handleVerify2FA}
                                             disabled={twoFALoading || otpCode.length !== 6}
-                                            className="flex-1 py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                            style={{ backgroundColor: colors.accent.olive }}
-                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+                                            className="flex-1 py-2 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed rounded"
                                         >
                                             {twoFALoading ? "Verifying..." : "Verify Code"}
                                         </Button>
@@ -512,35 +505,35 @@ export default function AccountSecurityForm() {
                                 </div>
                             )}
                         </form>
-                    </Card>
+                    </SettingsCard>
 
                     {/* Email Verification Section */}
-                    <Card className="p-4 md:p-6">
+                    <SettingsCard className="p-4 md:p-6">
                         <form onSubmit={(e) => e.preventDefault()} autoComplete="off">
                             <div className="mb-4 flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <Mail className="w-6 h-6 text-slate-700" />
+                                <Mail className="w-6 h-6 text-neutral-400" />
                                     <div>
-                                        <h3 className="text-lg font-semibold text-slate-900">Email Verification</h3>
-                                        <p className="text-sm text-slate-600">Verify your email address</p>
+                                        <h3 className="text-lg font-semibold text-white">Email Verification</h3>
+                                        <p className="text-sm text-neutral-400">Verify your email address</p>
                                     </div>
                                 </div>
                                 <div
                                     className={`px-3 py-1 text-xs font-medium rounded ${emailVerified
-                                        ? "bg-green-100 text-green-700"
-                                        : "bg-red-100 text-red-700"
+                                        ? "bg-green-400/20 text-green-300"
+                                        : "bg-red-400/20 text-red-300"
                                         }`}
                                 >
                                     {emailVerified ? "Verified" : "Not Verified"}
                                 </div>
                             </div>
 
-                            <div className="bg-slate-50 p-3 rounded-lg mb-4">
-                                <p className="text-xs text-slate-600 font-medium mb-1">Email Address</p>
-                                <p className="text-sm text-slate-900 font-mono">{maskEmail(userEmail)}</p>
+                            <div className="bg-white/5 p-3 rounded-lg mb-4">
+                                <p className="text-xs text-neutral-400 font-medium mb-1">Email Address</p>
+                                <p className="text-sm text-white font-mono">{maskEmail(userEmail)}</p>
                             </div>
 
-                            <p className="text-sm text-slate-600 mb-4">
+                            <p className="text-sm text-neutral-400 mb-4">
                                 {emailVerified
                                     ? "Your email is verified and secure."
                                     : "Please verify your email to secure your account."}
@@ -551,60 +544,57 @@ export default function AccountSecurityForm() {
                                     type="button"
                                     onClick={handleResendVerification}
                                     disabled={emailVerificationLoading}
-                                    className="w-full py-2 px-4 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                                    style={{ backgroundColor: colors.accent.olive }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4a5d29'}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.accent.olive}
+                                    className="w-full py-2 px-4 bg-orange-400 hover:bg-orange-500 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {emailVerificationLoading ? "Sending..." : "Resend Verification Email"}
                                 </Button>
                             )}
                         </form>
-                    </Card>
+                    </SettingsCard>
                 </div>
             </div>
 
             {/* Bottom Section - Audit Logs */}
             <div className="w-full mt-6">
-                <Card className="p-4 md:p-6">
+                <SettingsCard className="p-4 md:p-6">
                     <div className="mb-4 flex items-center gap-3">
-                        <Clock className="w-6 h-6 text-slate-700" />
+                        <Clock className="w-6 h-6 text-neutral-400" />
                         <div>
-                            <h3 className="text-lg font-semibold text-slate-900">Account Audit Logs</h3>
-                            <p className="text-sm text-slate-600">Recent security-related activities on your account</p>
+                            <h3 className="text-lg font-semibold text-white">Account Audit Logs</h3>
+                            <p className="text-sm text-neutral-400">Recent security-related activities on your account</p>
                         </div>
                     </div>
 
                     {auditLogsLoading ? (
-                        <p className="text-slate-600 text-sm">Loading audit logs...</p>
+                        <p className="text-neutral-400 text-sm">Loading audit logs...</p>
                     ) : auditLogs.length === 0 ? (
-                        <p className="text-slate-600 text-sm">No recent activities found.</p>
+                        <p className="text-neutral-400 text-sm">No recent activities found.</p>
                     ) : (
                         <>
                             <div className="max-h-64 overflow-y-auto">
                                 <table className="w-full text-sm">
                                     <thead>
-                                        <tr className="border-b border-slate-200">
-                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">Date</th>
-                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">Activity</th>
-                                            <th className="px-4 py-2 text-left font-semibold text-slate-900">IP Address</th>
+                                        <tr className="border-b border-white/10">
+                                            <th className="px-4 py-2 text-left font-semibold text-neutral-300">Date</th>
+                                            <th className="px-4 py-2 text-left font-semibold text-neutral-300">Activity</th>
+                                            <th className="px-4 py-2 text-left font-semibold text-neutral-300">IP Address</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-slate-200">
+                                    <tbody className="divide-y divide-white/5">
                                         {auditLogs.map((log) => (
-                                            <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                                                <td className="px-4 py-2 text-slate-600 text-xs">
+                                            <tr key={log.id} className="hover:bg-white/5 transition-colors">
+                                                <td className="px-4 py-2 text-neutral-400 text-xs">
                                                     {new Date(log.created_at).toLocaleString()}
                                                 </td>
-                                                <td className="px-4 py-2 text-slate-600 text-xs">
+                                                <td className="px-4 py-2 text-neutral-400 text-xs">
                                                     {log.event.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                                                 </td>
-                                                <td className="px-4 py-2 text-slate-600">
+                                                <td className="px-4 py-2 text-neutral-400">
                                                     <div className="flex items-center gap-2 group">
                                                         <span className="text-xs font-mono">{log.ip_address}</span>
                                                         <button
                                                             onClick={() => copyToClipboard(log.ip_address, log.id)}
-                                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-slate-600"
+                                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-300"
                                                             title="Copy IP address"
                                                         >
                                                             {copiedId === log.id ? (
@@ -623,14 +613,14 @@ export default function AccountSecurityForm() {
 
                             {/* Pagination Controls */}
                             <div className="mt-4 flex items-center justify-between">
-                                <p className="text-xs text-slate-600">
+                                <p className="text-xs text-neutral-400">
                                     Showing {auditLogs.length > 0 ? (auditLogsPagination.current_page - 1) * auditLogsPagination.per_page + 1 : 0} to {Math.min(auditLogsPagination.current_page * auditLogsPagination.per_page, auditLogsPagination.total)} of {auditLogsPagination.total} entries
                                 </p>
                                 <div className="flex gap-2">
                                     <button
                                         onClick={() => fetchAuditLogs(auditLogsPagination.current_page - 1)}
                                         disabled={auditLogsPagination.current_page === 1 || auditLogsLoading}
-                                        className="px-3 py-1 text-sm border border-slate-300 text-slate-700 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        className="px-3 py-1 text-sm border border-white/20 text-neutral-300 rounded hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
                                         Previous
                                     </button>
@@ -640,13 +630,11 @@ export default function AccountSecurityForm() {
                                                 key={page}
                                                 onClick={() => fetchAuditLogs(page)}
                                                 disabled={auditLogsLoading}
-                                                className="px-2 py-1 text-xs rounded transition-colors border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                                                style={{
-                                                    backgroundColor: auditLogsPagination.current_page === page ? colors.accent.olive : 'transparent',
-                                                    color: auditLogsPagination.current_page === page ? 'white' : '#6b7280',
-                                                    fontWeight: auditLogsPagination.current_page === page ? '600' : 'normal',
-                                                    borderColor: auditLogsPagination.current_page === page ? colors.accent.olive : '#d1d5db'
-                                                }}
+                                                className={`px-2 py-1 text-xs rounded transition-colors border disabled:opacity-50 disabled:cursor-not-allowed ${
+                                                    auditLogsPagination.current_page === page
+                                                        ? 'bg-orange-400 border-orange-400 text-white font-semibold'
+                                                        : 'border-white/20 text-neutral-400 hover:bg-white/10'
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
@@ -655,7 +643,7 @@ export default function AccountSecurityForm() {
                                     <button
                                         onClick={() => fetchAuditLogs(auditLogsPagination.current_page + 1)}
                                         disabled={auditLogsPagination.current_page === auditLogsPagination.last_page || auditLogsLoading}
-                                        className="px-3 py-1 text-sm border border-slate-300 text-slate-700 rounded hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        className="px-3 py-1 text-sm border border-white/20 text-neutral-300 rounded hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                     >
                                         Next
                                     </button>
@@ -663,7 +651,7 @@ export default function AccountSecurityForm() {
                             </div>
                         </>
                     )}
-                </Card>
+                </SettingsCard>
             </div>
         </>
     );

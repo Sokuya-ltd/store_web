@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import ToastContainer from "../../components/ui/ToastContainer";
@@ -92,11 +93,11 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-linear-to-br from-navy-900 via-navy-800 to-navy-900 flex flex-col lg:items-center lg:justify-center p-3 md:p-4 relative overflow-hidden">
             {/* Decorative Background Elements */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-700/20 rounded-full blur-3xl -mr-48 -mt-48"></div>
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
-            <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-0 right-0 w-96 h-96 bg-navy-700/30 rounded-full blur-3xl -mr-48 -mt-48"></div>
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-navy-600/20 rounded-full blur-3xl -ml-40 -mb-40"></div>
+            <div className="absolute top-1/2 right-1/3 w-72 h-72 bg-orange-400/10 rounded-full blur-3xl"></div>
 
             <ToastContainer toasts={toasts} onClose={hideToast} />
 
@@ -105,33 +106,31 @@ export default function Login() {
                     {/* Left Content - Welcome Section - Hidden on mobile, shown on tablet+ */}
                     <div className="hidden md:flex flex-col justify-center order-2 lg:order-1">
                         <div className="text-white space-y-6">
+                            <img src={logo} alt="Sokuya" className="h-40 w-auto mb-0" />
                             <div>
                                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3">
                                     Welcome!
                                 </h1>
-                                <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></div>
+                                <div className="w-16 h-1 bg-orange-400 rounded-full"></div>
                             </div>
-                            
-                            <p className="text-base md:text-lg text-purple-200 leading-relaxed">
+
+                            <p className="text-base md:text-lg text-neutral-300 leading-relaxed">
                                 Manage your store effortlessly. Access your dashboard, track orders, manage inventory, and grow your business with powerful tools designed for sellers.
                             </p>
-
-                            <button
-                                onClick={() => window.open("https://sokuya.com/learn", "_blank")}
-                                className="inline-block px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-purple-900 w-fit"
-                            >
-                                Learn More
-                            </button>
                         </div>
                     </div>
 
                     {/* Right Content - Login Form */}
                     <div className="order-1 md:order-2">
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-2xl">
+                        {/* Logo - mobile only */}
+                        <div className="flex justify-center mb-6 md:hidden">
+                            <img src={logo} alt="Sokuya" className="h-35 w-auto" />
+                        </div>
+                        <div className="bg-white/7 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl">
                             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                                 Sign in
                             </h2>
-                            <p className="text-xs md:text-sm text-purple-200 mb-8">
+                            <p className="text-xs md:text-sm text-neutral-400 mb-8">
                                 Enter your credentials to access your dashboard
                             </p>
 
@@ -167,14 +166,14 @@ export default function Login() {
                                                 // TODO: Implement resend verification email
                                                 showSuccess("Verification email resent! Please check your inbox.");
                                             }}
-                                            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 font-semibold rounded-lg transition-all"
+                                            className="w-full bg-orange-400 hover:bg-orange-500 text-white py-3 font-semibold rounded-lg transition-all"
                                         >
                                             Resend Verification Email
                                         </Button>
                                         <button
                                             type="button"
                                             onClick={() => setShowVerificationMessage(false)}
-                                            className="text-sm text-purple-200 hover:text-white underline transition-colors"
+                                            className="text-sm text-neutral-400 hover:text-white underline transition-colors"
                                         >
                                             Try with a different account
                                         </button>
@@ -184,7 +183,7 @@ export default function Login() {
                                 <form className="space-y-5" onSubmit={handleSubmit}>
                                     {/* Email Field */}
                                     <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-purple-100 mb-2">
+                                        <label htmlFor="email" className="block text-sm font-medium text-neutral-200 mb-2">
                                             User Name
                                         </label>
                                         <div className="relative">
@@ -197,9 +196,9 @@ export default function Login() {
                                                 required
                                                 aria-invalid={!!fieldErrors.email}
                                                 aria-describedby={fieldErrors.email ? "email-error" : undefined}
-                                                className="w-full bg-white/10 border border-white/30 text-white placeholder-purple-300/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all backdrop-blur-sm"
+                                                className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                                             />
-                                            <Mail className="absolute right-3 top-3.5 w-5 h-5 text-purple-300/50" />
+                                            <Mail className="absolute right-3 top-3.5 w-5 h-5 text-neutral-500" />
                                         </div>
                                         {fieldErrors.email && (
                                             <p id="email-error" className="text-red-300 text-xs mt-1.5">
@@ -210,7 +209,7 @@ export default function Login() {
 
                                     {/* Password Field */}
                                     <div>
-                                        <label htmlFor="password" className="block text-sm font-medium text-purple-100 mb-2">
+                                        <label htmlFor="password" className="block text-sm font-medium text-neutral-200 mb-2">
                                             Password
                                         </label>
                                         <div className="relative">
@@ -223,12 +222,12 @@ export default function Login() {
                                                 required
                                                 aria-invalid={!!fieldErrors.password}
                                                 aria-describedby={fieldErrors.password ? "password-error" : undefined}
-                                                className="w-full bg-white/10 border border-white/30 text-white placeholder-purple-300/50 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all backdrop-blur-sm"
+                                                className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute right-3 top-3.5 text-purple-300/50 hover:text-purple-200 transition-colors"
+                                                className="absolute right-3 top-3.5 text-neutral-500 hover:text-neutral-300 transition-colors"
                                                 aria-label={showPassword ? "Hide password" : "Show password"}
                                             >
                                                 {showPassword ? (
@@ -259,7 +258,7 @@ export default function Login() {
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        className="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-orange-500/50 disabled:to-orange-600/50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-purple-900"
+                                        className="w-full py-3 px-4 bg-orange-400 hover:bg-orange-500 disabled:bg-orange-400/50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-[1.02] disabled:scale-100 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-navy-900"
                                     >
                                         {isSubmitting ? (
                                             <span className="flex items-center justify-center gap-2">
@@ -274,46 +273,8 @@ export default function Login() {
                                         )}
                                     </button>
 
-                                    {/* Social Login Divider */}
-                                    <div className="relative py-2">
-                                        <div className="absolute inset-0 flex items-center">
-                                            <div className="w-full border-t border-white/20"></div>
-                                        </div>
-                                        <div className="relative flex justify-center text-sm">
-                                            <span className="px-2 bg-gradient-to-br from-purple-900 via-purple-800 to-purple-950 text-purple-300">Or connect with</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Social Icons */}
-                                    <div className="flex justify-center gap-4">
-                                        <button
-                                            type="button"
-                                            onClick={() => window.open("https://facebook.com", "_blank")}
-                                            className="p-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg transition-all hover:scale-110"
-                                            aria-label="Sign in with Facebook"
-                                        >
-                                            <Facebook className="w-5 h-5 text-white" />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => window.open("https://instagram.com", "_blank")}
-                                            className="p-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg transition-all hover:scale-110"
-                                            aria-label="Sign in with Instagram"
-                                        >
-                                            <Instagram className="w-5 h-5 text-white" />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => window.open("https://twitch.tv", "_blank")}
-                                            className="p-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg transition-all hover:scale-110"
-                                            aria-label="Sign in with Twitch"
-                                        >
-                                            <Twitch className="w-5 h-5 text-white" />
-                                        </button>
-                                    </div>
-
                                     {/* Register Link */}
-                                    <p className="text-center text-sm text-purple-200 pt-2">
+                                    <p className="text-center text-sm text-neutral-400 pt-2">
                                         Don't have an account?{" "}
                                         <Link
                                             to="/onboarding"

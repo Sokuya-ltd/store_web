@@ -4,10 +4,10 @@ import FileUploadCard from "../../components/ui/FileUploadCard";
 import FileListTable from "../../components/ui/FileListTable";
 import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
+import SettingsCard from "../../components/ui/SettingsCard";
 import ToastContainer from "../../components/ui/ToastContainer";
 import { Image, FileText } from "lucide-react";
 import { useToast } from "../../hooks/useToast";
-import { colors } from "../../lib/colors";
 import { uploadStoreFile, retrieveStoreFiles } from "../../services/api";
 
 export default function BrandingForm({ 
@@ -312,14 +312,14 @@ export default function BrandingForm({
             {/* Document Type Selection Dialog */}
             {showTypeDialog && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
-                        <h3 className="text-lg font-semibold text-slate-900 mb-4">Select Document Type</h3>
+                    <div className="bg-navy-800 border border-white/10 rounded-lg p-6 max-w-sm w-full mx-4">
+                        <h3 className="text-lg font-semibold text-white mb-4">Select Document Type</h3>
                         <div className="space-y-2 mb-6">
                             {documentTypes.map(docType => (
                                 <button
                                     key={docType.value}
                                     onClick={() => handleDocumentTypeSelect(docType.value)}
-                                    className="w-full text-left px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                                    className="w-full text-left px-4 py-2 border border-white/20 rounded-lg hover:bg-white/10 transition-colors text-neutral-200"
                                 >
                                     {docType.label}
                                 </button>
@@ -330,7 +330,7 @@ export default function BrandingForm({
                                 setShowTypeDialog(false);
                                 setPendingFile(null);
                             }}
-                            className="w-full px-4 py-2 text-slate-600 border border-slate-200 rounded-lg hover:bg-slate-50"
+                            className="w-full px-4 py-2 text-neutral-300 border border-white/20 rounded-lg hover:bg-white/10"
                         >
                             Cancel
                         </button>
@@ -343,14 +343,14 @@ export default function BrandingForm({
             
             {/* Success Message */}
             {submitSuccess && (
-                <div className="animate-slide-down bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg shadow-sm">
+                <div className="animate-slide-down bg-green-400/10 border border-green-400/30 text-green-300 px-4 py-3 rounded-lg shadow-sm">
                     <p className="font-medium">✓ Branding updated successfully!</p>
                 </div>
             )}
             
             {/* Error Message */}
             {submitError && (
-                <div className="animate-shake bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg shadow-sm">
+                <div className="animate-shake bg-red-400/10 border border-red-400/30 text-red-300 px-4 py-3 rounded-lg shadow-sm">
                     <p className="font-medium">✗ Failed to update branding</p>
                     {typeof submitError === 'object' ? (
                         <ul className="text-sm list-disc list-inside mt-1">
@@ -367,8 +367,8 @@ export default function BrandingForm({
             {/* Upload Cards Section */}
             <div>
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">Upload Files</h3>
-                    <p className="text-sm text-slate-600">Upload your store branding and document files</p>
+                    <h3 className="text-lg font-semibold text-white mb-2">Upload Files</h3>
+                    <p className="text-sm text-neutral-400">Upload your store branding and document files</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -413,16 +413,16 @@ export default function BrandingForm({
             {/* File List Section */}
             <div>
                 <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">All Files</h3>
+                    <h3 className="text-lg font-semibold text-white mb-2">All Files</h3>
                 </div>
 
-                <Card className="p-6">
+                <SettingsCard className="p-6">
                     <FileListTable
                         files={uploadedFiles}
                         onDelete={handleDeleteFile}
                         isLoading={fileDeleteLoading || loadingFiles}
                     />
-                </Card>
+                </SettingsCard>
             </div>
         </form>
         </>
