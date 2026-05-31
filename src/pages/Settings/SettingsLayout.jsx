@@ -167,7 +167,7 @@ export default function SettingsLayout() {
                 name: form.name,
                 phone: form.phone,
                 store_name: form.store_name,
-                store_description: form.store_description,
+                store_description: form.store_description ? String(form.store_description) : "",
                 store_address: form.store_address,
                 store_city: form.store_city,
                 store_state: form.store_state,
