@@ -126,7 +126,7 @@ export default function SettingsForm({ form, updateForm, onSubmit, submitting, s
                             label="Description"
                             rows={5}
                             value={form.store_description}
-                            onChange={content => updateForm({ ...form, store_description: content })}
+                            onChange={e => updateForm({ ...form, store_description: e.target.value })}
                             placeholder="Tell customers about your store..."
                         />
                     </div>
