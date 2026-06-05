@@ -1,7 +1,47 @@
 // API base URL from environment
-import { getToken, clearAuthData } from "./auth";
+import { getToken, clearAuthData, isTokenExpiringSoon, updateToken } from "./auth";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+// Singleton refresh promise — prevents multiple simultaneous refresh calls
+let _refreshPromise = null;
+
+async function refreshToken() {
+    if (_refreshPromise) return _refreshPromise;
+
+    _refreshPromise = (async () => {
+        try {
+            const token = getToken();
+            if (!token) throw new Error("No token to refresh");
+
+            const response = await fetch(`${API_BASE_URL}/store/refresh`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) throw new Error("Token refresh failed");
+
+            const data = await response.json();
+            updateToken(data.token, data.expires_in);
+            return data.token;
+        } catch (err) {
+            clearAuthData();
+            window.location.replace("/login");
+            throw err;
+        } finally {
+            _refreshPromise = null;
+        }
+    })();
+
+    return _refreshPromise;
+}
+
+// Exported so AuthContext can trigger a proactive refresh
+export { refreshToken as refreshApiToken };
 
 /**
  * Generic API request helper
@@ -21,20 +61,30 @@ async function request(endpoint, options = {}) {
         ...options,
     };
 
-    // Add auth token if available
+    // Proactively refresh if the token is about to expire
+    if (getToken() && isTokenExpiringSoon()) {
+        try { await refreshToken(); } catch { /* will 401 below */ }
+    }
+
+    // Add current (possibly refreshed) auth token
     const token = getToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
 
     try {
-        const response = await fetch(url, config);
+        let response = await fetch(url, config);
 
-        // Handle 401 Unauthorized - don't auto-redirect, let components handle it
+        // On 401: attempt one silent refresh then retry the original request
         if (response.status === 401) {
-            clearAuthData();
-            // Don't use window.location.href - let the component handle the error
-            // This allows error messages and toasts to display properly
+            try {
+                const newToken = await refreshToken();
+                config.headers.Authorization = `Bearer ${newToken}`;
+                response = await fetch(url, config);
+            } catch {
+                // refreshToken already cleared auth and redirected
+                throw new Error("Session expired. Please log in again.");
+            }
         }
 
         // Handle non-JSON responses

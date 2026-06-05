@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import auth from "../services/auth";
-import api from "../services/api";
+import api, { refreshApiToken } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -22,6 +22,35 @@ export function AuthProvider({ children }) {
         };
         initAuth();
     }, []);
+
+    // Proactive token refresh: runs every 60s while user is logged in.
+    // Catches the case where the user is idle (no API calls) but the token
+    // is about to expire (< 5 min remaining in the 60-min window).
+    useEffect(() => {
+        if (!user) return;
+
+        const interval = setInterval(async () => {
+            if (!auth.isAuthenticated()) {
+                // Token hard-expired with no refresh possible
+                setUser(null);
+                setStoreInfo(null);
+                navigate("/login", { replace: true });
+                return;
+            }
+
+            if (auth.isTokenExpiringSoon()) {
+                try {
+                    await refreshApiToken();
+                } catch {
+                    // refreshApiToken already redirected; sync React state
+                    setUser(null);
+                    setStoreInfo(null);
+                }
+            }
+        }, 60_000); // check every minute
+
+        return () => clearInterval(interval);
+    }, [user, navigate]);
 
     // Login handler
     const login = useCallback((response) => {

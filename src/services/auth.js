@@ -5,6 +5,9 @@ const USER_KEY = "auth_user";
 const STORE_KEY = "auth_store";
 const TOKEN_EXPIRY_KEY = "auth_token_expiry";
 
+// Refresh the token when less than 5 minutes remain
+const REFRESH_BUFFER_MS = 5 * 60 * 1000;
+
 /**
  * Store authentication data after successful login
  */
@@ -72,6 +75,26 @@ export function isAuthenticated() {
     }
 
     return true;
+}
+
+/**
+ * Update stored token and expiry after a refresh
+ */
+export function updateToken(token, expiresIn) {
+    if (token) localStorage.setItem(TOKEN_KEY, token);
+    if (expiresIn) {
+        const expiryTime = Date.now() + expiresIn * 1000;
+        localStorage.setItem(TOKEN_EXPIRY_KEY, expiryTime.toString());
+    }
+}
+
+/**
+ * Returns true when the token exists and will expire within REFRESH_BUFFER_MS
+ */
+export function isTokenExpiringSoon() {
+    const expiryTime = localStorage.getItem(TOKEN_EXPIRY_KEY);
+    if (!expiryTime) return false;
+    return Date.now() > parseInt(expiryTime) - REFRESH_BUFFER_MS;
 }
 
 /**
@@ -148,6 +171,8 @@ export default {
     getUser,
     getStoreInfo,
     isAuthenticated,
+    isTokenExpiringSoon,
+    updateToken,
     isVerified,
     isStoreActive,
     clearAuthData,

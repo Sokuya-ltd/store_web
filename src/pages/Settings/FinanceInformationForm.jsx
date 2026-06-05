@@ -7,7 +7,7 @@ import Input from "../../components/ui/Input";
 import { useToast } from "../../context/ToastContext";
 import api from "../../services/api";
 
-export default function FinanceInformationForm({ initialData = {} }) {
+export default function FinanceInformationForm({ initialData = {}, onRefetch }) {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -37,29 +37,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
     });
   }, [initialData]);
 
-  // Fetch profile data on component mount
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await api.get("/store/profile");
-        const profileData = response.store_owner || response.data;
-        if (profileData) {
-          setForm({
-            business_registration_number: profileData.business_registration_number || "",
-            tax_id: profileData.tax_id || "",
-            bank_account_number: profileData.bank_account_number || "",
-            bank_name: profileData.bank_name || "",
-            bank_routing_number: profileData.bank_routing_number || "",
-            bank_account_holder: profileData.name || "",
-          });
-        }
-      } catch (err) {
-        // Error fetching profile silently handled
-      }
-    };
 
-    fetchProfile();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,6 +77,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
         }));
       }
       toast.success(response.message || "Business information updated successfully!");
+      if (onRefetch) onRefetch();
     } catch (err) {
       if (err.status === 422 && err.errors) {
         setErrors((prev) => ({
@@ -149,6 +128,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
         }));
       }
       toast.success(response.message || "Bank information updated successfully!");
+      if (onRefetch) onRefetch();
     } catch (err) {
       if (err.status === 422 && err.errors) {
         setErrors((prev) => ({
@@ -287,7 +267,7 @@ export default function FinanceInformationForm({ initialData = {} }) {
             <div className="relative">
               <Input
                 name="bank_account_number"
-                type={showBankAccountNumber ? "text" : "password"}
+                type={showBankAccountNumber ? "text" : "text"}
                 value={form.bank_account_number}
                 onChange={handleChange}
                 placeholder="Account number (masked for security)"

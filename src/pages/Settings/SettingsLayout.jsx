@@ -7,11 +7,21 @@ import { useStoreProfile } from "../../hooks/useStoreProfile";
 import { useToast } from "../../hooks/useToast";
 import ToastContainer from "../../components/ui/ToastContainer";
 import api from "../../services/api";
+import { AlertTriangle, X, ChevronRight, ChevronDown, Building2, CreditCard, ImageIcon, FileCheck, Lock, Circle, ArrowRight } from "lucide-react";
+
+const SECTION_CONFIG = {
+    business_info:          { label: "Business Info",         icon: Building2,  tab: 0 },
+    bank_details:           { label: "Bank Details",          icon: CreditCard, tab: 3 },
+    store_media:            { label: "Store Media",           icon: ImageIcon,  tab: 1 },
+    verification_documents: { label: "Verification Documents", icon: FileCheck,  tab: 0 },
+};
 
 export default function SettingsLayout() {
-    const { profile, loading, error, refetch } = useStoreProfile();
+    const { profile, profileCompletion, loading, error, refetch } = useStoreProfile();
     const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
     const [activeTab, setActiveTab] = useState(0);
+    const [completionAlertDismissed, setCompletionAlertDismissed] = useState(false);
+    const [completionExpanded, setCompletionExpanded] = useState(false);
     
     // Settings Form State
     const [submitting, setSubmitting] = useState(false);
@@ -22,6 +32,28 @@ export default function SettingsLayout() {
     const [brandingSubmitting, setBrandingSubmitting] = useState(false);
     const [brandingSubmitError, setBrandingSubmitError] = useState(null);
     const [brandingSubmitSuccess, setBrandingSubmitSuccess] = useState(false);
+
+    // Store status toggle
+    const [statusUpdating, setStatusUpdating] = useState(false);
+
+    const handleStatusToggle = async () => {
+        if (statusUpdating) return;
+        const newStatus = !form.is_active;
+        setStatusUpdating(true);
+        // Optimistic update
+        updateForm({ is_active: newStatus });
+        try {
+            await api.put("/store/profile", { is_active: newStatus });
+            showSuccess(newStatus ? "Store is now Open" : "Store is now Closed");
+            await refetch();
+        } catch (err) {
+            // Revert on failure
+            updateForm({ is_active: !newStatus });
+            showError(err.message || "Failed to update store status");
+        } finally {
+            setStatusUpdating(false);
+        }
+    };
     
     const [form, setForm] = useState({
         name: "",
@@ -45,7 +77,11 @@ export default function SettingsLayout() {
         accepts_orders: true,
         verification_documents: "",
         business_registration_number: "",
-        bank_name: ""
+        tax_id: "",
+        bank_name: "",
+        bank_account_number: "",
+        bank_routing_number: "",
+        bank_account_holder: ""
     });
 
     // Separate branding form state
@@ -113,7 +149,11 @@ export default function SettingsLayout() {
                 total_revenue: profile.total_revenue != null ? parseFloat(profile.total_revenue) : 0,
                 verification_documents: profile.verification_documents || "",
                 business_registration_number: profile.business_registration_number || "",
-                bank_name: profile.bank_name || ""
+                tax_id: profile.tax_id || "",
+                bank_name: profile.bank_name || "",
+                bank_account_number: profile.bank_account_number || "",
+                bank_routing_number: profile.bank_routing_number || "",
+                bank_account_holder: profile.bank_account_holder || profile.name || ""
             });
 
             // Populate branding form separately
@@ -262,8 +302,128 @@ export default function SettingsLayout() {
         );
     }
 
+    const allSections = profileCompletion
+        ? Object.entries(profileCompletion).filter(([key]) => key !== "overall_complete")
+        : [];
+    const totalSections = allSections.length;
+    const completeSections = allSections.filter(([, val]) => val?.complete === true).length;
+    const incompleteSectionsList = allSections
+        .filter(([, val]) => val?.complete === false)
+        .map(([key, val]) => ({ key, missing: val.missing }));
+    const allMissingFields = incompleteSectionsList.flatMap(s => s.missing);
+    const previewFields = allMissingFields.slice(0, 2);
+    const extraCount = allMissingFields.length - previewFields.length;
+    const pct = totalSections > 0 ? Math.round((completeSections / totalSections) * 100) : 0;
+
     return (
         <div className="w-full space-y-8 px-6 py-6">
+            {/* Profile Completion — compact collapsible banner */}
+            {!completionAlertDismissed && profileCompletion && !profileCompletion.overall_complete && incompleteSectionsList.length > 0 && (
+                <div className="border border-orange-500/30 bg-[#1a1208] rounded-xl overflow-hidden">
+
+                    {/* ── Compact bar (always visible) ── */}
+                    <div className="flex items-center gap-3 px-4 py-3">
+                        {/* Icon + label */}
+                        <AlertTriangle size={15} className="shrink-0 text-orange-400" />
+                        <span className="text-orange-300 text-sm font-semibold whitespace-nowrap">Profile incomplete</span>
+                        <span className="text-orange-500/50 text-sm">—</span>
+
+                        {/* Field preview pills */}
+                        <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
+                            {previewFields.map(f => (
+                                <span key={f} className="shrink-0 bg-orange-500/15 text-orange-300 text-xs px-2 py-0.5 rounded-full border border-orange-500/20">
+                                    {f}
+                                </span>
+                            ))}
+                            {extraCount > 0 && (
+                                <span className="shrink-0 text-orange-400/60 text-xs font-medium">+{extraCount} more</span>
+                            )}
+                        </div>
+
+                        {/* Progress */}
+                        <div className="hidden sm:flex items-center gap-2 shrink-0">
+                            <div className="w-20 h-1 bg-orange-900/60 rounded-full overflow-hidden">
+                                <div className="h-full bg-orange-400 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                            </div>
+                            <span className="text-orange-300/50 text-xs whitespace-nowrap">{completeSections}/{totalSections}</span>
+                        </div>
+
+                        {/* Expand toggle */}
+                        <button
+                            onClick={() => setCompletionExpanded(v => !v)}
+                            className="shrink-0 flex items-center gap-1 text-orange-400 text-xs font-semibold hover:text-orange-300 transition-colors px-2 py-1 rounded-md hover:bg-orange-500/10"
+                        >
+                            {completionExpanded ? "Hide" : "Details"}
+                            <ChevronDown
+                                size={13}
+                                className={`transition-transform duration-200 ${completionExpanded ? "rotate-180" : ""}`}
+                            />
+                        </button>
+
+                        {/* Dismiss */}
+                        <button
+                            onClick={() => setCompletionAlertDismissed(true)}
+                            className="shrink-0 p-1 text-orange-400/40 hover:text-orange-300 transition-colors rounded"
+                            aria-label="Dismiss"
+                        >
+                            <X size={13} />
+                        </button>
+                    </div>
+
+                    {/* ── Expandable detail panel ── */}
+                    {completionExpanded && (
+                        <>
+                            <div className="border-t border-orange-500/20 p-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {incompleteSectionsList.map(({ key, missing }) => {
+                                    const config = SECTION_CONFIG[key] || { label: key.replace(/_/g, " "), icon: AlertTriangle, tab: 0 };
+                                    const SectionIcon = config.icon;
+                                    return (
+                                        <div key={key} className="border border-orange-500/20 bg-orange-500/5 rounded-lg overflow-hidden">
+                                            <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-orange-500/15">
+                                                <div className="p-1.5 bg-orange-500/15 rounded-md">
+                                                    <SectionIcon size={13} className="text-orange-400" />
+                                                </div>
+                                                <span className="text-orange-300 text-xs font-semibold uppercase tracking-wider">{config.label}</span>
+                                            </div>
+                                            <div className="divide-y divide-orange-500/10">
+                                                {missing.map((field) => (
+                                                    <button
+                                                        key={field}
+                                                        onClick={() => { setActiveTab(config.tab); setCompletionExpanded(false); }}
+                                                        className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-orange-500/10 transition-colors group"
+                                                    >
+                                                        <div className="flex items-center gap-2.5">
+                                                            <Circle size={7} className="text-orange-500/50 shrink-0" />
+                                                            <span className="text-orange-200/80 text-sm">{field}</span>
+                                                        </div>
+                                                        <ChevronRight size={13} className="text-orange-500/40 group-hover:text-orange-400 transition-colors" />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-t border-orange-500/20 bg-orange-500/5">
+                                <div className="flex items-center gap-1.5 text-orange-300/40 text-xs">
+                                    <Lock size={11} />
+                                    <span>Your information is encrypted and secure</span>
+                                </div>
+                                {incompleteSectionsList.some(s => s.key === "bank_details") && (
+                                    <button
+                                        onClick={() => { setActiveTab(3); setCompletionExpanded(false); }}
+                                        className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-400 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors"
+                                    >
+                                        Go to Finance Information
+                                        <ArrowRight size={12} />
+                                    </button>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            )}
+
             {/* Header with Title and Status Toggle */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-8">
                 <div className="flex-1">
@@ -273,14 +433,20 @@ export default function SettingsLayout() {
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
                     <span className="text-sm font-medium text-neutral-300">Store Status:</span>
                     <div className="flex items-center gap-2 bg-white/10 rounded-lg border border-white/20 px-3 py-2">
-                        <div className={`h-2 w-2 rounded-full ${form.is_active ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                        <span className={`text-sm font-medium ${form.is_active ? 'text-green-600' : 'text-red-600'}`}>
-                            {form.is_active ? 'Open' : 'Closed'}
+                        {statusUpdating ? (
+                            <div className="h-2 w-2 rounded-full bg-orange-400 animate-pulse" />
+                        ) : (
+                            <div className={`h-2 w-2 rounded-full ${form.is_active ? 'bg-green-500' : 'bg-red-500'}`} />
+                        )}
+                        <span className={`text-sm font-medium ${statusUpdating ? 'text-neutral-400' : form.is_active ? 'text-green-400' : 'text-red-400'}`}>
+                            {statusUpdating ? 'Updating…' : form.is_active ? 'Open' : 'Closed'}
                         </span>
                         <button
                             type="button"
-                            onClick={() => updateForm({ ...form, is_active: !form.is_active })}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                            onClick={handleStatusToggle}
+                            disabled={statusUpdating}
+                            aria-label={form.is_active ? 'Close store' : 'Open store'}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${
                                 form.is_active ? 'bg-green-500' : 'bg-white/20'
                             }`}
                         >
@@ -349,7 +515,7 @@ export default function SettingsLayout() {
                         <AccountSecurityForm />
                     )}
                     {activeTab === 3 && (
-                        <FinanceInformationForm initialData={form} />
+                        <FinanceInformationForm initialData={form} onRefetch={refetch} />
                     )}
                 </div>
             </div>

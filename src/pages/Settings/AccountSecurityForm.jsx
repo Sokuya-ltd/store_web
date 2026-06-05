@@ -221,7 +221,7 @@ export default function AccountSecurityForm() {
     const fetchAuditLogs = async (page = 1) => {
         setAuditLogsLoading(true);
         try {
-            const response = await api.get(`/store/audit/by-type?types=security&page=${page}`);
+            const response = await api.get(`/store/audit/by-type?types=security,store_owner&page=${page}`);
             setAuditLogs(response.data?.data || []);
             setAuditLogsPagination({
                 current_page: response.data?.current_page || 1,

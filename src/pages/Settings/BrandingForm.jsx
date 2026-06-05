@@ -64,13 +64,14 @@ export default function BrandingForm({
                 if (imagesData.images) {
                     Object.entries(imagesData.images).forEach(([type, image]) => {
                         if (image.uploaded && image.url) {
+                            const rawSize = image.size_bytes ?? image.bytes ?? image.size ?? null;
                             allFiles.push({
                                 id: `${type}_${Date.now()}`,
                                 name: `${type.charAt(0).toUpperCase() + type.slice(1)}`,
                                 type: type, // 'logo' or 'banner'
-                                size: image.size || 0,
+                                size: rawSize,
                                 url: cleanUrl(image.url),
-                                uploadedAt: new Date().toISOString(),
+                                uploadedAt: image.uploaded_at || image.created_at || image.updatedAt || null,
                                 filePath: image.path
                             });
                         }
