@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../../components/ui/Input";
 import Textarea from "../../components/ui/Textarea";
@@ -6,12 +6,26 @@ import Button from "../../components/ui/Button";
 import Card from "../../components/ui/Card";
 import ToggleButtonGroup from "../../components/ui/ToggleButtonGroup";
 import { useToast } from "../../hooks/useToast";
+import { useAuth } from "../../context/AuthContext";
 import api from "../../services/api";
+
+// Generates a SKU like "SL-8F3K2" from store name initials + random alphanumeric
+function buildSku(storeName) {
+    const initials = (storeName || "ST")
+        .split(/\s+/)
+        .map((w) => w[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 4);
+    const rand = Math.random().toString(36).toUpperCase().slice(2, 7);
+    return `${initials}-${rand}`;
+}
 
 export default function ProductEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addToast } = useToast();
+    const { storeInfo } = useAuth();
 
     // Loading and error states
     const [isLoading, setIsLoading] = useState(true);
@@ -52,6 +66,19 @@ export default function ProductEdit() {
 
     // Original store product data (for tracking changes)
     const [originalData, setOriginalData] = useState(null);
+
+    const generateSku = useCallback(
+        () => buildSku(storeInfo?.store_name || storeInfo?.name),
+        [storeInfo]
+    );
+
+    // Auto-generate SKU on mount if the product has no SKU yet
+    useEffect(() => {
+        setForm((prev) => ({
+            ...prev,
+            sku: prev.sku || generateSku(),
+        }));
+    }, [generateSku]);
 
     // Load product data from API on mount
     useEffect(() => {
@@ -671,11 +698,24 @@ export default function ProductEdit() {
                                     </div>
                                 </span>
                             </div>
-                            <Input
-                                type="text"
-                                value={form.sku}
-                                onChange={(e) => updateForm({ sku: e.target.value })}
-                            />
+                            <div className="flex gap-2">
+                                <Input
+                                    type="text"
+                                    value={form.sku}
+                                    onChange={(e) => updateForm({ sku: e.target.value })}
+                                    className="flex-1"
+                                />
+                                <button
+                                    type="button"
+                                    title="Regenerate SKU"
+                                    onClick={() => updateForm({ sku: generateSku() })}
+                                    className="shrink-0 px-2.5 py-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white transition-colors"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <Input
                             label="Barcode"
