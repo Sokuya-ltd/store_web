@@ -216,6 +216,33 @@ export default function ProductEdit() {
         }
     };
 
+    const handleMediaDelete = async (mediaId) => {
+        const notifyUser = (message, type = "error") => {
+            if (typeof addToast === "function") {
+                try { addToast(message, type); } catch (e) { console.error("Toast error:", e); }
+            } else {
+                console.error("Toast unavailable:", message);
+            }
+        };
+
+        if (!window.confirm("Remove this image from the product?")) {
+            return;
+        }
+
+        try {
+            setMediaUpdating({ ...mediaUpdating, [mediaId]: true });
+
+            await api.delete(`/api/store/storeProduct}/media/${mediaId}`);
+
+            setMedia(media.filter((m) => m.id !== mediaId));
+            notifyUser("Image deleted successfully", "success");
+        } catch (err) {
+            notifyUser(err.message || "Failed to delete image", "error");
+        } finally {
+            setMediaUpdating({ ...mediaUpdating, [mediaId]: false });
+        }
+    };
+
     // Handle image upload
     const handleImageUpload = async () => {
         console.log("Uploading image for product_id:", product_id);
@@ -265,7 +292,8 @@ export default function ProductEdit() {
 
             const response = await api.uploadFile(
                 `/store/products/${id}/media`,
-                formData
+                formData,
+                { method: "PUT" }
             );
 
             if (response) {
@@ -567,6 +595,17 @@ export default function ProductEdit() {
                                                         <div className="text-xs text-neutral-500">Updating...</div>
                                                     )}
                                                 </div>
+                                            </div>
+                                            <div className="mt-4 flex justify-end">
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    onClick={() => handleMediaDelete(image.id)}
+                                                    disabled={mediaUpdating[image.id]}
+                                                    className="border-red-400/30 text-red-300 hover:bg-red-400/10"
+                                                >
+                                                    {mediaUpdating[image.id] ? "Deleting..." : "Delete Image"}
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>

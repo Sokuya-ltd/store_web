@@ -161,7 +161,7 @@ const api = {
         const url = `${API_BASE_URL}${endpoint}`;
 
         const config = {
-            method: "POST",
+            method: options.method || "POST",
             ...options,
         };
 
