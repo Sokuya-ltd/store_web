@@ -45,7 +45,7 @@ export default function ProductEdit() {
     const [media, setMedia] = useState([]);
     const [mediaUpdating, setMediaUpdating] = useState({});
     const [uploadingImage, setUploadingImage] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFiles, setSelectedFiles] = useState([]);
     const fileInputRef = useRef(null);
 
     const [form, setForm] = useState({
@@ -192,7 +192,7 @@ export default function ProductEdit() {
         try {
             setMediaUpdating({ ...mediaUpdating, [mediaId]: true });
 
-            await api.put(`/store/${product_id}/media/${mediaId}`, updates);
+            await api.put(`/store/products/${product_id}/media/${mediaId}`, updates);
 
             // Update local media state
             setMedia(
@@ -232,7 +232,7 @@ export default function ProductEdit() {
         try {
             setMediaUpdating({ ...mediaUpdating, [mediaId]: true });
 
-            await api.delete(`/api/store/storeProduct}/media/${mediaId}`);
+            await api.delete(`/store/products/${id}/media/${mediaId}`);
 
             setMedia(media.filter((m) => m.id !== mediaId));
             notifyUser("Image deleted successfully", "success");
@@ -245,7 +245,7 @@ export default function ProductEdit() {
 
     // Handle image upload
     const handleImageUpload = async () => {
-        console.log("Uploading image for product_id:", product_id);
+        console.log("Uploading images for product_id:", product_id);
         const notifyUser = (message, type = "error") => {
             if (typeof addToast === "function") {
                 try { addToast(message, type); } catch (e) { console.error("Toast error:", e); }
@@ -254,8 +254,8 @@ export default function ProductEdit() {
             }
         };
 
-        if (!selectedFile) {
-            notifyUser("Please select an image to upload", "error");
+        if (selectedFiles.length < 2) {
+            notifyUser("Please select at least 2 images to upload", "error");
             return;
         }
 
@@ -274,38 +274,67 @@ export default function ProductEdit() {
             "image/heic",
             "image/heif"
         ];
-        if (!allowedTypes.includes(selectedFile.type)) {
-            notifyUser("Only image files (JPG, PNG, GIF, WebP, TIFF, SVG, BMP, ICO, AVIF, HEIC) are allowed", "error");
-            return;
-        }
 
-        if (selectedFile.size > 5 * 1024 * 1024) {
-            notifyUser("File size must be less than 5MB", "error");
-            return;
+        // Validate all selected files
+        for (let file of selectedFiles) {
+            if (!allowedTypes.includes(file.type)) {
+                notifyUser(`File "${file.name}" is not an allowed image format (JPG, PNG, GIF, WebP, TIFF, SVG, BMP, ICO, AVIF, HEIC)`, "error");
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                notifyUser(`File "${file.name}" exceeds 5MB limit`, "error");
+                return;
+            }
         }
 
         try {
             setUploadingImage(true);
 
             const formData = new FormData();
-            formData.append("file", selectedFile);
+            // API expects 'images' as an array field
+            // Append all selected files with array indices
+            selectedFiles.forEach((file, index) => {
+                formData.append(`images[${index}]`, file);
+            });
+
+            console.log("Uploading to: /store/products/${id}/media");
+            console.log("FormData contents:", {
+                fileCount: selectedFiles.length,
+                files: selectedFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
+                currentMediaCount: media.length
+            });
 
             const response = await api.uploadFile(
                 `/store/products/${id}/media`,
                 formData,
-                { method: "PUT" }
+                { method: "POST" }
             );
 
             if (response) {
-                setMedia([...media, response]);
-                setSelectedFile(null);
+                // response should contain the new media items
+                const newMedia = Array.isArray(response) ? response : [response];
+                setMedia([...media, ...newMedia]);
+                setSelectedFiles([]);
                 if (fileInputRef.current) {
                     fileInputRef.current.value = "";
                 }
-                notifyUser("Image uploaded successfully", "success");
+                notifyUser(`Successfully uploaded ${selectedFiles.length} images`, "success");
             }
         } catch (err) {
-            notifyUser(err.message || "Failed to upload image", "error");
+            console.error("Image upload error:", err);
+            
+            // Handle validation errors (422)
+            if (err.status === 422 && err.errors) {
+                const errorMessages = Array.isArray(err.errors)
+                    ? err.errors.join(", ")
+                    : Object.values(err.errors)
+                        .flat()
+                        .join(", ");
+                notifyUser(errorMessages || err.message || "Validation failed", "error");
+            } else {
+                notifyUser(err.message || "Failed to upload images", "error");
+            }
         } finally {
             setUploadingImage(false);
         }
@@ -626,7 +655,8 @@ export default function ProductEdit() {
                                         ref={fileInputRef}
                                         type="file"
                                         accept="image/*"
-                                        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                                        multiple
+                                        onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))}
                                         className="hidden"
                                         id="image-upload"
                                     />
@@ -647,10 +677,12 @@ export default function ProductEdit() {
                                             </svg>
                                             <div>
                                                 <p className="font-medium text-white">
-                                                    {selectedFile ? selectedFile.name : "Click to upload or drag and drop"}
+                                                    {selectedFiles.length > 0 
+                                                        ? `${selectedFiles.length} image${selectedFiles.length !== 1 ? 's' : ''} selected` 
+                                                        : "Click to upload or drag and drop"}
                                                 </p>
                                                 <p className="text-sm text-neutral-500 mt-1">
-                                                    PNG, JPG, GIF, WebP • Max 5MB
+                                                    Select at least 2 images • PNG, JPG, GIF, WebP • Max 5MB each
                                                 </p>
                                             </div>
                                         </div>
@@ -658,24 +690,26 @@ export default function ProductEdit() {
                                 </div>
                                 <div className="flex gap-3 justify-end">
                                     <Button
+                                        className="border-white/20 text-neutral-300 hover:bg-white/10"
                                         type="button"
                                         variant="outline"
                                         onClick={() => {
-                                            setSelectedFile(null);
+                                            setSelectedFiles([]);
                                             if (fileInputRef.current) {
                                                 fileInputRef.current.value = "";
                                             }
                                         }}
-                                        disabled={!selectedFile || uploadingImage}
+                                        disabled={selectedFiles.length === 0 || uploadingImage}
                                     >
                                         Clear
                                     </Button>
                                     <Button
+                                        className="bg-orange-400 hover:bg-orange-500 text-white"
                                         type="button"
                                         onClick={handleImageUpload}
-                                        disabled={!selectedFile || uploadingImage}
+                                        disabled={selectedFiles.length < 2 || uploadingImage}
                                     >
-                                        {uploadingImage ? "Uploading..." : "Upload Image"}
+                                        {uploadingImage ? `Uploading ${selectedFiles.length} images...` : `Upload ${selectedFiles.length}/2 Images`}
                                     </Button>
                                 </div>
                             </div>
