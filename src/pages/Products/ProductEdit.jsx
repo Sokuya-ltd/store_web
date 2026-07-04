@@ -254,8 +254,8 @@ export default function ProductEdit() {
             }
         };
 
-        if (selectedFiles.length < 2) {
-            notifyUser("Please select at least 2 images to upload", "error");
+        if (selectedFiles.length < 1) {
+            notifyUser("Please select at least 1 images to upload", "error");
             return;
         }
 
