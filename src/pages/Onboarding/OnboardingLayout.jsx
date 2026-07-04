@@ -1,6 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import StepBusinessInfo from "./StepBusinessInfo";
+import DesktopOnlyPage from "./DesktopOnlyPage";
 import ToastContainer from "../../components/ui/ToastContainer";
 import { useToast } from "../../hooks/useToast";
 import api from "../../services/api";
@@ -8,6 +9,7 @@ import logo from "../../assets/logo.png";
 
 export default function OnboardingLayout() {
     const { toasts, hideToast, success: showSuccess, error: showError } = useToast();
+    const [isMobile, setIsMobile] = useState(false);
     const [data, setData] = useState({
         name: "",
         email: "",
@@ -43,6 +45,22 @@ export default function OnboardingLayout() {
             return prev;
         });
     }, []);
+
+    // Detect mobile screen size
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024); // lg breakpoint
+        };
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
+    // Show desktop-only page on mobile
+    if (isMobile) {
+        return <DesktopOnlyPage />;
+    }
 
     const submitOnboarding = async () => {
         setIsSubmitting(true);
