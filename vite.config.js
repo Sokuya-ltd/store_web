@@ -14,4 +14,7 @@ export default defineConfig({
   define: {
     __DEV__: true,
   },
+  build: {
+    chunkSizeWarningLimit: 1000, // 1MB - increase from default 500KB
+  },
 })
