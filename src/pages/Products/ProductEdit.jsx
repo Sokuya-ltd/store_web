@@ -522,7 +522,7 @@ export default function ProductEdit() {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 pb-28 lg:pb-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Product Overview Card */}
                     {product && (
@@ -764,7 +764,7 @@ export default function ProductEdit() {
                             </Card>
 
                             {/* Product Details Section */}
-                            <Card className="p-6 border-white/10">
+                            <Card className="p-6 border-white/10 mb-20">
                                 <div className="flex items-center gap-2 mb-6">
                                     <Tag className="w-5 h-5 text-orange-400" />
                                     <h3 className="font-semibold text-white text-lg">Product Details</h3>
@@ -1018,27 +1018,32 @@ export default function ProductEdit() {
                                 </div>
                             </Card>
 
-                            {/* Action Buttons */}
-                            <div className="flex flex-col gap-2">
-                                <Button 
-                                    type="submit" 
-                                    disabled={isSaving}
-                                    className="bg-orange-400 hover:bg-orange-500 text-white w-full"
-                                >
-                                    {isSaving ? "Saving..." : "Update Product"}
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    onClick={() => navigate("/products")}
-                                    className="w-full"
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
+                            {/* Action Buttons - Hidden, moved to footer */}
+                            <div className="hidden"></div>
                         </div>
                     </div>
                 </form>
+            </div>
+
+            {/* Sticky Action Bar - Desktop & Mobile */}
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-navy-900 via-navy-900 to-navy-900/80 backdrop-blur border-t border-white/10 p-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 flex gap-2 lg:gap-4">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => navigate("/products")}
+                        className="flex-1"
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        onClick={handleSubmit}
+                        disabled={isSaving}
+                        className="flex-1 lg:flex-none lg:px-8 bg-orange-400 hover:bg-orange-500 text-white"
+                    >
+                        {isSaving ? "Saving..." : "Update Product"}
+                    </Button>
+                </div>
             </div>
         </div>
     );
