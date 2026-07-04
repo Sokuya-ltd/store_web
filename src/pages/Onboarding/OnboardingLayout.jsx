@@ -32,9 +32,8 @@ export default function OnboardingLayout() {
             ...partial,
         }));
 
-    // Clear field error when user starts typing
-    const updateDataWithClear = (partial) => {
-        const fieldName = Object.keys(partial)[0];
+    // Clear field error when user leaves the field (not on every keystroke to avoid focus loss on mobile)
+    const clearFieldError = (fieldName) => {
         if (fieldErrors[fieldName]) {
             setFieldErrors((prev) => {
                 const newErrors = { ...prev };
@@ -42,7 +41,6 @@ export default function OnboardingLayout() {
                 return newErrors;
             });
         }
-        updateData(partial);
     };
 
     const submitOnboarding = async () => {
@@ -147,7 +145,8 @@ export default function OnboardingLayout() {
                                     element={
                                         <StepBusinessInfo
                                             data={data}
-                                            updateData={updateDataWithClear}
+                                            updateData={updateData}
+                                            clearFieldError={clearFieldError}
                                             onSubmit={submitOnboarding}
                                             isSubmitting={isSubmitting}
                                             error={error}

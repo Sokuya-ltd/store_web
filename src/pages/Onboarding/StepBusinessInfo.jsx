@@ -21,7 +21,7 @@ function isUKPhone(phone) {
     return /^(\+44|0)[0-9]{9,10}$/.test(phone.replace(/\s/g, ""));
 }
 
-export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitting, error, fieldErrors = {} }) {
+export default function StepBusinessInfo({ data, updateData, clearFieldError, onSubmit, isSubmitting, error, fieldErrors = {} }) {
     const [currentStep, setCurrentStep] = useState(1);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -58,7 +58,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
         await onSubmit();
     };
 
-    const GlassInput = ({ label, type = "text", value, onChange, error: inputError, placeholder, required, name, numStep }) => (
+    const GlassInput = ({ label, type = "text", value, onChange, onBlur, error: inputError, placeholder, required, name, numStep }) => (
         <div>
             <label htmlFor={name} className="block text-sm font-medium text-neutral-200 mb-2">
                 {label}
@@ -70,6 +70,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                 name={name}
                 value={value ?? ""}
                 onChange={onChange}
+                onBlur={onBlur}
                 placeholder={placeholder}
                 required={required}
                 step={numStep}
@@ -118,6 +119,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                         name="name"
                         value={data.name}
                         onChange={(e) => updateData({ name: e.target.value })}
+                        onBlur={() => clearFieldError("name")}
                         error={step1Errors.name || fieldErrors.name}
                         placeholder="John Doe"
                         required
@@ -130,6 +132,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                             name="email"
                             value={data.email}
                             onChange={(e) => updateData({ email: e.target.value })}
+                            onBlur={() => clearFieldError("email")}
                             error={step1Errors.email || fieldErrors.email}
                             placeholder="you@example.com"
                             required
@@ -147,7 +150,10 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                                 value={data.phone || ""}
                                 onChange={(e) => updateData({ phone: e.target.value })}
                                 onFocus={() => setPhoneHint(true)}
-                                onBlur={() => setPhoneHint(false)}
+                                onBlur={() => {
+                                    setPhoneHint(false);
+                                    clearFieldError("phone");
+                                }}
                                 placeholder="+44 7xxx xxxxxx"
                                 required
                                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
@@ -173,6 +179,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                                 name="password"
                                 value={data.password || ""}
                                 onChange={(e) => updateData({ password: e.target.value })}
+                                onBlur={() => clearFieldError("password")}
                                 placeholder="••••••••"
                                 required
                                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 pr-11 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
@@ -198,6 +205,52 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                                     ))}
                                 </div>
                                 <p className={`text-xs mt-1 ${strength.score <= 2 ? "text-red-300" : strength.score === 3 ? "text-yellow-300" : "text-green-400"}`}>
+                                    {strength.label}
+                                </p>
+                            </div>
+                        )}
+                        {(step1Errors.password || fieldErrors.password) && (
+                            <p className="text-red-300 text-xs mt-1.5">{step1Errors.password || fieldErrors.password}</p>
+                        )}
+                    </div>
+
+                    {/* Confirm Password */}
+                    <div>
+                        <label htmlFor="password_confirmation" className="block text-sm font-medium text-neutral-200 mb-2">
+                            Confirm Password <span className="text-orange-400">*</span>
+                        </label>
+                        <div className="relative">
+                            <input
+                                id="password_confirmation"
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="password_confirmation"
+                                value={data.password_confirmation || ""}
+                                onChange={(e) => updateData({ password_confirmation: e.target.value })}
+                                onBlur={() => clearFieldError("password_confirmation")}
+                                placeholder="••••••••"
+                                required
+                                className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 pr-11 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-3.5 text-neutral-500 hover:text-neutral-300 transition-colors"
+                                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                            >
+                                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                            </button>
+                        </div>
+                        {data.password_confirmation && (
+                            <p className={`text-xs mt-1.5 ${passwordsMatch ? "text-green-400" : "text-red-300"}`}>
+                                {passwordsMatch ? "✓ Passwords match" : "Passwords do not match"}
+                            </p>
+                        )}
+                        {(step1Errors.password_confirmation || fieldErrors.password_confirmation) && !data.password_confirmation && (
+                            <p className="text-red-300 text-xs mt-1.5">
+                                {step1Errors.password_confirmation || fieldErrors.password_confirmation}
+                            </p>
+                        )}
+                    </div>
                                     {strength.label}
                                 </p>
                             </div>
@@ -305,6 +358,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                         name="store_name"
                         value={data.store_name}
                         onChange={(e) => updateData({ store_name: e.target.value })}
+                        onBlur={() => clearFieldError("store_name")}
                         error={fieldErrors.store_name}
                         placeholder="My Awesome Store"
                         required
@@ -329,6 +383,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                             name="business_registration_number"
                             value={data.business_registration_number || ""}
                             onChange={(e) => updateData({ business_registration_number: e.target.value })}
+                            onBlur={() => clearFieldError("business_registration_number")}
                             placeholder="e.g., 12345678"
                             className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                         />
@@ -342,6 +397,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                             numStep="0.1"
                             value={data.commission_rate ?? ""}
                             onChange={(e) => updateData({ commission_rate: parseFloat(e.target.value) || 0 })}
+                            onBlur={() => clearFieldError("commission_rate")}
                             error={fieldErrors.commission_rate}
                             placeholder="15.5"
                         />
@@ -352,6 +408,7 @@ export default function StepBusinessInfo({ data, updateData, onSubmit, isSubmitt
                             numStep="0.01"
                             value={data.minimum_order_amount ?? ""}
                             onChange={(e) => updateData({ minimum_order_amount: parseFloat(e.target.value) || 0 })}
+                            onBlur={() => clearFieldError("minimum_order_amount")}
                             error={fieldErrors.minimum_order_amount}
                             placeholder="0.00"
                         />
