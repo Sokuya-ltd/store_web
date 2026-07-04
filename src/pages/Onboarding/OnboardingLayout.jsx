@@ -109,7 +109,7 @@ export default function OnboardingLayout() {
             <div className="w-full max-w-6xl relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
                     {/* Left Content */}
-                    <div className="flex flex-col justify-center order-2 lg:order-1">
+                    <div className="flex flex-col justify-center order-1 lg:order-1">
                         <div className="text-white space-y-6">
                             <img src={logo} alt="Sokuya" className="h-40 w-auto mb-2" />
                             <div>
@@ -126,7 +126,7 @@ export default function OnboardingLayout() {
                     </div>
 
                     {/* Right Content - Form */}
-                    <div className="order-1 lg:order-2">
+                    <div className="order-2 lg:order-2">
                         <div className="bg-white/7 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
                             <h2 className="text-2xl font-bold text-white mb-2">
                                 Get Started
