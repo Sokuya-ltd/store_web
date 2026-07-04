@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -16,8 +17,28 @@ import RegistrationSuccess from "./pages/Onboarding/RegistrationSuccess";
 import Login from "./pages/Onboarding/Login";
 import ForgotPassword from "./pages/Onboarding/ForgotPassword";
 import ResetPassword from "./pages/Onboarding/ResetPassword";
+import DesktopOnlyPage from "./pages/Onboarding/DesktopOnlyPage";
 
 function AppRoutes() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+      setIsLoaded(true);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Show desktop-only page on mobile for all pages
+  if (isLoaded && isMobile) {
+    return <DesktopOnlyPage />;
+  }
+
   return (
     <Routes>
       {/* Guest routes - redirect to dashboard if already logged in */}

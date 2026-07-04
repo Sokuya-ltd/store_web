@@ -1,4 +1,5 @@
 import { Monitor, Smartphone } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 export default function DesktopOnlyPage() {
   return (
@@ -10,6 +11,11 @@ export default function DesktopOnlyPage() {
 
       {/* Content */}
       <div className="relative z-10 max-w-lg text-center">
+        {/* Logo */}
+        <div className="mb-8 flex justify-center">
+          <img src={logo} alt="Sokuya" className="h-32 w-auto drop-shadow-lg" />
+        </div>
+
         {/* Icon Animation */}
         <div className="mb-8 flex justify-center">
           <div className="relative">
