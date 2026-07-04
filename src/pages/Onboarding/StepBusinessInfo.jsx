@@ -1,4 +1,4 @@
-﻿import { useState, useCallback } from "react";
+﻿import { useState, useCallback, memo } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -21,7 +21,7 @@ function isUKPhone(phone) {
     return /^(\+44|0)[0-9]{9,10}$/.test(phone.replace(/\s/g, ""));
 }
 
-export default function StepBusinessInfo({ data, updateData, clearFieldError, onSubmit, isSubmitting, error, fieldErrors = {} }) {
+function StepBusinessInfo({ data, updateData, clearFieldError, onSubmit, isSubmitting, error, fieldErrors = {} }) {
     const [currentStep, setCurrentStep] = useState(1);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -472,3 +472,5 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
         </form>
     );
 }
+
+export default memo(StepBusinessInfo);

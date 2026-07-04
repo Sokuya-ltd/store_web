@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import StepBusinessInfo from "./StepBusinessInfo";
 import ToastContainer from "../../components/ui/ToastContainer";
 import { useToast } from "../../hooks/useToast";
@@ -26,22 +26,23 @@ export default function OnboardingLayout() {
 
     const navigate = useNavigate();
 
-    const updateData = (partial) =>
+    const updateData = useCallback((partial) =>
         setData((prev) => ({
             ...prev,
             ...partial,
-        }));
+        })), []);
 
     // Clear field error when user leaves the field (not on every keystroke to avoid focus loss on mobile)
-    const clearFieldError = (fieldName) => {
-        if (fieldErrors[fieldName]) {
-            setFieldErrors((prev) => {
+    const clearFieldError = useCallback((fieldName) => {
+        setFieldErrors((prev) => {
+            if (prev[fieldName]) {
                 const newErrors = { ...prev };
                 delete newErrors[fieldName];
                 return newErrors;
-            });
-        }
-    };
+            }
+            return prev;
+        });
+    }, []);
 
     const submitOnboarding = async () => {
         setIsSubmitting(true);
