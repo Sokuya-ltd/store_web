@@ -282,14 +282,6 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                             </p>
                         )}
                     </div>
-                                    {strength.label}
-                                </p>
-                            </div>
-                        )}
-                        {(step1Errors.password || fieldErrors.password) && (
-                            <p className="text-red-300 text-xs mt-1.5">{step1Errors.password || fieldErrors.password}</p>
-                        )}
-                    </div>
 
                     {/* Confirm Password */}
                     <div>
