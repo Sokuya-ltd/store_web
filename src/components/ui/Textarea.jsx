@@ -55,6 +55,10 @@ export default function Textarea({
             {/* Use simple textarea on mobile to avoid keyboard hiding issues */}
             {isMobile || !useTinyMCE ? (
                 <textarea
+                    autoComplete="off"
+                    spellCheck="false"
+                    autoCorrect="off"
+                    autoCapitalize="off"
                     className={`w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all resize-none ${
                         error ? "border-red-400 focus:ring-red-400" : ""
                     }`}

@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -33,6 +33,30 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
     const strength = getPasswordStrength(data.password);
     const passwordsMatch =
         data.password && data.password_confirmation && data.password === data.password_confirmation;
+
+    // Memoize handlers to prevent input focus loss
+    const handleNameChange = useCallback((e) => updateData({ name: e.target.value }), [updateData]);
+    const handleEmailChange = useCallback((e) => updateData({ email: e.target.value }), [updateData]);
+    const handlePhoneChange = useCallback((e) => updateData({ phone: e.target.value }), [updateData]);
+    const handlePasswordChange = useCallback((e) => updateData({ password: e.target.value }), [updateData]);
+    const handleConfirmPasswordChange = useCallback((e) => updateData({ password_confirmation: e.target.value }), [updateData]);
+    const handleStoreNameChange = useCallback((e) => updateData({ store_name: e.target.value }), [updateData]);
+    const handleRegistrationChange = useCallback((e) => updateData({ business_registration_number: e.target.value }), [updateData]);
+    const handleCommissionChange = useCallback((e) => updateData({ commission_rate: parseFloat(e.target.value) || 0 }), [updateData]);
+    const handleMinimumOrderChange = useCallback((e) => updateData({ minimum_order_amount: parseFloat(e.target.value) || 0 }), [updateData]);
+
+    const handleNameBlur = useCallback(() => clearFieldError("name"), [clearFieldError]);
+    const handleEmailBlur = useCallback(() => clearFieldError("email"), [clearFieldError]);
+    const handlePhoneBlur = useCallback(() => {
+        setPhoneHint(false);
+        clearFieldError("phone");
+    }, [clearFieldError]);
+    const handlePasswordBlur = useCallback(() => clearFieldError("password"), [clearFieldError]);
+    const handleConfirmPasswordBlur = useCallback(() => clearFieldError("password_confirmation"), [clearFieldError]);
+    const handleStoreNameBlur = useCallback(() => clearFieldError("store_name"), [clearFieldError]);
+    const handleRegistrationBlur = useCallback(() => clearFieldError("business_registration_number"), [clearFieldError]);
+    const handleCommissionBlur = useCallback(() => clearFieldError("commission_rate"), [clearFieldError]);
+    const handleMinimumOrderBlur = useCallback(() => clearFieldError("minimum_order_amount"), [clearFieldError]);
 
     const validateStep1 = () => {
         const errors = {};
@@ -74,6 +98,10 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                 placeholder={placeholder}
                 required={required}
                 step={numStep}
+                autoComplete="off"
+                spellCheck="false"
+                autoCorrect="off"
+                autoCapitalize="off"
                 aria-invalid={!!inputError}
                 aria-describedby={inputError ? `${name}-error` : undefined}
                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
@@ -118,8 +146,8 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                         label="Full Name"
                         name="name"
                         value={data.name}
-                        onChange={(e) => updateData({ name: e.target.value })}
-                        onBlur={() => clearFieldError("name")}
+                        onChange={handleNameChange}
+                        onBlur={handleNameBlur}
                         error={step1Errors.name || fieldErrors.name}
                         placeholder="John Doe"
                         required
@@ -131,8 +159,8 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                             type="email"
                             name="email"
                             value={data.email}
-                            onChange={(e) => updateData({ email: e.target.value })}
-                            onBlur={() => clearFieldError("email")}
+                            onChange={handleEmailChange}
+                            onBlur={handleEmailBlur}
                             error={step1Errors.email || fieldErrors.email}
                             placeholder="you@example.com"
                             required
@@ -148,13 +176,12 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                                 type="tel"
                                 name="phone"
                                 value={data.phone || ""}
-                                onChange={(e) => updateData({ phone: e.target.value })}
+                                onChange={handlePhoneChange}
                                 onFocus={() => setPhoneHint(true)}
-                                onBlur={() => {
-                                    setPhoneHint(false);
-                                    clearFieldError("phone");
-                                }}
+                                onBlur={handlePhoneBlur}
                                 placeholder="+44 7xxx xxxxxx"
+                                autoComplete="tel"
+                                spellCheck="false"
                                 required
                                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                             />
@@ -178,9 +205,11 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 value={data.password || ""}
-                                onChange={(e) => updateData({ password: e.target.value })}
-                                onBlur={() => clearFieldError("password")}
+                                onChange={handlePasswordChange}
+                                onBlur={handlePasswordBlur}
                                 placeholder="••••••••"
+                                autoComplete="new-password"
+                                spellCheck="false"
                                 required
                                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 pr-11 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                             />
@@ -225,9 +254,11 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                                 type={showConfirmPassword ? "text" : "password"}
                                 name="password_confirmation"
                                 value={data.password_confirmation || ""}
-                                onChange={(e) => updateData({ password_confirmation: e.target.value })}
-                                onBlur={() => clearFieldError("password_confirmation")}
+                                onChange={handleConfirmPasswordChange}
+                                onBlur={handleConfirmPasswordBlur}
                                 placeholder="••••••••"
+                                autoComplete="new-password"
+                                spellCheck="false"
                                 required
                                 className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 pr-11 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                             />
@@ -357,8 +388,8 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                         label="Store Name"
                         name="store_name"
                         value={data.store_name}
-                        onChange={(e) => updateData({ store_name: e.target.value })}
-                        onBlur={() => clearFieldError("store_name")}
+                        onChange={handleStoreNameChange}
+                        onBlur={handleStoreNameBlur}
                         error={fieldErrors.store_name}
                         placeholder="My Awesome Store"
                         required
@@ -382,9 +413,13 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                             type="text"
                             name="business_registration_number"
                             value={data.business_registration_number || ""}
-                            onChange={(e) => updateData({ business_registration_number: e.target.value })}
-                            onBlur={() => clearFieldError("business_registration_number")}
+                            onChange={handleRegistrationChange}
+                            onBlur={handleRegistrationBlur}
                             placeholder="e.g., 12345678"
+                            autoComplete="off"
+                            spellCheck="false"
+                            autoCorrect="off"
+                            autoCapitalize="off"
                             className="w-full bg-white/10 border border-white/20 text-white placeholder-neutral-500 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400/50 transition-all backdrop-blur-sm"
                         />
                     </div>
@@ -396,8 +431,8 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                             name="commission_rate"
                             numStep="0.1"
                             value={data.commission_rate ?? ""}
-                            onChange={(e) => updateData({ commission_rate: parseFloat(e.target.value) || 0 })}
-                            onBlur={() => clearFieldError("commission_rate")}
+                            onChange={handleCommissionChange}
+                            onBlur={handleCommissionBlur}
                             error={fieldErrors.commission_rate}
                             placeholder="15.5"
                         />
@@ -407,8 +442,8 @@ export default function StepBusinessInfo({ data, updateData, clearFieldError, on
                             name="minimum_order_amount"
                             numStep="0.01"
                             value={data.minimum_order_amount ?? ""}
-                            onChange={(e) => updateData({ minimum_order_amount: parseFloat(e.target.value) || 0 })}
-                            onBlur={() => clearFieldError("minimum_order_amount")}
+                            onChange={handleMinimumOrderChange}
+                            onBlur={handleMinimumOrderBlur}
                             error={fieldErrors.minimum_order_amount}
                             placeholder="0.00"
                         />
